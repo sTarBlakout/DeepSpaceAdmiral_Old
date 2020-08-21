@@ -12,6 +12,8 @@ public class TestShip : MonoBehaviour
     private Vector3 _targetPos;
     private bool _move;
 
+    private Vector3 _lastMove;
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
@@ -22,7 +24,7 @@ public class TestShip : MonoBehaviour
         if (_move)
         {
             var dist = Vector3.Distance(transform.position, _targetPos);
-            if (dist < 2)
+            if (dist < 4)
                 _move = false;
 
             var inputDirection = (_targetPos - transform.position).normalized;
@@ -31,18 +33,24 @@ public class TestShip : MonoBehaviour
 
             float rotationAmount;
             if (thrust >= 0)
-                _rigidbody.AddForce(transform.forward * (thrust * inputDirection.magnitude * movementSpeed));
+            {
+                _lastMove = transform.forward * (thrust * inputDirection.magnitude * movementSpeed);
+                _rigidbody.AddForce(_lastMove);
+            }
 
-            if (thrust < -0.98f)
+            if (thrust < 0.999f)
             {
-                rotationAmount = rotationSpeed * rotation * 8;
+                if (rotation < 0)
+                    rotationAmount = -rotationSpeed;
+                else
+                    rotationAmount = rotationSpeed;
+                _rigidbody.AddTorque(0, rotationAmount, 0);
             }
-            else
-            {
-                rotationAmount = rotationSpeed * rotation;
-            }
-            
-            _rigidbody.AddTorque(0, rotationAmount, 0);
+        }
+        else
+        {
+            _lastMove *= 0.95f;
+            _rigidbody.AddForce(_lastMove);
         }
     }
 
