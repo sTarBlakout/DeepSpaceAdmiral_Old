@@ -327,7 +327,7 @@ GameObject:
   - component: {fileID: 502189918355351883}
   - component: {fileID: 4683013382497507137}
   - component: {fileID: 5541890745853807276}
-  - component: {fileID: 9174123943971153804}
+  - component: {fileID: 197640317}
   m_Layer: 0
   m_Name: Ship
   m_TagString: Untagged
@@ -380,7 +380,7 @@ CapsuleCollider:
   m_Height: 10
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: -0.4}
---- !u!114 &9174123943971153804
+--- !u!114 &197640317
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -389,12 +389,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2073844814151256159}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2abbf600a68589f458529ab8aa6c712a, type: 3}
+  m_Script: {fileID: 11500000, guid: 2ecb7048678ee3c42890f1c0726242ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 200
+  movementSpeed: 300
   rotationSpeed: 200
-  isSelected: 1
+  reachedDistOffset: 2
+  slowDownCoef: 0.95
 --- !u!1 &2815303682257264632
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using Lean.Touch;
-using RTS.Ships;
 
 namespace RTS.Controls
 {
     public class InputManager : MonoBehaviour
     {
+        private SelectedObject _selectedObject = new SelectedObject();
+        
         private void OnEnable()
         {
             LeanTouch.OnFingerTap += HandleFingerTap;
@@ -18,16 +19,17 @@ namespace RTS.Controls
 
         private void HandleFingerTap(LeanFinger finger)
         {
-            if (Physics.Raycast(finger.GetRay(), out var hitInfo, Mathf.Infinity))
+            if (!Physics.Raycast(finger.GetRay(), out var hitInfo, Mathf.Infinity)) return;
+            
+            var monoBehaviorObj = hitInfo.collider.GetComponent<MonoBehaviour>();
+            if (monoBehaviorObj != null)
             {
-                var battleship = hitInfo.collider.GetComponent<BattleshipBase>();
-                if (battleship != null)
-                {
-                    Debug.Log("Tapped on Battleship!");
-                    return;
-                }
-                
-                Debug.Log("Tapped on Infinite Space!");
+                _selectedObject.InitObject(monoBehaviorObj);
+            }
+            else
+            {
+                var moveToPos = new Vector3(hitInfo.point.x, RTSGameController.Instance.ShipsPosY, hitInfo.point.z);
+                _selectedObject.TryMoveToPos(moveToPos);
             }
         }
     }
