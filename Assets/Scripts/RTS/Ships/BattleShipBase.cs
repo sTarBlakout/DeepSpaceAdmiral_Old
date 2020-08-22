@@ -3,8 +3,12 @@ using RTS.Controls;
 
 namespace RTS.Ships
 {
-    public class BattleshipBase : MonoBehaviour, IMoveable
+    public class BattleshipBase : MonoBehaviour, IMoveable, IDamageable
     {
+        [Header("General")] 
+        [SerializeField] private bool isFriend; 
+        
+        [Header("Movement")]
         [SerializeField] private float movementSpeed = 1f;
         [SerializeField] private float rotationSpeed = 1f;
         [SerializeField] private float reachedDistOffset = 1f;
@@ -17,6 +21,8 @@ namespace RTS.Ships
         private Vector3 _movement;
         private float _moveThrust;
         private bool _isReachedDestination;
+
+        public bool IsFriend => isFriend;
 
         private void Awake()
         {

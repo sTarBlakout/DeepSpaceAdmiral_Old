@@ -24,10 +24,19 @@ namespace RTS.Controls
             var monoBehaviorObj = hitInfo.collider.GetComponent<MonoBehaviour>();
             if (monoBehaviorObj != null)
             {
+                if (_selectedObject.IsInit)
+                {
+                    // If can interact somehow, don't reselect.
+                    if (_selectedObject.TryInteractWithObject(monoBehaviorObj))
+                        return;
+                }
+                
+                // Can't interact in any way, reselect.
                 _selectedObject.InitObject(monoBehaviorObj);
             }
             else
             {
+                // Touched map, try to move ship there, if selected.
                 var moveToPos = new Vector3(hitInfo.point.x, RTSGameController.Instance.ShipsPosY, hitInfo.point.z);
                 _selectedObject.TryMoveToPos(moveToPos);
             }
