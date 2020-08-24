@@ -4,6 +4,8 @@ namespace RTS.Controls
 {
     public class SelectedObject
     {
+        private MonoBehaviour _monoBehaviour;
+        
         private IMoveable _moveable;
         private IDamageable _damageable;
 
@@ -12,8 +14,10 @@ namespace RTS.Controls
 
         public void InitObject(MonoBehaviour monoBehaviourObj)
         {
-            _damageable = monoBehaviourObj.GetComponent<IDamageable>();
-            _moveable = monoBehaviourObj.GetComponent<IMoveable>();
+            _monoBehaviour = monoBehaviourObj;
+            
+            _damageable = _monoBehaviour.GetComponent<IDamageable>();
+            _moveable = _monoBehaviour.GetComponent<IMoveable>();
 
             if (_damageable != null)
             {
@@ -29,9 +33,15 @@ namespace RTS.Controls
 
         public void UninitObject()
         {
+            _monoBehaviour = null;
             _damageable = null;
             _moveable = null;
             _isInit = false;
+        }
+
+        public bool SameObject(MonoBehaviour monoBehaviourObj)
+        {
+            return _monoBehaviour == monoBehaviourObj;
         }
 
         public void TryMoveToPos(Vector3 position)

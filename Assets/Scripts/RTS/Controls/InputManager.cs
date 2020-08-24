@@ -1,12 +1,21 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using Lean.Touch;
+using GameGlobal;
 
 namespace RTS.Controls
 {
     public class InputManager : MonoBehaviour
     {
-        private SelectedObject _selectedObject = new SelectedObject();
+        [SerializeField] private float doubleTapThreshold;
         
+        private SelectedObject _selectedObject = new SelectedObject();
+
+        private float _lastTappedTime;
+        
+        private byte _doubleTapCounter;
+        private Coroutine _doubleTapResetCoroutine;
+
         private void OnEnable()
         {
             LeanTouch.OnFingerTap += HandleFingerTap;
@@ -17,9 +26,33 @@ namespace RTS.Controls
             LeanTouch.OnFingerTap -= HandleFingerTap;
         }
 
+        private bool CheckForDoubleTap()
+        {
+            var isDoubleTap = _lastTappedTime + doubleTapThreshold >= Time.time;
+            
+            _doubleTapCounter++;
+            if (_doubleTapCounter == 2)
+                _doubleTapCounter = 0;
+
+            if (_doubleTapResetCoroutine != null)
+                StopCoroutine(_doubleTapResetCoroutine);
+            _doubleTapResetCoroutine = StartCoroutine(ResetTapStatsInSeconds(doubleTapThreshold));
+            
+            return isDoubleTap;
+        }
+
+        private IEnumerator ResetTapStatsInSeconds(float seconds)
+        {
+            yield return new WaitForSeconds(seconds);
+            _doubleTapCounter = 0;
+        }
+
         private void HandleFingerTap(LeanFinger finger)
         {
             if (!Physics.Raycast(finger.GetRay(), out var hitInfo, Mathf.Infinity)) return;
+
+            var isDoubleTap = CheckForDoubleTap();
+            _lastTappedTime = Time.time;
             
             var monoBehaviorObj = hitInfo.collider.GetComponent<MonoBehaviour>();
             if (monoBehaviorObj != null)
@@ -32,12 +65,21 @@ namespace RTS.Controls
                 }
                 
                 // Can't interact in any way, reselect.
-                _selectedObject.InitObject(monoBehaviorObj);
+                if (!_selectedObject.SameObject(monoBehaviorObj))
+                    _selectedObject.InitObject(monoBehaviorObj);
+                else
+                {
+                    // Zoom on selected
+                    if (isDoubleTap)
+                    {
+                        CameraManager.Instance.SetLeanChaseDestination(monoBehaviorObj.transform);
+                    }
+                }
             }
             else
             {
                 // Touched map, try to move ship there, if selected.
-                var moveToPos = new Vector3(hitInfo.point.x, RTSGameController.Instance.ShipsPosY, hitInfo.point.z);
+                var moveToPos = new Vector3(hitInfo.point.x, GlobalData.Instance.RtsShipsPosY, hitInfo.point.z);
                 _selectedObject.TryMoveToPos(moveToPos);
             }
         }
