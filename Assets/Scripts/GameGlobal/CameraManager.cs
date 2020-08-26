@@ -7,7 +7,7 @@ namespace GameGlobal
 {
     public class CameraManager : MonoBehaviour
     {
-        private const float VectorEqualityPrecision = 0.5f;
+        private const float ZoomObjPrec = 0.5f;
         
         private LeanChase _leanChase;
         
@@ -43,7 +43,7 @@ namespace GameGlobal
         {
             if (_leanChase.isActiveAndEnabled)
             {
-                if (Vector3.SqrMagnitude(transform.position - _leanChase.Destination.position) < VectorEqualityPrecision)
+                if (GlobalData.VectorsApproxEqual(transform.position, _leanChase.Destination.position, ZoomObjPrec))
                     _leanChase.enabled = false;
             }
         }

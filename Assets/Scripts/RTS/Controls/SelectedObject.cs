@@ -8,34 +8,53 @@ namespace RTS.Controls
         
         private IMoveable _moveable;
         private IDamageable _damageable;
+        private IAttackable _attackable;
+        private ISelectable _selectable;
 
         private bool _isInit;
         public bool IsInit => _isInit;
 
         public void InitObject(MonoBehaviour monoBehaviourObj)
         {
+            UninitObject();
+            
             _monoBehaviour = monoBehaviourObj;
+            _selectable = _monoBehaviour.GetComponent<ISelectable>();
+
+            if (_selectable == null)
+            {
+                UninitObject();
+                return;
+            }
             
             _damageable = _monoBehaviour.GetComponent<IDamageable>();
             _moveable = _monoBehaviour.GetComponent<IMoveable>();
+            _attackable = _monoBehaviour.GetComponent<IAttackable>();
 
             if (_damageable != null)
             {
+                // If enemy, don't select.
                 if (!_damageable.IsFriend)
                 {
                     UninitObject();
                     return;
                 }
             }
+
+            _selectable.Select();
             
             _isInit = true;
         }
 
-        public void UninitObject()
+        private void UninitObject()
         {
+            if (_isInit)
+                _selectable.Unselect();
+            
             _monoBehaviour = null;
             _damageable = null;
             _moveable = null;
+            _attackable = null;
             _isInit = false;
         }
 
@@ -59,7 +78,10 @@ namespace RTS.Controls
             if (damageable != null)
             {
                 if (!damageable.IsFriend)
+                {
+                    _attackable.AttackTarget(damageable);
                     return true;
+                }
             }
 
             return false;

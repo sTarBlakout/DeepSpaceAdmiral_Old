@@ -24,5 +24,10 @@ namespace GameGlobal
         {
             DontDestroyOnLoad(gameObject);
         }
+
+        public static bool VectorsApproxEqual(Vector3 v1, Vector3 v2, float precision)
+        {
+            return Vector3.SqrMagnitude(v1 - v2) < precision;
+        }
     }
 }
