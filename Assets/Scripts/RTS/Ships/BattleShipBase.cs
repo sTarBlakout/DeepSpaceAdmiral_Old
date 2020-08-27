@@ -47,6 +47,8 @@ namespace RTS.Ships
         {
             _stance = Stance.Idle;
             _isReachedDestination = true;
+
+            selectedMarker.transform.Translate(Vector3.down * GlobalData.Instance.RtsShipsPosY, Space.World);
             selectedMarker.SetActive(false);
         }
 
