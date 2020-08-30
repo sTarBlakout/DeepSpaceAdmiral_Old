@@ -1,4 +1,6 @@
-﻿namespace RTS.Controls
+﻿using UnityEngine;
+
+namespace RTS.Controls
 {
     public interface IDamageable
     {

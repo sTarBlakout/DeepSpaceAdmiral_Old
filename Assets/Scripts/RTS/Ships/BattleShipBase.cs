@@ -25,6 +25,7 @@ namespace RTS.Ships
         private const float SlowDownEndPrec = 0.1f;
         
         private Stance _stance;
+        private Stance _stanceToSwitch;
 
         private Rigidbody _rigidbody;
 
@@ -34,7 +35,7 @@ namespace RTS.Ships
         private float _moveThrust;
         private bool _isReachedDestination;
 
-        private IDamageable _currTarget;
+        private MonoBehaviour _currTarget;
 
         public bool IsFriend => isFriend;
 
@@ -45,15 +46,21 @@ namespace RTS.Ships
 
         private void Start()
         {
+            _stanceToSwitch = Stance.Empty;
             _stance = Stance.Idle;
             _isReachedDestination = true;
 
-            selectedMarker.transform.Translate(Vector3.down * GlobalData.Instance.RtsShipsPosY, Space.World);
-            selectedMarker.SetActive(false);
+            if (isFriend)
+            {
+                selectedMarker.transform.Translate(Vector3.down * GlobalData.Instance.RtsShipsPosY, Space.World);
+                selectedMarker.SetActive(false);
+            }
         }
 
         private void FixedUpdate()
         {
+            if (isFriend)
+                Debug.Log(_stance + " " + _stanceToSwitch);
             switch (_stance)
             {
                 case Stance.Idle:
@@ -71,7 +78,12 @@ namespace RTS.Ships
 
         private void AttackTargetBehavior()
         {
-            
+            var distToTarget = Vector3.Distance(transform.position, _currTarget.transform.position);
+            if (distToTarget > attackRange)
+            {
+                _targetMovePos = _currTarget.transform.position;
+                MoveToPositon(_targetMovePos, _stance);
+            }
         }
 
         private void MoveToPositionBehavior()
@@ -88,7 +100,15 @@ namespace RTS.Ships
                 else
                 {
                     _rigidbody.velocity = Vector3.zero;
-                    _stance = Stance.Idle;
+                    if (_stanceToSwitch == Stance.Empty)
+                    { 
+                        _stance = Stance.Idle;
+                    }
+                    else
+                    {
+                        _stance = _stanceToSwitch;
+                        _stanceToSwitch = Stance.Empty;
+                    }
                 }
             }
         }
@@ -131,18 +151,22 @@ namespace RTS.Ships
 
         #region IMoveable Implementation
 
-        public void MoveToPositon(Vector3 position)
+        public void MoveToPositon(Vector3 position, Stance stance = Stance.MoveToPosition)
         {
             _targetMovePos = position;
             _isReachedDestination = false;
             _stance = Stance.MoveToPosition;
+            if (stance != Stance.MoveToPosition)
+            {
+                _stanceToSwitch = stance;
+            }
         }
 
         #endregion
         
         #region IAttackable Implementation
 
-        public void AttackTarget(IDamageable target)
+        public void AttackTarget(MonoBehaviour target)
         {
             _currTarget = target;
             _stance = Stance.AttackTarget;

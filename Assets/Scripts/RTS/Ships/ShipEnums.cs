@@ -4,6 +4,7 @@
     {
         Idle,
         MoveToPosition,
-        AttackTarget
+        AttackTarget,
+        Empty
     }
 }

@@ -1,7 +1,9 @@
-﻿namespace RTS.Controls
+﻿using UnityEngine;
+
+namespace RTS.Controls
 {
     public interface IAttackable
     {
-        void AttackTarget(IDamageable target);
+        void AttackTarget(MonoBehaviour target);
     }
 }

@@ -79,7 +79,7 @@ namespace RTS.Controls
             {
                 if (!damageable.IsFriend)
                 {
-                    _attackable.AttackTarget(damageable);
+                    _attackable.AttackTarget(monoBehaviourObj);
                     return true;
                 }
             }
