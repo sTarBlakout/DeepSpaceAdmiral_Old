@@ -14,7 +14,7 @@ namespace RTS.Ships
         [SerializeField] private float movementSpeed = 1f;
         [SerializeField] private float rotationSpeed = 1f;
         [SerializeField] private float reachedDistOffset = 1f;
-        [SerializeField] private float slowDownCoef = 0f;
+        [SerializeField] private float slowDownCoef;
 
         [Header("Attack")] 
         [SerializeField] private float attackRange = 1f;
@@ -22,7 +22,7 @@ namespace RTS.Ships
         [Header("Visuals")] 
         [SerializeField] private GameObject selectedMarker;
 
-        private const float SlowDownEndPrec = 0.1f;
+        private const float SLOW_DOWN_END_PREC = 0.1f;
         
         private Stance _stance;
         private Stance _stanceToSwitch;
@@ -59,8 +59,6 @@ namespace RTS.Ships
 
         private void FixedUpdate()
         {
-            if (isFriend)
-                Debug.Log(_stance + " " + _stanceToSwitch);
             switch (_stance)
             {
                 case Stance.Idle:
@@ -70,6 +68,8 @@ namespace RTS.Ships
                     break;
                 case Stance.AttackTarget:
                     AttackTargetBehavior();
+                    break;
+                case Stance.Empty:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -90,12 +90,19 @@ namespace RTS.Ships
         {
             if (!_isReachedDestination)
             {
+                if (_stanceToSwitch != Stance.Empty)
+                {
+                    var distToTarget = Vector3.Distance(transform.position, _currTarget.transform.position);
+                    if (distToTarget <= attackRange)
+                        _isReachedDestination = true;
+                }
+                
                 UpdateMoving();
                 UpdateRotating();
             }
             else
             {
-                if (!GlobalData.VectorsApproxEqual(_rigidbody.velocity, Vector3.zero, SlowDownEndPrec))
+                if (!GlobalData.VectorsApproxEqual(_rigidbody.velocity, Vector3.zero, SLOW_DOWN_END_PREC))
                     SlowDown();
                 else
                 {
