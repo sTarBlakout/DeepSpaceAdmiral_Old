@@ -7,4 +7,10 @@
         AttackTarget,
         Empty
     }
+
+    public enum MainWeaponType
+    {
+        Front,
+        Sides
+    }
 }

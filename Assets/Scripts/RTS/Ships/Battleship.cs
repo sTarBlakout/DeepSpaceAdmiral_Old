@@ -5,7 +5,7 @@ using RTS.Controls;
 
 namespace RTS.Ships
 {
-    public class BattleshipBase : MonoBehaviour, IMoveable, IDamageable, IAttackable, ISelectable
+    public class Battleship : MonoBehaviour, IMoveable, IDamageable, IAttackable, ISelectable
     {
         [Header("General")] 
         [SerializeField] private bool isFriend; 
@@ -17,6 +17,7 @@ namespace RTS.Ships
         [SerializeField] private float slowDownCoef;
 
         [Header("Attack")] 
+        [SerializeField] private MainWeaponType mainWeaponType;
         [SerializeField] private float attackRange = 1f;
 
         [Header("Visuals")] 
@@ -83,6 +84,27 @@ namespace RTS.Ships
             {
                 _targetMovePos = _currTarget.transform.position;
                 MoveToPositon(_targetMovePos, _stance);
+                return;
+            }
+
+            switch (mainWeaponType)
+            {
+                case MainWeaponType.Front:
+                    ProcessFrontWeapon();
+                    break;
+                case MainWeaponType.Sides:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void ProcessFrontWeapon()
+        {
+            var rotation = (_currTarget.transform.position - transform.position).normalized;
+            if (UpdateRotating(rotation))
+            {
+                //Shooting here
             }
         }
 
@@ -98,7 +120,7 @@ namespace RTS.Ships
                 }
                 
                 UpdateMoving();
-                UpdateRotating();
+                UpdateRotating(_moveDirection);
             }
             else
             {
@@ -142,18 +164,21 @@ namespace RTS.Ships
                 _isReachedDestination = true;
         }
 
-        private void UpdateRotating()
+        private bool UpdateRotating(Vector3 rotateTo)
         {
-            if (_moveThrust >= 0.999f || _isReachedDestination) return;
+            var moveThrust = Vector3.Dot(rotateTo.normalized, transform.forward);
+            if (moveThrust >= 0.999f) return true;
 
             float rotationAmount;
-            var rotation = Vector3.Dot(_moveDirection.normalized, transform.right);
+            var rotation = Vector3.Dot(rotateTo.normalized, transform.right);
             if (rotation < 0)
                 rotationAmount = -rotationSpeed;
             else
                 rotationAmount = rotationSpeed;
             
             _rigidbody.AddTorque(0, rotationAmount, 0);
+
+            return false;
         }
 
         #region IMoveable Implementation
