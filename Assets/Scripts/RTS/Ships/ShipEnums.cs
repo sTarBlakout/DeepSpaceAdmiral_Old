@@ -13,4 +13,9 @@
         Front,
         Sides
     }
+
+    public enum ProjectileType
+    {
+        LaserBeam
+    }
 }

@@ -1,12 +1,14 @@
 ﻿using System;
-using GameGlobal;
 using UnityEngine;
+using GameGlobal;
 using RTS.Controls;
 
 namespace RTS.Ships
 {
     public class Battleship : MonoBehaviour, IMoveable, IDamageable, IAttackable, ISelectable
     {
+        #region Data
+
         [Header("General")] 
         [SerializeField] private bool isFriend; 
         
@@ -16,33 +18,35 @@ namespace RTS.Ships
         [SerializeField] private float reachedDistOffset = 1f;
         [SerializeField] private float slowDownCoef;
 
-        [Header("Attack")] 
-        [SerializeField] private MainWeaponType mainWeaponType;
-        [SerializeField] private float attackRange = 1f;
-
         [Header("Visuals")] 
         [SerializeField] private GameObject selectedMarker;
 
         private const float SLOW_DOWN_END_PREC = 0.1f;
+        private const float FACING_TARGET_PREC = 0.9999f;
         
         private Stance _stance;
         private Stance _stanceToSwitch;
 
         private Rigidbody _rigidbody;
 
+        private WeaponManager _weaponManager;
+
         private Vector3 _targetMovePos;
         private Vector3 _moveDirection;
         private Vector3 _movement;
-        private float _moveThrust;
+        private float _dotForward;
         private bool _isReachedDestination;
 
         private MonoBehaviour _currTarget;
 
-        public bool IsFriend => isFriend;
+        #endregion
 
+        #region Unity Events
+        
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
+            _weaponManager = transform.GetComponentInChildren<WeaponManager>();
         }
 
         private void Start()
@@ -50,7 +54,10 @@ namespace RTS.Ships
             _stanceToSwitch = Stance.Empty;
             _stance = Stance.Idle;
             _isReachedDestination = true;
-
+            
+            if (isFriend)
+                _weaponManager.InitWeaponSystem(FACING_TARGET_PREC);
+            
             if (isFriend)
             {
                 selectedMarker.transform.Translate(Vector3.down * GlobalData.Instance.RtsShipsPosY, Space.World);
@@ -64,50 +71,65 @@ namespace RTS.Ships
             {
                 case Stance.Idle:
                     break;
+                
                 case Stance.MoveToPosition:
                     MoveToPositionBehavior();
                     break;
+                
                 case Stance.AttackTarget:
                     AttackTargetBehavior();
                     break;
+                
                 case Stance.Empty:
                     break;
+                
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
+        
+        #endregion
+
+        #region Attack Logic
 
         private void AttackTargetBehavior()
         {
             var distToTarget = Vector3.Distance(transform.position, _currTarget.transform.position);
-            if (distToTarget > attackRange)
+            if (distToTarget > _weaponManager.AttackRange)
             {
+                _weaponManager.UpdateWeaponSystem(false);
                 _targetMovePos = _currTarget.transform.position;
                 MoveToPositon(_targetMovePos, _stance);
                 return;
             }
 
-            switch (mainWeaponType)
+            var rotation = Vector3.zero;
+            switch (_weaponManager.MainWeaponType)
             {
                 case MainWeaponType.Front:
-                    ProcessFrontWeapon();
+                    rotation = (_currTarget.transform.position - transform.position).normalized;
                     break;
+                
                 case MainWeaponType.Sides:
                     break;
+                
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+            
+            UpdateRotating(rotation, out _dotForward);
+            _weaponManager.UpdateWeaponSystem(true, _dotForward, _currTarget);
         }
 
-        private void ProcessFrontWeapon()
+        private void ResetAttackStance()
         {
-            var rotation = (_currTarget.transform.position - transform.position).normalized;
-            if (UpdateRotating(rotation))
-            {
-                //Shooting here
-            }
+            _weaponManager.UpdateWeaponSystem(false);
         }
+        
+        #endregion
 
+        #region Moving Logic
+        
         private void MoveToPositionBehavior()
         {
             if (!_isReachedDestination)
@@ -115,12 +137,12 @@ namespace RTS.Ships
                 if (_stanceToSwitch != Stance.Empty)
                 {
                     var distToTarget = Vector3.Distance(transform.position, _currTarget.transform.position);
-                    if (distToTarget <= attackRange)
+                    if (distToTarget <= _weaponManager.AttackRange)
                         _isReachedDestination = true;
                 }
                 
                 UpdateMoving();
-                UpdateRotating(_moveDirection);
+                UpdateRotating(_moveDirection, out _dotForward);
             }
             else
             {
@@ -153,21 +175,22 @@ namespace RTS.Ships
             var distToTarget = Vector3.Distance(transform.position, _targetMovePos);
             if (distToTarget > reachedDistOffset)
             {
-                _moveDirection = (_targetMovePos - transform.position).normalized;
-                _moveThrust = Vector3.Dot(_moveDirection.normalized, transform.forward);
+                var shipTransform = transform;
+                _moveDirection = (_targetMovePos - shipTransform.position).normalized;
+                var moveThrust = Vector3.Dot(_moveDirection.normalized, shipTransform.forward);
 
-                if (_moveThrust < 0) return;
-                _movement = transform.forward * (_moveThrust * _moveDirection.magnitude * movementSpeed);
+                if (moveThrust < 0) return;
+                _movement = transform.forward * (moveThrust * _moveDirection.magnitude * movementSpeed);
                 _rigidbody.AddForce(_movement);
             }
             else
                 _isReachedDestination = true;
         }
 
-        private bool UpdateRotating(Vector3 rotateTo)
+        private void UpdateRotating(Vector3 rotateTo, out float dotForward)
         {
-            var moveThrust = Vector3.Dot(rotateTo.normalized, transform.forward);
-            if (moveThrust >= 0.999f) return true;
+            dotForward = Vector3.Dot(rotateTo.normalized, transform.forward);
+            if (dotForward >= FACING_TARGET_PREC) return;
 
             float rotationAmount;
             var rotation = Vector3.Dot(rotateTo.normalized, transform.right);
@@ -177,14 +200,16 @@ namespace RTS.Ships
                 rotationAmount = rotationSpeed;
             
             _rigidbody.AddTorque(0, rotationAmount, 0);
-
-            return false;
         }
+        
+        #endregion
 
         #region IMoveable Implementation
 
         public void MoveToPositon(Vector3 position, Stance stance = Stance.MoveToPosition)
         {
+            ResetAttackStance();
+            
             _targetMovePos = position;
             _isReachedDestination = false;
             _stance = Stance.MoveToPosition;
@@ -218,6 +243,17 @@ namespace RTS.Ships
             selectedMarker.SetActive(false);
         }
         
+        #endregion
+
+        #region IDamageable Implementation
+
+        public bool IsFriend => isFriend;
+        
+        public void Damage(float damage)
+        {
+            Debug.Log(gameObject.name + " got " + damage + " damage!");
+        }
+
         #endregion
     }
 }
