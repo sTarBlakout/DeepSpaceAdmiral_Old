@@ -8,6 +8,9 @@ namespace RTS.Ships
     public class Battleship : MonoBehaviour, IMoveable, IDamageable, IAttackable, ISelectable
     {
         #region Data
+        
+        private const float SLOW_DOWN_END_PREC = 0.1f;
+        private const float FACING_TARGET_PREC = 0.9999f;
 
         [Header("General")] 
         [SerializeField] private bool isFriend; 
@@ -21,9 +24,6 @@ namespace RTS.Ships
         [Header("Visuals")] 
         [SerializeField] private GameObject selectedMarker;
 
-        private const float SLOW_DOWN_END_PREC = 0.1f;
-        private const float FACING_TARGET_PREC = 0.9999f;
-        
         private Stance _stance;
         private Stance _stanceToSwitch;
 
@@ -121,11 +121,6 @@ namespace RTS.Ships
             _weaponManager.UpdateWeaponSystem(true, _dotForward, _currTarget);
         }
 
-        private void ResetAttackStance()
-        {
-            _weaponManager.UpdateWeaponSystem(false);
-        }
-        
         #endregion
 
         #region Moving Logic
@@ -134,8 +129,10 @@ namespace RTS.Ships
         {
             if (!_isReachedDestination)
             {
-                if (_stanceToSwitch != Stance.Empty)
+                if (_stanceToSwitch == Stance.AttackTarget)
                 {
+                    _targetMovePos = _currTarget.transform.position;
+                    MoveToPositon(_targetMovePos, _stance);
                     var distToTarget = Vector3.Distance(transform.position, _currTarget.transform.position);
                     if (distToTarget <= _weaponManager.AttackRange)
                         _isReachedDestination = true;
@@ -208,14 +205,16 @@ namespace RTS.Ships
 
         public void MoveToPositon(Vector3 position, Stance stance = Stance.MoveToPosition)
         {
-            ResetAttackStance();
-            
             _targetMovePos = position;
             _isReachedDestination = false;
             _stance = Stance.MoveToPosition;
             if (stance != Stance.MoveToPosition)
             {
                 _stanceToSwitch = stance;
+                if (_stanceToSwitch != Stance.AttackTarget)
+                {
+                    _weaponManager.UpdateWeaponSystem(false);
+                }
             }
         }
 

@@ -668,7 +668,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainWeaponType: 0
   mainWeaponProjectileType: 0
+  damage: 1
   attackRange: 50
+  mainGunWarmFactor: 0.001
+  mainGunCoolFactor: 0.001
   mainWeapon: {fileID: 7748021208463515911}
   laserBeamStart: {fileID: 6660593211300058736}
   laserBeamStream: {fileID: 4093972070987386631}
