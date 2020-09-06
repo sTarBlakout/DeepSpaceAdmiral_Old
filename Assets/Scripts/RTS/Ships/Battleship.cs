@@ -133,7 +133,7 @@ namespace RTS.Ships
                 {
                     _targetMovePos = _currTarget.transform.position;
                     MoveToPositon(_targetMovePos, _stance);
-                    var distToTarget = Vector3.Distance(transform.position, _currTarget.transform.position);
+                    var distToTarget = Vector3.Distance(transform.position, _targetMovePos);
                     if (distToTarget <= _weaponManager.AttackRange)
                         _isReachedDestination = true;
                 }
@@ -250,7 +250,7 @@ namespace RTS.Ships
         
         public void Damage(float damage)
         {
-            Debug.Log(gameObject.name + " got " + damage + " damage!");
+            // Debug.Log(gameObject.name + " got " + damage + " damage!");
         }
 
         #endregion

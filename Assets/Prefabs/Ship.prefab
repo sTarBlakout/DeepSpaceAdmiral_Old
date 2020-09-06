@@ -666,13 +666,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 818f6ea167b0be14da7ab513341e2b15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainWeapon: {fileID: 7748021208463515911}
   mainWeaponType: 0
   mainWeaponProjectileType: 0
   damage: 1
   attackRange: 50
+  fireRate: 2
+  minGunTemp: -0.05
+  maxGunTemp: 1
+  borderGunTemp: 0
   mainGunWarmFactor: 0.001
-  mainGunCoolFactor: 0.001
-  mainWeapon: {fileID: 7748021208463515911}
+  mainGunCoolFactor: 0.005
   laserBeamStart: {fileID: 6660593211300058736}
   laserBeamStream: {fileID: 4093972070987386631}
   laserBeamEnd: {fileID: 565069644463568547}
