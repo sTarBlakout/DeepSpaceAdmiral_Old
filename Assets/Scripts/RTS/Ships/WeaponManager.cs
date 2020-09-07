@@ -2,7 +2,6 @@
 using System.Collections;
 using UnityEngine;
 using RTS.Controls;
-using TMPro.SpriteAssetUtilities;
 
 namespace RTS.Ships
 {

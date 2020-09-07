@@ -30,12 +30,14 @@ namespace RTS.Ships
         private Rigidbody _rigidbody;
 
         private WeaponManager _weaponManager;
+        private EngineManager _engineManager;
 
         private Vector3 _targetMovePos;
         private Vector3 _moveDirection;
         private Vector3 _movement;
         private float _dotForward;
         private bool _isReachedDestination;
+        private bool _isShipMoving;
 
         private MonoBehaviour _currTarget;
 
@@ -47,6 +49,7 @@ namespace RTS.Ships
         {
             _rigidbody = GetComponent<Rigidbody>();
             _weaponManager = transform.GetComponentInChildren<WeaponManager>();
+            _engineManager = transform.GetComponentInChildren<EngineManager>();
         }
 
         private void Start()
@@ -54,10 +57,13 @@ namespace RTS.Ships
             _stanceToSwitch = Stance.Empty;
             _stance = Stance.Idle;
             _isReachedDestination = true;
-            
+
             if (isFriend)
+            {
+                _engineManager.InitEngines(SLOW_DOWN_END_PREC);
                 _weaponManager.InitWeaponSystem(FACING_TARGET_PREC);
-            
+            }
+
             if (isFriend)
             {
                 selectedMarker.transform.Translate(Vector3.down * GlobalData.Instance.RtsShipsPosY, Space.World);
@@ -86,6 +92,9 @@ namespace RTS.Ships
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+            
+            if (isFriend)
+                _engineManager.UpdateEngines(_dotForward, _isShipMoving);
         }
         
         #endregion
@@ -127,6 +136,7 @@ namespace RTS.Ships
         
         private void MoveToPositionBehavior()
         {
+            _isShipMoving = !GlobalData.VectorsApproxEqual(_rigidbody.velocity, Vector3.zero, SLOW_DOWN_END_PREC);
             if (!_isReachedDestination)
             {
                 if (_stanceToSwitch == Stance.AttackTarget)
@@ -143,7 +153,7 @@ namespace RTS.Ships
             }
             else
             {
-                if (!GlobalData.VectorsApproxEqual(_rigidbody.velocity, Vector3.zero, SLOW_DOWN_END_PREC))
+                if (_isShipMoving)
                     SlowDown();
                 else
                 {
