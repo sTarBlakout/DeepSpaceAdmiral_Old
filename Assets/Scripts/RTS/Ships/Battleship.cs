@@ -10,16 +10,17 @@ namespace RTS.Ships
         #region Data
         
         private const float SLOW_DOWN_END_PREC = 0.1f;
-        private const float FACING_TARGET_PREC = 0.9999f;
+        private const float FACING_TARGET_PREC = 0.999f;
 
         [Header("General")] 
         [SerializeField] private bool isFriend; 
         
         [Header("Movement")]
-        [SerializeField] private float movementSpeed = 1f;
+        [SerializeField] private float maxMovementSpeed = 1f;
         [SerializeField] private float rotationSpeed = 1f;
         [SerializeField] private float reachedDistOffset = 1f;
         [SerializeField] private float slowDownCoef;
+        [SerializeField] private float accelerationCoef;
 
         [Header("Visuals")] 
         [SerializeField] private GameObject selectedMarker;
@@ -35,6 +36,7 @@ namespace RTS.Ships
         private Vector3 _targetMovePos;
         private Vector3 _moveDirection;
         private Vector3 _movement;
+        private float _currSpeed;
         private float _dotForward;
         private bool _isReachedDestination;
         private bool _isShipMoving;
@@ -158,6 +160,7 @@ namespace RTS.Ships
                 else
                 {
                     _rigidbody.velocity = Vector3.zero;
+                    _currSpeed = 0f;
                     if (_stanceToSwitch == Stance.Empty)
                     { 
                         _stance = Stance.Idle;
@@ -174,6 +177,7 @@ namespace RTS.Ships
         private void SlowDown()
         {
             _movement *= slowDownCoef;
+            _currSpeed = Mathf.Max(_currSpeed - accelerationCoef, 0f);
             _rigidbody.AddForce(_movement);
         }
         
@@ -187,7 +191,8 @@ namespace RTS.Ships
                 var moveThrust = Vector3.Dot(_moveDirection.normalized, shipTransform.forward);
 
                 if (moveThrust < 0) return;
-                _movement = transform.forward * (moveThrust * _moveDirection.magnitude * movementSpeed);
+                _currSpeed = Mathf.Min(_currSpeed + accelerationCoef, maxMovementSpeed);
+                _movement = transform.forward * (moveThrust * _moveDirection.magnitude * _currSpeed);
                 _rigidbody.AddForce(_movement);
             }
             else

@@ -427,10 +427,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isFriend: 1
-  movementSpeed: 300
+  maxMovementSpeed: 1
   rotationSpeed: 200
   reachedDistOffset: 2
   slowDownCoef: 0.95
+  accelerationCoef: 1
   selectedMarker: {fileID: 285583517557485424}
 --- !u!1 &2815303682257264632
 GameObject:
