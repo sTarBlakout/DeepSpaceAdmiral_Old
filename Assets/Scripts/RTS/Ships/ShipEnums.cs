@@ -18,4 +18,11 @@
     {
         LaserBeam
     }
+
+    public enum EngineSection
+    {
+        Main,
+        Right,
+        Left
+    }
 }

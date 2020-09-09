@@ -8,9 +8,6 @@ namespace RTS.Ships
     public class Battleship : MonoBehaviour, IMoveable, IDamageable, IAttackable, ISelectable
     {
         #region Data
-        
-        private const float SLOW_DOWN_END_PREC = 0.1f;
-        private const float FACING_TARGET_PREC = 0.999f;
 
         [Header("General")] 
         [SerializeField] private bool isFriend; 
@@ -24,6 +21,9 @@ namespace RTS.Ships
 
         [Header("Visuals")] 
         [SerializeField] private GameObject selectedMarker;
+        
+        private float _slowDownEndPrec;
+        private float _facingTargetPrec;
 
         private Stance _stance;
         private Stance _stanceToSwitch;
@@ -38,6 +38,7 @@ namespace RTS.Ships
         private Vector3 _movement;
         private float _currSpeed;
         private float _dotForward;
+        private float _dotSide;
         private bool _isReachedDestination;
         private bool _isShipMoving;
 
@@ -52,6 +53,9 @@ namespace RTS.Ships
             _rigidbody = GetComponent<Rigidbody>();
             _weaponManager = transform.GetComponentInChildren<WeaponManager>();
             _engineManager = transform.GetComponentInChildren<EngineManager>();
+
+            _slowDownEndPrec = GlobalData.Instance.BattleshipSlowDownEndPrec;
+            _facingTargetPrec = GlobalData.Instance.BattleshipFacingTargetPrec;
         }
 
         private void Start()
@@ -62,8 +66,7 @@ namespace RTS.Ships
 
             if (isFriend)
             {
-                _engineManager.InitEngines(SLOW_DOWN_END_PREC);
-                _weaponManager.InitWeaponSystem(FACING_TARGET_PREC);
+                _weaponManager.InitWeaponSystem(_facingTargetPrec);
             }
 
             if (isFriend)
@@ -94,9 +97,12 @@ namespace RTS.Ships
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            
+
             if (isFriend)
-                _engineManager.UpdateEngines(_dotForward, _isShipMoving);
+            {
+                _isShipMoving = !GlobalData.VectorsApproxEqual(_rigidbody.velocity, Vector3.zero, _slowDownEndPrec);
+                _engineManager.UpdateEngines(_dotForward, _dotSide, _isShipMoving);
+            }
         }
         
         #endregion
@@ -128,7 +134,7 @@ namespace RTS.Ships
                     throw new ArgumentOutOfRangeException();
             }
             
-            UpdateRotating(rotation, out _dotForward);
+            UpdateRotating(rotation, out _dotForward, out _dotSide);
             _weaponManager.UpdateWeaponSystem(true, _dotForward, _currTarget);
         }
 
@@ -138,7 +144,6 @@ namespace RTS.Ships
         
         private void MoveToPositionBehavior()
         {
-            _isShipMoving = !GlobalData.VectorsApproxEqual(_rigidbody.velocity, Vector3.zero, SLOW_DOWN_END_PREC);
             if (!_isReachedDestination)
             {
                 if (_stanceToSwitch == Stance.AttackTarget)
@@ -151,7 +156,7 @@ namespace RTS.Ships
                 }
                 
                 UpdateMoving();
-                UpdateRotating(_moveDirection, out _dotForward);
+                UpdateRotating(_moveDirection, out _dotForward, out _dotSide);
             }
             else
             {
@@ -199,14 +204,14 @@ namespace RTS.Ships
                 _isReachedDestination = true;
         }
 
-        private void UpdateRotating(Vector3 rotateTo, out float dotForward)
+        private void UpdateRotating(Vector3 rotateTo, out float dotForward, out float dotSide)
         {
             dotForward = Vector3.Dot(rotateTo.normalized, transform.forward);
-            if (dotForward >= FACING_TARGET_PREC) return;
+            dotSide = Vector3.Dot(rotateTo.normalized, transform.right);
+            if (dotForward >= _facingTargetPrec) return;
 
             float rotationAmount;
-            var rotation = Vector3.Dot(rotateTo.normalized, transform.right);
-            if (rotation < 0)
+            if (dotSide < 0)
                 rotationAmount = -rotationSpeed;
             else
                 rotationAmount = rotationSpeed;
