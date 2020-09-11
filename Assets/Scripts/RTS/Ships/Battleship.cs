@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using GameGlobal;
 using RTS.Controls;
@@ -10,8 +11,9 @@ namespace RTS.Ships
         #region Data
 
         [Header("General")] 
-        [SerializeField] private bool isFriend; 
-        
+        [SerializeField] private bool isFriend;
+        [SerializeField] private float maxHealthPoints;
+
         [Header("Movement")]
         [SerializeField] private float maxMovementSpeed = 1f;
         [SerializeField] private float rotationSpeed = 1f;
@@ -19,19 +21,28 @@ namespace RTS.Ships
         [SerializeField] private float slowDownCoef;
         [SerializeField] private float accelerationCoef;
 
-        [Header("Visuals")] 
-        [SerializeField] private GameObject selectedMarker;
+        [Header("Markers")] 
+        [SerializeField] private ParticleSystem selectedMarker;
+
+        [Header("Destruction")] 
+        [SerializeField] private GameObject mainExplosion;
+        [SerializeField] private GameObject[] destructLvlMeshes;
+        
+        private readonly List<ParticleSystem> _mainExplosionParticles = new List<ParticleSystem>();
         
         private float _slowDownEndPrec;
         private float _facingTargetPrec;
 
         private Stance _stance;
         private Stance _stanceToSwitch;
+        private DestructionLevel _destrLvl;
 
         private Rigidbody _rigidbody;
 
         private WeaponManager _weaponManager;
         private EngineManager _engineManager;
+
+        private float _currHealthPoints;
 
         private Vector3 _targetMovePos;
         private Vector3 _moveDirection;
@@ -56,24 +67,20 @@ namespace RTS.Ships
 
             _slowDownEndPrec = GlobalData.Instance.BattleshipSlowDownEndPrec;
             _facingTargetPrec = GlobalData.Instance.BattleshipFacingTargetPrec;
+
+            _currHealthPoints = maxHealthPoints;
+            
+            _stanceToSwitch = Stance.Empty;
+            _stance = Stance.Idle;
+            _isReachedDestination = true;
         }
 
         private void Start()
         {
-            _stanceToSwitch = Stance.Empty;
-            _stance = Stance.Idle;
-            _isReachedDestination = true;
-
-            if (isFriend)
-            {
-                _weaponManager.InitWeaponSystem(_facingTargetPrec);
-            }
-
-            if (isFriend)
-            {
-                selectedMarker.transform.Translate(Vector3.down * GlobalData.Instance.RtsShipsPosY, Space.World);
-                selectedMarker.SetActive(false);
-            }
+            SetDestructionLvl(DestructionLevel.New);
+            InitParticles();
+            
+            _weaponManager.InitWeaponSystem(_facingTargetPrec);
         }
 
         private void FixedUpdate()
@@ -91,20 +98,33 @@ namespace RTS.Ships
                     AttackTargetBehavior();
                     break;
                 
-                case Stance.Empty:
+                case Stance.Destroyed:
                     break;
                 
+                case Stance.Empty:
+                    break;
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
-            if (isFriend)
-            {
-                _isShipMoving = !GlobalData.VectorsApproxEqual(_rigidbody.velocity, Vector3.zero, _slowDownEndPrec);
-                _engineManager.UpdateEngines(_dotForward, _dotSide, _isShipMoving);
-            }
+
+            _isShipMoving = !GlobalData.VectorsApproxEqual(_rigidbody.velocity, Vector3.zero, _slowDownEndPrec);
+            _engineManager.UpdateEngines(_dotForward, _dotSide, _isShipMoving);
         }
         
+        #endregion
+
+        #region Private Functions
+
+        private void InitParticles()
+        {
+            selectedMarker.transform.Translate(Vector3.down * GlobalData.Instance.RtsShipsPosY, Space.World);
+            
+            foreach (Transform explosion in mainExplosion.transform)
+                _mainExplosionParticles.Add(explosion.GetComponent<ParticleSystem>());
+        }
+
         #endregion
 
         #region Attack Logic
@@ -221,6 +241,36 @@ namespace RTS.Ships
         
         #endregion
 
+        #region Destruction Logic
+
+        protected virtual float CalculateTakenDamage(float damage)
+        {
+            return Mathf.Max(_currHealthPoints - damage, 0f);
+        }
+
+        protected virtual void DestroySelf()
+        {
+            foreach (var explosion in _mainExplosionParticles)
+                explosion.Play();
+            
+            var destructedMesh = SetDestructionLvl(DestructionLevel.Destroyed);
+            //destructedMesh.transform.SetParent(null);
+        }
+
+        private GameObject SetDestructionLvl(DestructionLevel level)
+        {
+            foreach (var mesh in destructLvlMeshes)
+            {
+                mesh.SetActive(false);
+            }
+
+            var meshGameObject = destructLvlMeshes[(int) level];
+            meshGameObject.SetActive(true);
+            return meshGameObject;
+        }
+            
+        #endregion
+
         #region IMoveable Implementation
 
         public void MoveToPositon(Vector3 position, Stance stance = Stance.MoveToPosition)
@@ -254,12 +304,12 @@ namespace RTS.Ships
         
         public void Select()
         {
-            selectedMarker.SetActive(true);
+            selectedMarker.Play();
         }
 
         public void Unselect()
         {
-            selectedMarker.SetActive(false);
+            selectedMarker.Stop();
         }
         
         #endregion
@@ -270,7 +320,14 @@ namespace RTS.Ships
         
         public void Damage(float damage)
         {
-            // Debug.Log(gameObject.name + " got " + damage + " damage!");
+            if (_stance == Stance.Destroyed) return;
+            
+            _currHealthPoints = CalculateTakenDamage(damage);
+            if (_currHealthPoints <= 0f)
+            {
+                _stance = Stance.Destroyed;
+                DestroySelf();
+            }
         }
 
         #endregion

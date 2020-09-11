@@ -5,7 +5,14 @@
         Idle,
         MoveToPosition,
         AttackTarget,
+        Destroyed,
         Empty
+    }
+
+    public enum DestructionLevel
+    {
+        New,
+        Destroyed
     }
 
     public enum MainWeaponType

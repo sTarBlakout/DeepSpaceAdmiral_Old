@@ -7,12 +7,14 @@ namespace RTS.Ships
 {
     public class EngineManager : MonoBehaviour
     {
+        #region Data
+
         [SerializeField] private Transform mainEngineSection;
         [SerializeField] private Transform rightEngineSection;
         [SerializeField] private Transform leftEngineSection;
-        
-        [SerializeField] private float startMainEngineMinDot; 
-        
+
+        [SerializeField] private float startMainEngineMinDot;
+
         private List<ParticleSystem> _mainEngines = new List<ParticleSystem>();
         private List<ParticleSystem> _rightEngines = new List<ParticleSystem>();
         private List<ParticleSystem> _leftEngines = new List<ParticleSystem>();
@@ -23,6 +25,8 @@ namespace RTS.Ships
 
         private float _sideEngineActTrig;
 
+        #endregion
+
         #region Unity Events
 
         private void Awake()
@@ -31,9 +35,9 @@ namespace RTS.Ships
 
             _sideEngineActTrig = GlobalData.Instance.BattleshipSideEngineTrigger;
         }
-         
+
         #endregion
-        
+
         #region Public API
 
         public void UpdateEngines(float dotForward, float dotSide, bool isShipMoving)
@@ -62,6 +66,8 @@ namespace RTS.Ships
         }
 
         #endregion
+
+        #region Private Functions
         
         private void InitEngines()
         {
@@ -69,10 +75,12 @@ namespace RTS.Ships
             {
                 _mainEngines.Add(engineTransform.GetComponentInChildren<ParticleSystem>());
             }
+
             foreach (Transform engineTransform in leftEngineSection)
             {
                 _leftEngines.Add(engineTransform.GetComponentInChildren<ParticleSystem>());
             }
+
             foreach (Transform engineTransform in rightEngineSection)
             {
                 _rightEngines.Add(engineTransform.GetComponentInChildren<ParticleSystem>());
@@ -110,5 +118,7 @@ namespace RTS.Ships
                     particle.Stop();
             }
         }
+
+        #endregion
     }
 }

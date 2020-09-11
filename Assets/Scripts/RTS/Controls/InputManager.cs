@@ -9,7 +9,7 @@ namespace RTS.Controls
     {
         [SerializeField] private float doubleTapThreshold;
         
-        private SelectedObject _selectedObject = new SelectedObject();
+        private readonly SelectedObject _selectedObject = new SelectedObject();
 
         private float _lastTappedTime;
         
