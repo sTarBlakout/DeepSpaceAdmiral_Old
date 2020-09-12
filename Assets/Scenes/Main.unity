@@ -153,7 +153,8 @@ MonoBehaviour:
   rtsShipsPosY: 2
   battleshipSlowDownEndPrec: 0.1
   battleshipFacingTargetPrec: 0.999
-  battleshipSideEngineTrigger: 0.5
+  battleshipSideEngineTriggerMove: 0.5
+  battleshipSideEngineTriggerStay: 0.9
 --- !u!4 &99946245
 Transform:
   m_ObjectHideFlags: 0
@@ -719,6 +720,10 @@ PrefabInstance:
     - target: {fileID: 197640317, guid: ce3e003a4545afa458e59167abd257d8, type: 3}
       propertyPath: isFriend
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 197640317, guid: ce3e003a4545afa458e59167abd257d8, type: 3}
+      propertyPath: maxHealthPoints
+      value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 502189918355351883, guid: ce3e003a4545afa458e59167abd257d8,
         type: 3}

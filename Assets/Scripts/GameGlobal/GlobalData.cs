@@ -11,7 +11,8 @@ namespace GameGlobal
         
         [SerializeField] private float battleshipSlowDownEndPrec = 0.1f;
         [SerializeField] private float battleshipFacingTargetPrec = 0.999f;
-        [SerializeField] private float battleshipSideEngineTrigger = 0.5f;
+        [SerializeField] private float battleshipSideEngineTriggerMove = 0.5f;
+        [SerializeField] private float battleshipSideEngineTriggerStay = 0.999f;
         
         #endregion
 
@@ -19,7 +20,8 @@ namespace GameGlobal
         public float RtsShipsPosY => rtsShipsPosY;
         public float BattleshipSlowDownEndPrec => battleshipSlowDownEndPrec;
         public float BattleshipFacingTargetPrec => battleshipFacingTargetPrec;
-        public float BattleshipSideEngineTrigger => battleshipSideEngineTrigger;
+        public float BattleshipSideEngineTriggerMove => battleshipSideEngineTriggerMove;
+        public float BattleshipSideEngineTriggerStay => battleshipSideEngineTriggerStay;
         #endregion
         
         #region Singleton Implementation

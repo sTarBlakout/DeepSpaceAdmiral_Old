@@ -23,7 +23,8 @@ namespace RTS.Ships
         private bool _isRightEngineActive;
         private bool _isLeftEngineActive;
 
-        private float _sideEngineActTrig;
+        private float _sideEngineActTrigMove;
+        private float _sideEngineActTrigStay;
 
         #endregion
 
@@ -33,7 +34,8 @@ namespace RTS.Ships
         {
             InitEngines();
 
-            _sideEngineActTrig = GlobalData.Instance.BattleshipSideEngineTrigger;
+            _sideEngineActTrigMove = GlobalData.Instance.BattleshipSideEngineTriggerMove;
+            _sideEngineActTrigStay = GlobalData.Instance.BattleshipSideEngineTriggerStay;
         }
 
         #endregion
@@ -42,20 +44,27 @@ namespace RTS.Ships
 
         public void UpdateEngines(float dotForward, float dotSide, bool isShipMoving)
         {
+            bool shouldSideEnginesWork;
+                
             if (isShipMoving)
+            {
                 ActivateEngineSection(EngineSection.Main, dotForward > startMainEngineMinDot);
+                shouldSideEnginesWork = dotForward < _sideEngineActTrigMove;
+            }
             else
+            {
                 ActivateEngineSection(EngineSection.Main, false);
-
-            var shouldSides = dotForward < _sideEngineActTrig;
+                shouldSideEnginesWork = dotForward < _sideEngineActTrigStay;
+            }
+            
             if (dotSide > 0)
             {
-                ActivateEngineSection(EngineSection.Right, shouldSides);
+                ActivateEngineSection(EngineSection.Right, shouldSideEnginesWork);
                 ActivateEngineSection(EngineSection.Left, false);
             }
             else if (dotSide < 0)
             {
-                ActivateEngineSection(EngineSection.Left, shouldSides);
+                ActivateEngineSection(EngineSection.Left, shouldSideEnginesWork);
                 ActivateEngineSection(EngineSection.Right, false);
             }
             else
