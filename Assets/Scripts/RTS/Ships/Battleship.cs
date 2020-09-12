@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using GameGlobal;
 using RTS.Controls;
+using Random = UnityEngine.Random;
 
 namespace RTS.Ships
 {
@@ -27,8 +29,10 @@ namespace RTS.Ships
         [Header("Destruction")] 
         [SerializeField] private GameObject mainExplosion;
         [SerializeField] private GameObject[] destructLvlMeshes;
-        
+        [Range(0, 1)] [SerializeField] private float partsStayOnExplChance;
+
         private readonly List<ParticleSystem> _mainExplosionParticles = new List<ParticleSystem>();
+        private readonly List<GameObject> _destroyedParts = new List<GameObject>();
         
         private float _slowDownEndPrec;
         private float _facingTargetPrec;
@@ -54,6 +58,7 @@ namespace RTS.Ships
         private bool _isShipMoving;
 
         private MonoBehaviour _currTarget;
+        private IDamageable _currTargetDamageable;
 
         #endregion
 
@@ -108,7 +113,6 @@ namespace RTS.Ships
                     throw new ArgumentOutOfRangeException();
             }
 
-
             _isShipMoving = !GlobalData.VectorsApproxEqual(_rigidbody.velocity, Vector3.zero, _slowDownEndPrec);
             _engineManager.UpdateEngines(_dotForward, _dotSide, _isShipMoving);
         }
@@ -131,6 +135,12 @@ namespace RTS.Ships
 
         private void AttackTargetBehavior()
         {
+            if (!_currTargetDamageable.CanBeDamaged())
+            {
+                StopAttack();
+                return;
+            }
+            
             var distToTarget = Vector3.Distance(transform.position, _currTarget.transform.position);
             if (distToTarget > _weaponManager.AttackRange)
             {
@@ -156,6 +166,14 @@ namespace RTS.Ships
             
             UpdateRotating(rotation, out _dotForward, out _dotSide);
             _weaponManager.UpdateWeaponSystem(true, _dotForward, _currTarget);
+        }
+
+        private void StopAttack()
+        {
+            _stance = Stance.Idle;
+            _weaponManager.UpdateWeaponSystem(false);
+            _currTarget = null;
+            _currTargetDamageable = null;
         }
 
         #endregion
@@ -254,7 +272,29 @@ namespace RTS.Ships
                 explosion.Play();
             
             var destructedMesh = SetDestructionLvl(DestructionLevel.Destroyed);
-            //destructedMesh.transform.SetParent(null);
+            var destructiblePartsTransform = destructedMesh.transform.GetChild(1);
+            var destructibleParts = destructiblePartsTransform.Cast<Transform>().ToList();
+
+            foreach (var part in destructibleParts)
+            {
+                var shouldPush = Random.value > partsStayOnExplChance;
+                if (!shouldPush) continue;
+                
+                part.SetParent(null);
+                var rb = part.gameObject.AddComponent<Rigidbody>();
+                rb.useGravity = false;
+                rb.drag = rb.angularDrag = 0.2f;
+
+                var randomVector = new Vector3(
+                    Random.Range(-100,100),
+                    Random.Range(-100,100),
+                    Random.Range(-100,100));
+
+                rb.AddForce(randomVector);
+                rb.AddTorque(randomVector);
+                    
+                _destroyedParts.Add(part.gameObject);
+            }
         }
 
         private GameObject SetDestructionLvl(DestructionLevel level)
@@ -295,12 +335,18 @@ namespace RTS.Ships
         public void AttackTarget(MonoBehaviour target)
         {
             _currTarget = target;
+            _currTargetDamageable = target.GetComponent<IDamageable>();
             _stance = Stance.AttackTarget;
         }
         
         #endregion
 
         #region ISelectable Implementation
+
+        public bool CanSelect()
+        {
+            return _stance != Stance.Destroyed;
+        }
         
         public void Select()
         {
@@ -317,7 +363,12 @@ namespace RTS.Ships
         #region IDamageable Implementation
 
         public bool IsFriend => isFriend;
-        
+
+        public bool CanBeDamaged()
+        {
+            return _stance != Stance.Destroyed;
+        }
+
         public void Damage(float damage)
         {
             if (_stance == Stance.Destroyed) return;

@@ -21,12 +21,12 @@ namespace RTS.Controls
             _monoBehaviour = monoBehaviourObj;
             _selectable = _monoBehaviour.GetComponent<ISelectable>();
 
-            if (_selectable == null)
+            if (_selectable == null || !_selectable.CanSelect())
             {
                 UninitObject();
                 return;
             }
-            
+
             _damageable = _monoBehaviour.GetComponent<IDamageable>();
             _moveable = _monoBehaviour.GetComponent<IMoveable>();
             _attackable = _monoBehaviour.GetComponent<IAttackable>();
@@ -77,7 +77,7 @@ namespace RTS.Controls
             var damageable = monoBehaviourObj.GetComponent<IDamageable>();
             if (damageable != null)
             {
-                if (!damageable.IsFriend)
+                if (!damageable.IsFriend && damageable.CanBeDamaged())
                 {
                     _attackable.AttackTarget(monoBehaviourObj);
                     return true;
