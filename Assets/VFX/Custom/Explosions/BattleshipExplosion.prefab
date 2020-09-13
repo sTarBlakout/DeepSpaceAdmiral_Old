@@ -24090,7 +24090,7 @@ GameObject:
   - component: {fileID: 4476984872419370}
   - component: {fileID: 198412047670380270}
   - component: {fileID: 199172917232266846}
-  - component: {fileID: 114695848455610634}
+  - component: {fileID: 5966144428211370560}
   m_Layer: 0
   m_Name: BattleshipExplosion
   m_TagString: Untagged
@@ -28896,7 +28896,7 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
---- !u!114 &114695848455610634
+--- !u!114 &5966144428211370560
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -28905,11 +28905,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1905092842673754}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5aa5c1e37409a9344a344c0468db383d, type: 3}
+  m_Script: {fileID: 11500000, guid: 4d828e90a7197784d9a19b5c97c3ec0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabSound: {fileID: 1297775994297274, guid: 74eb49b0ecd3740449484ce8cc486d13,
-    type: 3}
-  destroyWhenDone: 1
-  soundPrefabIsChild: 0
-  pitchRandomMultiplier: 1.3

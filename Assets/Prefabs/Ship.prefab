@@ -288,6 +288,7 @@ GameObject:
   - component: {fileID: 723448855173354512}
   - component: {fileID: 751394215109518294}
   - component: {fileID: 741105609410290788}
+  - component: {fileID: 5898019217341593654}
   m_Layer: 0
   m_Name: StarSparrow_Weapon
   m_TagString: Untagged
@@ -356,6 +357,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &5898019217341593654
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727778608645114042}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.7822469, y: 0.32396775, z: 3.99}
+  m_Center: {x: 0, y: 0.000000007450581, z: 0}
 --- !u!1 &1216636242290368298
 GameObject:
   m_ObjectHideFlags: 0
@@ -477,6 +491,7 @@ GameObject:
   - component: {fileID: 1735853873726669798}
   - component: {fileID: 1760738956436515576}
   - component: {fileID: 1750642036426355156}
+  - component: {fileID: 1823818430196854928}
   m_Layer: 0
   m_Name: StarSparrow_Engine
   m_TagString: Untagged
@@ -545,6 +560,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &1823818430196854928
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1737849857803586238}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.8, y: 1, z: 2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1833880012699997001
 GameObject:
   m_ObjectHideFlags: 0
@@ -795,6 +823,7 @@ MonoBehaviour:
   - {fileID: 243898105803790696}
   - {fileID: 2188729688822704523}
   partsStayOnExplChance: 0
+  completeDestroySeconds: 5
 --- !u!1 &2188729688822704523
 GameObject:
   m_ObjectHideFlags: 0
@@ -1077,6 +1106,7 @@ GameObject:
   - component: {fileID: 8779904304775518767}
   - component: {fileID: 3680389787435514999}
   - component: {fileID: 9150737328464397626}
+  - component: {fileID: 6524315220649183566}
   m_Layer: 0
   m_Name: StarSparrow_Engine (1)
   m_TagString: Untagged
@@ -1145,6 +1175,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &6524315220649183566
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4461445686930819176}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.8, z: 2}
+  m_Center: {x: 0, y: -0.00000011920929, z: 0}
 --- !u!1 &4992128530289668792
 GameObject:
   m_ObjectHideFlags: 0
@@ -1297,6 +1340,7 @@ GameObject:
   - component: {fileID: 4635449198654167395}
   - component: {fileID: 554961086565343998}
   - component: {fileID: 4673994275421692424}
+  - component: {fileID: 7568319387336623229}
   m_Layer: 0
   m_Name: StarSparrow_Engine (3)
   m_TagString: Untagged
@@ -1365,6 +1409,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &7568319387336623229
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5720532471058669395}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.1363409, y: 0.41, z: 3.1260438}
+  m_Center: {x: 0, y: 0, z: -0.00000011920929}
 --- !u!1 &5904644600089528975
 GameObject:
   m_ObjectHideFlags: 0
@@ -1570,6 +1627,7 @@ GameObject:
   - component: {fileID: 6712355965369107296}
   - component: {fileID: 4297642892464105343}
   - component: {fileID: 7079744035507162797}
+  - component: {fileID: 6655002260489199456}
   m_Layer: 0
   m_Name: StarSparrow_Engine (2)
   m_TagString: Untagged
@@ -1638,6 +1696,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &6655002260489199456
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6898477293211804968}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.8, z: 2}
+  m_Center: {x: -0.00000011920929, y: 0, z: 0}
 --- !u!1 &7244800917819042300
 GameObject:
   m_ObjectHideFlags: 0
@@ -1777,6 +1848,7 @@ GameObject:
   - component: {fileID: 7859123880197092460}
   - component: {fileID: 7883788777613270568}
   - component: {fileID: 7875782863669385614}
+  - component: {fileID: 699719905706609245}
   m_Layer: 0
   m_Name: StarSparrow_Core
   m_TagString: Untagged
@@ -1845,6 +1917,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &699719905706609245
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7862525678958332316}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.58, y: 1.12, z: 9.57}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7871460109536996675
 GameObject:
   m_ObjectHideFlags: 0
@@ -2108,6 +2193,7 @@ GameObject:
   - component: {fileID: 7839492320393865100}
   - component: {fileID: 2169982818029370523}
   - component: {fileID: 6161846462884927163}
+  - component: {fileID: 5840576434667649231}
   m_Layer: 0
   m_Name: StarSparrow_Engine (4)
   m_TagString: Untagged
@@ -2176,6 +2262,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &5840576434667649231
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8424730972030989020}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.1363409, y: 0.51, z: 3.1260438}
+  m_Center: {x: 0, y: 0, z: 0.00000011920929}
 --- !u!1 &8630798754693446355
 GameObject:
   m_ObjectHideFlags: 0
@@ -2187,6 +2286,7 @@ GameObject:
   - component: {fileID: 1238887533798356576}
   - component: {fileID: 8562066884605526506}
   - component: {fileID: 362539332696151130}
+  - component: {fileID: 3334200252957078913}
   m_Layer: 0
   m_Name: StarSparrow_Weapon (1)
   m_TagString: Untagged
@@ -2255,6 +2355,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &3334200252957078913
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8630798754693446355}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.7822469, y: 0.32396775, z: 3.99}
+  m_Center: {x: 0, y: 0.000000022351742, z: 0}
 --- !u!1 &8639741970829024780
 GameObject:
   m_ObjectHideFlags: 0
@@ -2570,15 +2683,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4910da04669ef424c9d560e761e78458, type: 3}
---- !u!4 &560094693614003039 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4982589758569942, guid: 4910da04669ef424c9d560e761e78458,
-    type: 3}
-  m_PrefabInstance: {fileID: 564190801986281097}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &565069644463568547 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1107562920683562, guid: 4910da04669ef424c9d560e761e78458,
+    type: 3}
+  m_PrefabInstance: {fileID: 564190801986281097}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &560094693614003039 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4982589758569942, guid: 4910da04669ef424c9d560e761e78458,
     type: 3}
   m_PrefabInstance: {fileID: 564190801986281097}
   m_PrefabAsset: {fileID: 0}
@@ -3112,15 +3225,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f553384660fc82d48a16f9421a25b1d7, type: 3}
---- !u!1 &6660593211300058736 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1569048298829072, guid: f553384660fc82d48a16f9421a25b1d7,
-    type: 3}
-  m_PrefabInstance: {fileID: 6659343038757184352}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6663787988970971702 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4568370480841046, guid: f553384660fc82d48a16f9421a25b1d7,
+    type: 3}
+  m_PrefabInstance: {fileID: 6659343038757184352}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6660593211300058736 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1569048298829072, guid: f553384660fc82d48a16f9421a25b1d7,
     type: 3}
   m_PrefabInstance: {fileID: 6659343038757184352}
   m_PrefabAsset: {fileID: 0}

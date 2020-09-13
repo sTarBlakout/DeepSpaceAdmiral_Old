@@ -26,6 +26,8 @@ namespace RTS.Ships
         private float _sideEngineActTrigMove;
         private float _sideEngineActTrigStay;
 
+        private bool _isEngineSystemOn;
+
         #endregion
 
         #region Unity Events
@@ -42,8 +44,19 @@ namespace RTS.Ships
 
         #region Public API
 
+        public void TurnOffEngines()
+        {
+            _isEngineSystemOn = false;
+            
+            ActivateEngineSection(EngineSection.Main, false);
+            ActivateEngineSection(EngineSection.Left, false);
+            ActivateEngineSection(EngineSection.Right, false);
+        }
+
         public void UpdateEngines(float dotForward, float dotSide, bool isShipMoving)
         {
+            if (!_isEngineSystemOn) return;
+            
             bool shouldSideEnginesWork;
                 
             if (isShipMoving)
@@ -80,6 +93,8 @@ namespace RTS.Ships
         
         private void InitEngines()
         {
+            _isEngineSystemOn = true;
+            
             foreach (Transform engineTransform in mainEngineSection)
             {
                 _mainEngines.Add(engineTransform.GetComponentInChildren<ParticleSystem>());

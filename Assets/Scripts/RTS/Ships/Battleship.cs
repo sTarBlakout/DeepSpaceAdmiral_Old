@@ -31,9 +31,8 @@ namespace RTS.Ships
         [SerializeField] private GameObject[] destructLvlMeshes;
         [Range(0, 1)] [SerializeField] private float partsStayOnExplChance;
 
-        private readonly List<ParticleSystem> _mainExplosionParticles = new List<ParticleSystem>();
-        private readonly List<GameObject> _destroyedParts = new List<GameObject>();
-        
+        private readonly List<ParticleManager> _mainExplosionParticles = new List<ParticleManager>();
+
         private float _slowDownEndPrec;
         private float _facingTargetPrec;
 
@@ -42,6 +41,7 @@ namespace RTS.Ships
         private DestructionLevel _destrLvl;
 
         private Rigidbody _rigidbody;
+        private Collider _mainCollider;
 
         private WeaponManager _weaponManager;
         private EngineManager _engineManager;
@@ -66,6 +66,7 @@ namespace RTS.Ships
         
         private void Awake()
         {
+            _mainCollider = GetComponent<Collider>();
             _rigidbody = GetComponent<Rigidbody>();
             _weaponManager = transform.GetComponentInChildren<WeaponManager>();
             _engineManager = transform.GetComponentInChildren<EngineManager>();
@@ -126,7 +127,7 @@ namespace RTS.Ships
             selectedMarker.transform.Translate(Vector3.down * GlobalData.Instance.RtsShipsPosY, Space.World);
             
             foreach (Transform explosion in mainExplosion.transform)
-                _mainExplosionParticles.Add(explosion.GetComponent<ParticleSystem>());
+                _mainExplosionParticles.Add(explosion.GetComponent<ParticleManager>());
         }
 
         #endregion
@@ -266,35 +267,51 @@ namespace RTS.Ships
             return Mathf.Max(_currHealthPoints - damage, 0f);
         }
 
-        protected virtual void DestroySelf()
+        protected virtual void StartDestroySelf()
         {
-            foreach (var explosion in _mainExplosionParticles)
-                explosion.Play();
-            
-            var destructedMesh = SetDestructionLvl(DestructionLevel.Destroyed);
-            var destructiblePartsTransform = destructedMesh.transform.GetChild(1);
-            var destructibleParts = destructiblePartsTransform.Cast<Transform>().ToList();
+            _mainCollider.enabled = false;
+            _engineManager.TurnOffEngines();
 
+            foreach (var explosion in _mainExplosionParticles)
+                explosion.ActivateParticle();
+
+            var destructedMesh = SetDestructionLvl(DestructionLevel.Destroyed);
+            
+            var corePartsTransform = destructedMesh.transform.GetChild(0);
+            var destructiblePartsTransform = destructedMesh.transform.GetChild(1);
+            
+            corePartsTransform.SetParent(null);
+            var rbCore = corePartsTransform.gameObject.AddComponent<Rigidbody>();
+            rbCore.mass = _rigidbody.mass;
+            rbCore.useGravity = false;
+            rbCore.drag = rbCore.angularDrag = 0.5f;
+            rbCore.AddForce(_movement * 2.5f);
+            
+            var destructibleParts = destructiblePartsTransform.Cast<Transform>().ToList();
             foreach (var part in destructibleParts)
             {
                 var shouldPush = Random.value > partsStayOnExplChance;
-                if (!shouldPush) continue;
-                
+                if (!shouldPush)
+                {
+                    part.SetParent(corePartsTransform);
+                    continue;
+                }
+
                 part.SetParent(null);
-                var rb = part.gameObject.AddComponent<Rigidbody>();
-                rb.useGravity = false;
-                rb.drag = rb.angularDrag = 0.2f;
+                var rbPart = part.gameObject.AddComponent<Rigidbody>();
+                rbPart.useGravity = false;
+                rbPart.drag = rbPart.angularDrag = 0.2f;
 
                 var randomVector = new Vector3(
                     Random.Range(-100,100),
                     Random.Range(-100,100),
                     Random.Range(-100,100));
 
-                rb.AddForce(randomVector);
-                rb.AddTorque(randomVector);
-                    
-                _destroyedParts.Add(part.gameObject);
+                rbPart.AddForce(randomVector);
+                rbPart.AddTorque(randomVector);
             }
+
+            Destroy(gameObject);
         }
 
         private GameObject SetDestructionLvl(DestructionLevel level)
@@ -308,10 +325,12 @@ namespace RTS.Ships
             meshGameObject.SetActive(true);
             return meshGameObject;
         }
-            
+
         #endregion
 
         #region IMoveable Implementation
+
+        public bool IsReachedDestination => _isReachedDestination;
 
         public void MoveToPositon(Vector3 position, Stance stance = Stance.MoveToPosition)
         {
@@ -377,7 +396,7 @@ namespace RTS.Ships
             if (_currHealthPoints <= 0f)
             {
                 _stance = Stance.Destroyed;
-                DestroySelf();
+                StartDestroySelf();
             }
         }
 
