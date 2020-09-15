@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2044437519944592724}
   - component: {fileID: 1047136487489011265}
   - component: {fileID: 6457505674666744622}
+  - component: {fileID: 1391478171736584943}
   m_Layer: 0
   m_Name: StarSparrow_Wing_1 (1)
   m_TagString: Untagged
@@ -79,6 +80,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &1391478171736584943
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 116997107907187378}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.27356145, y: 3.04, z: 2.42}
+  m_Center: {x: 0.000000089406996, y: 0.12, z: -1.71}
 --- !u!1 &208818984049859886
 GameObject:
   m_ObjectHideFlags: 0
@@ -209,6 +223,7 @@ GameObject:
   - component: {fileID: 260125365940908521}
   - component: {fileID: 286584077022190441}
   - component: {fileID: 279112149285521627}
+  - component: {fileID: 5959643156638616733}
   m_Layer: 0
   m_Name: StarSparrow_Wing_1
   m_TagString: Untagged
@@ -277,6 +292,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &5959643156638616733
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 254606044571026649}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.27356145, y: 3.04, z: 2.42}
+  m_Center: {x: 0.000000089406996, y: 0.12, z: -1.71}
 --- !u!1 &727778608645114042
 GameObject:
   m_ObjectHideFlags: 0
@@ -823,7 +851,6 @@ MonoBehaviour:
   - {fileID: 243898105803790696}
   - {fileID: 2188729688822704523}
   partsStayOnExplChance: 0
-  completeDestroySeconds: 5
 --- !u!1 &2188729688822704523
 GameObject:
   m_ObjectHideFlags: 0
@@ -1848,7 +1875,7 @@ GameObject:
   - component: {fileID: 7859123880197092460}
   - component: {fileID: 7883788777613270568}
   - component: {fileID: 7875782863669385614}
-  - component: {fileID: 699719905706609245}
+  - component: {fileID: 8988430851484762915}
   m_Layer: 0
   m_Name: StarSparrow_Core
   m_TagString: Untagged
@@ -1917,8 +1944,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &699719905706609245
-BoxCollider:
+--- !u!136 &8988430851484762915
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1927,9 +1954,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.58, y: 1.12, z: 9.57}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.5
+  m_Height: 9
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: -0.4}
 --- !u!1 &7871460109536996675
 GameObject:
   m_ObjectHideFlags: 0
@@ -2683,15 +2711,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4910da04669ef424c9d560e761e78458, type: 3}
---- !u!1 &565069644463568547 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1107562920683562, guid: 4910da04669ef424c9d560e761e78458,
-    type: 3}
-  m_PrefabInstance: {fileID: 564190801986281097}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &560094693614003039 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4982589758569942, guid: 4910da04669ef424c9d560e761e78458,
+    type: 3}
+  m_PrefabInstance: {fileID: 564190801986281097}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &565069644463568547 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1107562920683562, guid: 4910da04669ef424c9d560e761e78458,
     type: 3}
   m_PrefabInstance: {fileID: 564190801986281097}
   m_PrefabAsset: {fileID: 0}
@@ -2999,15 +3027,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89393581439b2f845a76dab652442825, type: 3}
---- !u!1 &4093972070987386631 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1801798944994376, guid: 89393581439b2f845a76dab652442825,
-    type: 3}
-  m_PrefabInstance: {fileID: 4095693261916633935}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4091205808257728411 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4557835563631828, guid: 89393581439b2f845a76dab652442825,
+    type: 3}
+  m_PrefabInstance: {fileID: 4095693261916633935}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4093972070987386631 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1801798944994376, guid: 89393581439b2f845a76dab652442825,
     type: 3}
   m_PrefabInstance: {fileID: 4095693261916633935}
   m_PrefabAsset: {fileID: 0}
