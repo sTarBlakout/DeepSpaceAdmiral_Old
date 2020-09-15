@@ -49,7 +49,7 @@ namespace RTS.Controls
 
         private void HandleFingerTap(LeanFinger finger)
         {
-            if (!Physics.Raycast(finger.GetRay(), out var hitInfo, Mathf.Infinity)) return;
+            if (!Physics.Raycast(finger.GetRay(), out var hitInfo, Mathf.Infinity) || finger.IsOverGui) return;
 
             var isDoubleTap = CheckForDoubleTap();
             _lastTappedTime = Time.time;
