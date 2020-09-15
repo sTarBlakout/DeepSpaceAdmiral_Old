@@ -12,8 +12,8 @@ namespace RTS.Ships
     {
         #region Data
 
-        [Header("General")] 
-        [SerializeField] private bool isFriend;
+        [Header("General")]
+        [SerializeField] public bool isFriend; //public for testing purpose
         [SerializeField] private float maxHealthPoints;
 
         [Header("Movement")]
@@ -85,8 +85,6 @@ namespace RTS.Ships
         {
             SetDestructionLvl(DestructionLevel.New);
             InitParticles();
-            
-            _weaponManager.InitWeaponSystem(_facingTargetPrec);
         }
 
         private void FixedUpdate()
@@ -166,7 +164,7 @@ namespace RTS.Ships
             }
             
             UpdateRotating(rotation, out _dotForward, out _dotSide);
-            _weaponManager.UpdateWeaponSystem(true, _dotForward, _currTarget);
+            _weaponManager.UpdateWeaponSystem(true, _currTarget);
         }
 
         private void StopAttack()

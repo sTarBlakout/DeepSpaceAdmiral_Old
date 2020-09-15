@@ -23,15 +23,14 @@ namespace RTS.Ships
         [SerializeField] private float borderGunTemp;
         [SerializeField] private float mainGunWarmFactor;
         [SerializeField] private float mainGunCoolFactor;
-        
 
-        [Header("Laser Beam VFX")] 
+
+        [Header("Laser Beam")] 
+        [SerializeField] private float beamThickness;
         [SerializeField] private GameObject laserBeamStart;
         [SerializeField] private GameObject laserBeamStream;
         [SerializeField] private GameObject laserBeamEnd;
-
-        private float _facingTargetPrec;
-        private float _dotForward;
+        
         private bool _shouldAttackMain;
         private MonoBehaviour _currTarget;
 
@@ -51,6 +50,8 @@ namespace RTS.Ships
         private void Start()
         {
             _mainGunTemp = minGunTemp;
+            
+            InitWeaponSystem();
         }
 
         private void FixedUpdate()
@@ -70,18 +71,29 @@ namespace RTS.Ships
 
         #region Public API
 
-        public void InitWeaponSystem(float facingTargetPrec)
+        public void UpdateWeaponSystem(bool shouldAttackMain, MonoBehaviour target = null)
         {
-            _facingTargetPrec = facingTargetPrec;
-        }
-
-        public void UpdateWeaponSystem(bool shouldAttackMain, float dotForward = 0f, MonoBehaviour target = null)
-        {
-            _dotForward = dotForward;
             _currTarget = target;
             _shouldAttackMain = shouldAttackMain;
         }
         
+        #endregion
+
+        #region Private Functions
+
+        public void InitWeaponSystem()
+        {
+            switch (mainWeaponProjectileType)
+            {
+                case ProjectileType.LaserBeam:
+                    InitLaserBeam();
+                    break;
+                
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
         #endregion
 
         #region Main Weapon
@@ -143,10 +155,10 @@ namespace RTS.Ships
         #endregion
 
         #region Laser Beam
-        
+
         private void ProcessLaserBeamMain()
         {
-            if (Physics.Raycast(mainWeapon.position, transform.forward, out var hit, attackRange))
+            if (Physics.SphereCast(mainWeapon.position, beamThickness, transform.forward, out var hit, attackRange))
             {
                 var hitDamageable = hit.collider.GetComponent<IDamageable>();
                 if (hitDamageable != null)
@@ -161,7 +173,7 @@ namespace RTS.Ships
                         lineRenderer.SetPosition(1, hit.point);
 
                         laserBeamEnd.transform.position = hit.point;
-                                
+
                         ActivateLaserBeamVFX(true);
                                 
                         hitDamageable.Damage(damage);
@@ -185,6 +197,12 @@ namespace RTS.Ships
             laserBeamStart.SetActive(activate);
             laserBeamStream.SetActive(activate);
             laserBeamEnd.SetActive(activate);
+        }
+
+        private void InitLaserBeam()
+        {
+            var lineRenderer = laserBeamStream.GetComponent<LineRenderer>();
+            lineRenderer.startWidth = lineRenderer.endWidth = beamThickness;
         }
         
         #endregion
