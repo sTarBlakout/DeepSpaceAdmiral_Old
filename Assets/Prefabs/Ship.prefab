@@ -1861,7 +1861,10 @@ MonoBehaviour:
   borderGunTemp: 0
   mainGunWarmFactor: 0.001
   mainGunCoolFactor: 0.005
-  beamThickness: 0.5
+  beamMaxThickness: 0.5
+  beamMinThickness: 0.05
+  beamIncSpd: 0.01
+  beamDecSpd: 0.05
   laserBeamStart: {fileID: 6660593211300058736}
   laserBeamStream: {fileID: 4093972070987386631}
   laserBeamEnd: {fileID: 565069644463568547}

@@ -23,20 +23,24 @@ namespace RTS.Ships
         [SerializeField] private float borderGunTemp;
         [SerializeField] private float mainGunWarmFactor;
         [SerializeField] private float mainGunCoolFactor;
-
-
+        
         [Header("Laser Beam")] 
-        [SerializeField] private float beamThickness;
+        [SerializeField] private float beamMaxThickness;
+        [SerializeField] private float beamMinThickness;
+        [SerializeField] private float beamIncSpd;
+        [SerializeField] private float beamDecSpd;
         [SerializeField] private GameObject laserBeamStart;
         [SerializeField] private GameObject laserBeamStream;
         [SerializeField] private GameObject laserBeamEnd;
+
+        private LineRenderer _laserBeamRenderer;
         
         private bool _shouldAttackMain;
         private MonoBehaviour _currTarget;
 
         private bool _isMainGunFiring;
-        private float _mainGunTemp;
         private bool _isMainGunLocked;
+        private float _mainGunTemp;
 
         private Coroutine _lockGunCoroutine;
 
@@ -81,7 +85,7 @@ namespace RTS.Ships
 
         #region Private Functions
 
-        public void InitWeaponSystem()
+        private void InitWeaponSystem()
         {
             switch (mainWeaponProjectileType)
             {
@@ -158,7 +162,8 @@ namespace RTS.Ships
 
         private void ProcessLaserBeamMain()
         {
-            if (Physics.SphereCast(mainWeapon.position, beamThickness, transform.forward, out var hit, attackRange))
+            var turnOnBeam = false;
+            if (Physics.SphereCast(mainWeapon.position, beamMaxThickness, transform.forward, out var hit, attackRange))
             {
                 var hitDamageable = hit.collider.GetComponent<IDamageable>();
                 if (hitDamageable != null)
@@ -174,35 +179,44 @@ namespace RTS.Ships
 
                         laserBeamEnd.transform.position = hit.point;
 
-                        ActivateLaserBeamVFX(true);
-                                
+                        turnOnBeam = true;
+
                         hitDamageable.Damage(damage);
-                    }
-                    else
-                    {
-                        _isMainGunFiring = false;
-                        ActivateLaserBeamVFX(false);
                     }
                 }
             }
-            else
-            {
-                _isMainGunFiring = false;
-                ActivateLaserBeamVFX(false);
-            }
+            
+            _isMainGunFiring = turnOnBeam;
+            ActivateLaserBeamVFX(turnOnBeam);
         }
         
         private void ActivateLaserBeamVFX(bool activate)
         {
-            laserBeamStart.SetActive(activate);
-            laserBeamStream.SetActive(activate);
-            laserBeamEnd.SetActive(activate);
+            var isBeamActive = false;
+            float width;
+            if (activate)
+            {
+                width = Mathf.Min(_laserBeamRenderer.endWidth + beamIncSpd, beamMaxThickness);
+                _laserBeamRenderer.startWidth = _laserBeamRenderer.endWidth = width;
+                isBeamActive = true;
+            }
+            else
+            {
+                width = Mathf.Max(_laserBeamRenderer.endWidth - beamDecSpd, beamMinThickness);
+                _laserBeamRenderer.startWidth = _laserBeamRenderer.endWidth = width;
+                if (!Mathf.Approximately(_laserBeamRenderer.endWidth, beamMinThickness))
+                    isBeamActive = true;
+            }
+            
+            laserBeamStart.SetActive(isBeamActive);
+            laserBeamStream.SetActive(isBeamActive);
+            laserBeamEnd.SetActive(isBeamActive);
         }
 
         private void InitLaserBeam()
         {
-            var lineRenderer = laserBeamStream.GetComponent<LineRenderer>();
-            lineRenderer.startWidth = lineRenderer.endWidth = beamThickness;
+            _laserBeamRenderer = laserBeamStream.GetComponent<LineRenderer>();
+            _laserBeamRenderer.startWidth = _laserBeamRenderer.endWidth = beamMinThickness;
         }
         
         #endregion
