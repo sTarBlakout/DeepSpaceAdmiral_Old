@@ -172,18 +172,14 @@ namespace RTS.Ships
                     {
                         _isMainGunFiring = true;
                         if (_mainGunTemp < borderGunTemp) return;
-                        
-                        var lineRenderer = laserBeamStream.GetComponent<LineRenderer>();
-                        lineRenderer.SetPosition(0, mainWeapon.position);
-                        lineRenderer.SetPosition(1, hit.point);
-
-                        laserBeamEnd.transform.position = hit.point;
 
                         turnOnBeam = true;
-
                         hitDamageable.Damage(damage);
                     }
                 }
+                _laserBeamRenderer.SetPosition(0, mainWeapon.position);
+                _laserBeamRenderer.SetPosition(1, hit.point);
+                laserBeamEnd.transform.position = hit.point;
             }
             
             _isMainGunFiring = turnOnBeam;
