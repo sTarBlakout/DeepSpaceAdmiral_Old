@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using GameGlobal;
 using RTS.Controls;
+using RTS.Weapons;
 using Random = UnityEngine.Random;
 
 namespace RTS.Ships
@@ -150,13 +151,13 @@ namespace RTS.Ships
             }
 
             var rotation = Vector3.zero;
-            switch (_weaponManager.MainWeaponType)
+            switch (_weaponManager.WeaponLocation)
             {
-                case MainWeaponType.Front:
+                case WeaponLocation.Front:
                     rotation = (_currTarget.transform.position - transform.position).normalized;
                     break;
                 
-                case MainWeaponType.Sides:
+                case WeaponLocation.Sides:
                     break;
                 
                 default:

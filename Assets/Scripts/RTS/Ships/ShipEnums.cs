@@ -15,17 +15,6 @@
         Destroyed
     }
 
-    public enum MainWeaponType
-    {
-        Front,
-        Sides
-    }
-
-    public enum ProjectileType
-    {
-        LaserBeam
-    }
-
     public enum EngineSection
     {
         Main,
