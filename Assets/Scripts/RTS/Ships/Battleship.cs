@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEngine;
 using GameGlobal;
 using RTS.Controls;
-using RTS.Weapons;
 using Random = UnityEngine.Random;
 
 namespace RTS.Ships
@@ -149,23 +148,10 @@ namespace RTS.Ships
                 MoveToPositon(_targetMovePos, _stance);
                 return;
             }
-
-            var rotation = Vector3.zero;
-            switch (_weaponManager.WeaponLocation)
-            {
-                case WeaponLocation.Front:
-                    rotation = (_currTarget.transform.position - transform.position).normalized;
-                    break;
-                
-                case WeaponLocation.Sides:
-                    break;
-                
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
             
-            UpdateRotating(rotation, out _dotForward, out _dotSide);
             _weaponManager.UpdateWeaponSystem(true, _currTarget);
+            var rotation = _weaponManager.CalculateRequiredRotation();
+            UpdateRotating(rotation, out _dotForward, out _dotSide);
         }
 
         private void StopAttack()

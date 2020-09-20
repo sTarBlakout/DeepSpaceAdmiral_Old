@@ -12,26 +12,34 @@ namespace RTS.Weapons
         [SerializeField] private GameObject laserBeamStart;
         [SerializeField] private GameObject laserBeamStream;
         [SerializeField] private GameObject laserBeamEnd;
+        [SerializeField] private Transform targetPoint;
         
         private LineRenderer _laserBeamRenderer;
+        private ParticleSystem _laserBeamStart;
+        private ParticleSystem _laserBeamEnd;
 
         public override void InitWeapon()
         {
+            _laserBeamStart = laserBeamStart.GetComponent<ParticleSystem>();
+            _laserBeamEnd = laserBeamEnd.GetComponent<ParticleSystem>();
             _laserBeamRenderer = laserBeamStream.GetComponent<LineRenderer>();
             _laserBeamRenderer.startWidth = _laserBeamRenderer.endWidth = beamMinThickness;
 
             MainGunTemp = minGunTemp;
+            targetPoint.Translate(Vector3.forward * attackRange);
         }
 
         public override void ProcessWeapon(bool process)
         {
             var turnOnBeam = false;
+            var beamEndPoint = targetPoint.position;
             ShouldHeat = false;
 
             if (process)
             {
                 if (Physics.SphereCast(transform.position, beamMaxThickness, transform.forward, out var hit, attackRange))
                 {
+                    beamEndPoint = hit.point;
                     var hitDamageable = hit.collider.GetComponent<IDamageable>();
                     if (hitDamageable != null)
                     {
@@ -44,14 +52,11 @@ namespace RTS.Weapons
                             hitDamageable.Damage(damage);
                         }
                     }
-
-                    _laserBeamRenderer.SetPosition(0, transform.position);
-                    _laserBeamRenderer.SetPosition(1, hit.point);
-                    laserBeamEnd.transform.position = hit.point;
                 }
             }
             
             ActivateVFX(turnOnBeam);
+            UpdateBeamPoints(transform.position, beamEndPoint);
         }
 
         public override void ProcessWeaponTemperature()
@@ -70,7 +75,14 @@ namespace RTS.Weapons
             ShouldLock = Mathf.Approximately(MainGunTemp, maxGunTemp);
         }
 
-        protected void ActivateVFX(bool activate)
+        private void UpdateBeamPoints(Vector3 startPos, Vector3 endPos)
+        {
+            _laserBeamRenderer.SetPosition(0, startPos);
+            _laserBeamRenderer.SetPosition(1, endPos);
+            laserBeamEnd.transform.position = endPos;
+        }
+
+        private void ActivateVFX(bool activate)
         {
             var isBeamActive = false;
             float width;
@@ -87,10 +99,25 @@ namespace RTS.Weapons
                 if (!Mathf.Approximately(_laserBeamRenderer.endWidth, beamMinThickness))
                     isBeamActive = true;
             }
-            
-            laserBeamStart.SetActive(isBeamActive);
-            laserBeamStream.SetActive(isBeamActive);
-            laserBeamEnd.SetActive(isBeamActive);
+
+            if (isBeamActive)
+            {
+                if (!_laserBeamStart.isPlaying)
+                    _laserBeamStart.Play();
+                if (!_laserBeamEnd.isPlaying)
+                    _laserBeamEnd.Play();
+                if (!_laserBeamRenderer.enabled)
+                    _laserBeamRenderer.enabled = true;
+            }
+            else
+            {
+                if (_laserBeamStart.isPlaying)
+                    _laserBeamStart.Stop();
+                if (_laserBeamEnd.isPlaying)
+                    _laserBeamEnd.Stop();
+                if (_laserBeamRenderer.enabled)
+                    _laserBeamRenderer.enabled = false;
+            }
         }
     }
 }

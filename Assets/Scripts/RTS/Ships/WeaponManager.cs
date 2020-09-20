@@ -52,6 +52,24 @@ namespace RTS.Ships
             _currTarget = target;
             _shouldAttackMain = shouldAttackMain;
         }
+
+        public Vector3 CalculateRequiredRotation()
+        {
+            Vector3 rotation = Vector3.zero;
+            switch (WeaponLocation)
+            {
+                case WeaponLocation.Front:
+                    rotation = (_currTarget.transform.position - transform.position).normalized;
+                    break;
+                
+                case WeaponLocation.Sides:
+                    break;
+                
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            return rotation;
+        }
         
         #endregion
 
