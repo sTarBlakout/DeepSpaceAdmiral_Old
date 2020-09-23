@@ -18,6 +18,8 @@ namespace RTS.Weapons
         private ParticleSystem _laserBeamStart;
         private ParticleSystem _laserBeamEnd;
 
+        private bool _isBeamActive;
+
         public override void InitWeapon()
         {
             _laserBeamStart = laserBeamStart.GetComponent<ParticleSystem>();
@@ -28,14 +30,14 @@ namespace RTS.Weapons
             MainGunTemp = minGunTemp;
             targetPoint.Translate(Vector3.forward * attackRange);
         }
-
+        
         public override void ProcessWeapon(bool process)
         {
             var turnOnBeam = false;
             var beamEndPoint = targetPoint.position;
             ShouldHeat = false;
 
-            if (process)
+            if (process || _isBeamActive)
             {
                 if (Physics.SphereCast(transform.position, beamMaxThickness, transform.forward, out var hit, attackRange))
                 {
@@ -46,17 +48,18 @@ namespace RTS.Weapons
                         if (!hitDamageable.IsFriend)
                         {
                             ShouldHeat = true;
-                            if (MainGunTemp < borderGunTemp) return;
-
-                            turnOnBeam = true;
-                            hitDamageable.Damage(damage);
+                            if (MainGunTemp >= borderGunTemp)
+                            {
+                                turnOnBeam = process;
+                                hitDamageable.Damage(damage);
+                            }
                         }
                     }
                 }
+                UpdateBeamPoints(transform.position, beamEndPoint);
             }
             
-            ActivateVFX(turnOnBeam);
-            UpdateBeamPoints(transform.position, beamEndPoint);
+            ActivateVFX(turnOnBeam, beamEndPoint != targetPoint.position);
         }
 
         public override void ProcessWeaponTemperature()
@@ -82,30 +85,38 @@ namespace RTS.Weapons
             laserBeamEnd.transform.position = endPos;
         }
 
-        private void ActivateVFX(bool activate)
+        private void ActivateVFX(bool activate, bool playEnd = true)
         {
-            var isBeamActive = false;
             float width;
             if (activate)
             {
                 width = Mathf.Min(_laserBeamRenderer.endWidth + beamIncSpd, beamMaxThickness);
                 _laserBeamRenderer.startWidth = _laserBeamRenderer.endWidth = width;
-                isBeamActive = true;
+                _isBeamActive = true;
             }
             else
             {
                 width = Mathf.Max(_laserBeamRenderer.endWidth - beamDecSpd, beamMinThickness);
                 _laserBeamRenderer.startWidth = _laserBeamRenderer.endWidth = width;
-                if (!Mathf.Approximately(_laserBeamRenderer.endWidth, beamMinThickness))
-                    isBeamActive = true;
+                _isBeamActive = !Mathf.Approximately(_laserBeamRenderer.endWidth, beamMinThickness);
             }
 
-            if (isBeamActive)
+            if (_isBeamActive)
             {
                 if (!_laserBeamStart.isPlaying)
                     _laserBeamStart.Play();
-                if (!_laserBeamEnd.isPlaying)
-                    _laserBeamEnd.Play();
+
+                if (playEnd)
+                {
+                    if (!_laserBeamEnd.isPlaying)
+                        _laserBeamEnd.Play();
+                }
+                else
+                {
+                    if (_laserBeamEnd.isPlaying)
+                        _laserBeamEnd.Stop();
+                }
+
                 if (!_laserBeamRenderer.enabled)
                     _laserBeamRenderer.enabled = true;
             }
