@@ -55,6 +55,16 @@ namespace GameGlobal
             return Vector3.SqrMagnitude(v1 - v2) < precision;
         }
         
+        public static void ActivateParticle(ParticleSystem particleSystem, bool activate)
+        {
+            if (particleSystem.isPlaying == activate) return;
+            
+            if (activate)
+                particleSystem.Play();
+            else
+                particleSystem.Stop();    
+        }
+        
         #endregion
     }
 }

@@ -1,4 +1,5 @@
-﻿using RTS.Controls;
+﻿using GameGlobal;
+using RTS.Controls;
 using UnityEngine;
 
 namespace RTS.Weapons
@@ -10,6 +11,7 @@ namespace RTS.Weapons
         [SerializeField] private float beamIncSpd;
         [SerializeField] private float beamDecSpd;
         [SerializeField] private GameObject laserBeamStart;
+        [SerializeField] private GameObject laserBeamEnd;
         [SerializeField] private GameObject laserBeamStream;
         [SerializeField] private GameObject laserBeamHit;
         [SerializeField] private Transform targetPoint;
@@ -17,12 +19,14 @@ namespace RTS.Weapons
         private LineRenderer _laserBeamRenderer;
         private ParticleSystem _laserBeamStart;
         private ParticleSystem _laserBeamHit;
+        private ParticleSystem _laserBeamEnd;
 
         private bool _isBeamActive;
 
         public override void InitWeapon()
         {
             _laserBeamStart = laserBeamStart.GetComponent<ParticleSystem>();
+            _laserBeamEnd = laserBeamEnd.GetComponent<ParticleSystem>();
             _laserBeamHit = laserBeamHit.GetComponent<ParticleSystem>();
             _laserBeamRenderer = laserBeamStream.GetComponent<LineRenderer>();
             _laserBeamRenderer.startWidth = _laserBeamRenderer.endWidth = beamMinThickness;
@@ -34,7 +38,6 @@ namespace RTS.Weapons
         public override void ProcessWeapon(bool process)
         {
             var turnOnBeam = false;
-            var processHit = true;
             var beamEndPoint = targetPoint.position;
             
             ShouldHeat = false;
@@ -58,11 +61,10 @@ namespace RTS.Weapons
                         }
                     }
                 }
-                processHit = beamEndPoint != targetPoint.position;
-                UpdateBeamPoints(transform.position, beamEndPoint, processHit);
+                UpdateBeamPoints(transform.position, beamEndPoint);
             }
             
-            ActivateVFX(turnOnBeam, processHit);
+            ProcessVFX(turnOnBeam, beamEndPoint != targetPoint.position);
         }
 
         public override void ProcessWeaponTemperature()
@@ -81,15 +83,14 @@ namespace RTS.Weapons
             ShouldLock = Mathf.Approximately(MainGunTemp, maxGunTemp);
         }
 
-        private void UpdateBeamPoints(Vector3 startPos, Vector3 endPos, bool updateHit = true)
+        private void UpdateBeamPoints(Vector3 startPos, Vector3 endPos)
         {
             _laserBeamRenderer.SetPosition(0, startPos);
             _laserBeamRenderer.SetPosition(1, endPos);
-            if (updateHit)
-                laserBeamHit.transform.position = endPos;
+            laserBeamHit.transform.position = endPos;
         }
 
-        private void ActivateVFX(bool activate, bool playHit = true)
+        private void ProcessVFX(bool activate, bool hitSmth)
         { 
             float width;
             if (activate)
@@ -104,35 +105,13 @@ namespace RTS.Weapons
                 _laserBeamRenderer.startWidth = _laserBeamRenderer.endWidth = width;
                 _isBeamActive = !Mathf.Approximately(_laserBeamRenderer.startWidth, beamMinThickness);
             }
+            
+            if (_laserBeamRenderer.enabled != _isBeamActive)
+                _laserBeamRenderer.enabled = activate;
 
-            if (_isBeamActive)
-            {
-                if (!_laserBeamStart.isPlaying)
-                    _laserBeamStart.Play();
-
-                if (playHit)
-                {
-                    if (!_laserBeamHit.isPlaying)
-                        _laserBeamHit.Play();
-                }
-                else
-                {
-                    if (_laserBeamHit.isPlaying)
-                        _laserBeamHit.Stop();
-                }
-
-                if (!_laserBeamRenderer.enabled)
-                    _laserBeamRenderer.enabled = true;
-            }
-            else
-            {
-                if (_laserBeamStart.isPlaying)
-                    _laserBeamStart.Stop();
-                if (_laserBeamHit.isPlaying)
-                    _laserBeamHit.Stop();
-                if (_laserBeamRenderer.enabled)
-                    _laserBeamRenderer.enabled = false;
-            }
+            GlobalData.ActivateParticle(_laserBeamStart, _isBeamActive);
+            GlobalData.ActivateParticle(_laserBeamHit, _isBeamActive && hitSmth);
+            GlobalData.ActivateParticle(_laserBeamEnd, _isBeamActive && !hitSmth);
         }
     }
 }
