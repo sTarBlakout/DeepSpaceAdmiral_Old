@@ -11,19 +11,19 @@ namespace RTS.Weapons
         [SerializeField] private float beamDecSpd;
         [SerializeField] private GameObject laserBeamStart;
         [SerializeField] private GameObject laserBeamStream;
-        [SerializeField] private GameObject laserBeamEnd;
+        [SerializeField] private GameObject laserBeamHit;
         [SerializeField] private Transform targetPoint;
         
         private LineRenderer _laserBeamRenderer;
         private ParticleSystem _laserBeamStart;
-        private ParticleSystem _laserBeamEnd;
+        private ParticleSystem _laserBeamHit;
 
         private bool _isBeamActive;
 
         public override void InitWeapon()
         {
             _laserBeamStart = laserBeamStart.GetComponent<ParticleSystem>();
-            _laserBeamEnd = laserBeamEnd.GetComponent<ParticleSystem>();
+            _laserBeamHit = laserBeamHit.GetComponent<ParticleSystem>();
             _laserBeamRenderer = laserBeamStream.GetComponent<LineRenderer>();
             _laserBeamRenderer.startWidth = _laserBeamRenderer.endWidth = beamMinThickness;
 
@@ -34,7 +34,9 @@ namespace RTS.Weapons
         public override void ProcessWeapon(bool process)
         {
             var turnOnBeam = false;
+            var processHit = true;
             var beamEndPoint = targetPoint.position;
+            
             ShouldHeat = false;
 
             if (process || _isBeamActive)
@@ -56,10 +58,11 @@ namespace RTS.Weapons
                         }
                     }
                 }
-                UpdateBeamPoints(transform.position, beamEndPoint);
+                processHit = beamEndPoint != targetPoint.position;
+                UpdateBeamPoints(transform.position, beamEndPoint, processHit);
             }
             
-            ActivateVFX(turnOnBeam, beamEndPoint != targetPoint.position);
+            ActivateVFX(turnOnBeam, processHit);
         }
 
         public override void ProcessWeaponTemperature()
@@ -78,27 +81,28 @@ namespace RTS.Weapons
             ShouldLock = Mathf.Approximately(MainGunTemp, maxGunTemp);
         }
 
-        private void UpdateBeamPoints(Vector3 startPos, Vector3 endPos)
+        private void UpdateBeamPoints(Vector3 startPos, Vector3 endPos, bool updateHit = true)
         {
             _laserBeamRenderer.SetPosition(0, startPos);
             _laserBeamRenderer.SetPosition(1, endPos);
-            laserBeamEnd.transform.position = endPos;
+            if (updateHit)
+                laserBeamHit.transform.position = endPos;
         }
 
-        private void ActivateVFX(bool activate, bool playEnd = true)
-        {
+        private void ActivateVFX(bool activate, bool playHit = true)
+        { 
             float width;
             if (activate)
             {
-                width = Mathf.Min(_laserBeamRenderer.endWidth + beamIncSpd, beamMaxThickness);
+                width = Mathf.Min(_laserBeamRenderer.startWidth + beamIncSpd, beamMaxThickness);
                 _laserBeamRenderer.startWidth = _laserBeamRenderer.endWidth = width;
                 _isBeamActive = true;
             }
             else
             {
-                width = Mathf.Max(_laserBeamRenderer.endWidth - beamDecSpd, beamMinThickness);
+                width = Mathf.Max(_laserBeamRenderer.startWidth - beamDecSpd, beamMinThickness);
                 _laserBeamRenderer.startWidth = _laserBeamRenderer.endWidth = width;
-                _isBeamActive = !Mathf.Approximately(_laserBeamRenderer.endWidth, beamMinThickness);
+                _isBeamActive = !Mathf.Approximately(_laserBeamRenderer.startWidth, beamMinThickness);
             }
 
             if (_isBeamActive)
@@ -106,15 +110,15 @@ namespace RTS.Weapons
                 if (!_laserBeamStart.isPlaying)
                     _laserBeamStart.Play();
 
-                if (playEnd)
+                if (playHit)
                 {
-                    if (!_laserBeamEnd.isPlaying)
-                        _laserBeamEnd.Play();
+                    if (!_laserBeamHit.isPlaying)
+                        _laserBeamHit.Play();
                 }
                 else
                 {
-                    if (_laserBeamEnd.isPlaying)
-                        _laserBeamEnd.Stop();
+                    if (_laserBeamHit.isPlaying)
+                        _laserBeamHit.Stop();
                 }
 
                 if (!_laserBeamRenderer.enabled)
@@ -124,8 +128,8 @@ namespace RTS.Weapons
             {
                 if (_laserBeamStart.isPlaying)
                     _laserBeamStart.Stop();
-                if (_laserBeamEnd.isPlaying)
-                    _laserBeamEnd.Stop();
+                if (_laserBeamHit.isPlaying)
+                    _laserBeamHit.Stop();
                 if (_laserBeamRenderer.enabled)
                     _laserBeamRenderer.enabled = false;
             }

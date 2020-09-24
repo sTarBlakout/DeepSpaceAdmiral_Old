@@ -480,7 +480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a450c1cb55243069158da65c29859e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shipToSpawn: {fileID: 2073844814151256159, guid: ce3e003a4545afa458e59167abd257d8,
+  shipToSpawn: {fileID: 6624679407273337055, guid: ce3e003a4545afa458e59167abd257d8,
     type: 3}
 --- !u!4 &599025673
 Transform:
@@ -4216,6 +4216,126 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1596562726887414838, guid: ce3e003a4545afa458e59167abd257d8,
+        type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1596562726887414838, guid: ce3e003a4545afa458e59167abd257d8,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.r
+      value: 0.9960785
+      objectReference: {fileID: 0}
+    - target: {fileID: 1596562726887414838, guid: ce3e003a4545afa458e59167abd257d8,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.g
+      value: 0.9960785
+      objectReference: {fileID: 0}
+    - target: {fileID: 1596562726887414838, guid: ce3e003a4545afa458e59167abd257d8,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.b
+      value: 0.34509805
+      objectReference: {fileID: 0}
+    - target: {fileID: 1596562726887414838, guid: ce3e003a4545afa458e59167abd257d8,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.atime1
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 1596562726887414838, guid: ce3e003a4545afa458e59167abd257d8,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1596562726887414838, guid: ce3e003a4545afa458e59167abd257d8,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.ctime0
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1596562726887414838, guid: ce3e003a4545afa458e59167abd257d8,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.ctime1
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 1596562726887414838, guid: ce3e003a4545afa458e59167abd257d8,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.m_NumColorKeys
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1596562726887414838, guid: ce3e003a4545afa458e59167abd257d8,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key2.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1596562726887414838, guid: ce3e003a4545afa458e59167abd257d8,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key3.r
+      value: 0.9960785
+      objectReference: {fileID: 0}
+    - target: {fileID: 1596562726887414838, guid: ce3e003a4545afa458e59167abd257d8,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key3.g
+      value: 0.9960785
+      objectReference: {fileID: 0}
+    - target: {fileID: 1596562726887414838, guid: ce3e003a4545afa458e59167abd257d8,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key3.b
+      value: 0.34509805
+      objectReference: {fileID: 0}
+    - target: {fileID: 1596562726887414838, guid: ce3e003a4545afa458e59167abd257d8,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.ctime2
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 1596562726887414838, guid: ce3e003a4545afa458e59167abd257d8,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.ctime3
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 1596562726887414838, guid: ce3e003a4545afa458e59167abd257d8,
+        type: 3}
+      propertyPath: m_Parameters.numCapVertices
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1596562726887414838, guid: ce3e003a4545afa458e59167abd257d8,
+        type: 3}
+      propertyPath: m_Parameters.generateLightingData
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1596562726887414838, guid: ce3e003a4545afa458e59167abd257d8,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1596562726887414838, guid: ce3e003a4545afa458e59167abd257d8,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.m_NumAlphaKeys
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1596562726887414838, guid: ce3e003a4545afa458e59167abd257d8,
+        type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1596562726887414838, guid: ce3e003a4545afa458e59167abd257d8,
+        type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1596562726887414838, guid: ce3e003a4545afa458e59167abd257d8,
+        type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].inSlope
+      value: -0.2946811
+      objectReference: {fileID: 0}
+    - target: {fileID: 1596562726887414838, guid: ce3e003a4545afa458e59167abd257d8,
+        type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].outSlope
+      value: -0.2946811
+      objectReference: {fileID: 0}
+    - target: {fileID: 1596562726887414838, guid: ce3e003a4545afa458e59167abd257d8,
+        type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].inWeight
+      value: 0.13494812
+      objectReference: {fileID: 0}
     - target: {fileID: 1694279090960726270, guid: ce3e003a4545afa458e59167abd257d8,
         type: 3}
       propertyPath: m_IsActive
@@ -4309,7 +4429,7 @@ PrefabInstance:
     - target: {fileID: 8212996829436003507, guid: ce3e003a4545afa458e59167abd257d8,
         type: 3}
       propertyPath: beamDecSpd
-      value: 0.001
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 8212996829436003507, guid: ce3e003a4545afa458e59167abd257d8,
         type: 3}
