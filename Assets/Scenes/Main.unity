@@ -4456,6 +4456,11 @@ PrefabInstance:
       propertyPath: mainGunCoolFactor
       value: 0.05
       objectReference: {fileID: 0}
+    - target: {fileID: 8212996829436003507, guid: ce3e003a4545afa458e59167abd257d8,
+        type: 3}
+      propertyPath: fireRate
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 8303742777589244297, guid: ce3e003a4545afa458e59167abd257d8,
         type: 3}
       propertyPath: m_IsActive

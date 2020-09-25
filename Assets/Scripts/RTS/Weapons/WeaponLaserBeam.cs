@@ -24,6 +24,7 @@ namespace RTS.Weapons
         private ParticleSystem _laserBeamEnd;
 
         private bool _isBeamActive;
+        private float _nextDamageTime;
 
         public override void InitWeapon()
         {
@@ -58,7 +59,11 @@ namespace RTS.Weapons
                             if (MainGunTemp >= borderGunTemp)
                             {
                                 turnOnBeam = process;
-                                hitDamageable.Damage(damage);
+                                if (_nextDamageTime <= Time.time)
+                                {
+                                    _nextDamageTime = Time.time + fireRate;
+                                    hitDamageable.Damage(damage);
+                                }
                             }
                         }
                     }
