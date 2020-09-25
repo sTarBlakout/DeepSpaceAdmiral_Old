@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72abc9538a114326bc0d062c0f07010e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponLocation: 0
+  activeDirection: 0
   damage: 1
   attackRange: 1
   fireRate: 1
@@ -454,6 +454,11 @@ PrefabInstance:
     - target: {fileID: 2752911046463110279, guid: e68765cd589ed8347b21d14a7b09fb3a,
         type: 3}
       propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2752911046463110279, guid: e68765cd589ed8347b21d14a7b09fb3a,
+        type: 3}
+      propertyPath: m_Loop
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2848932926616119507, guid: e68765cd589ed8347b21d14a7b09fb3a,

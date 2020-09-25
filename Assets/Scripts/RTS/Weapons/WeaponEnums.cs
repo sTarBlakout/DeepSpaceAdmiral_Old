@@ -1,6 +1,6 @@
 ﻿namespace RTS.Weapons
 {
-    public enum WeaponLocation
+    public enum ActiveDirection
     {
         Front,
         Sides

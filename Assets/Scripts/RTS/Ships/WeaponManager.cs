@@ -19,7 +19,7 @@ namespace RTS.Ships
         
         private MainWeaponBase _mainWeapon;
 
-        public WeaponLocation WeaponLocation => _mainWeapon.WeaponLocation;
+        public ActiveDirection ActiveDirection => _mainWeapon.ActiveDirection;
         public float AttackRange => _mainWeapon.AttackRange;
 
         #endregion
@@ -56,13 +56,13 @@ namespace RTS.Ships
         public Vector3 CalculateRequiredRotation()
         {
             Vector3 rotation = Vector3.zero;
-            switch (WeaponLocation)
+            switch (ActiveDirection)
             {
-                case WeaponLocation.Front:
+                case ActiveDirection.Front:
                     rotation = (_currTarget.transform.position - transform.position).normalized;
                     break;
                 
-                case WeaponLocation.Sides:
+                case ActiveDirection.Sides:
                     break;
                 
                 default:
@@ -86,13 +86,13 @@ namespace RTS.Ships
         
         private void ProcessMainWeapon(bool process)
         {
-            switch (_mainWeapon.WeaponLocation)
+            switch (_mainWeapon.ActiveDirection)
             {
-                case WeaponLocation.Front:
+                case ActiveDirection.Front:
                     _mainWeapon.ProcessWeapon(process);
                     break;
                 
-                case WeaponLocation.Sides:
+                case ActiveDirection.Sides:
                     break;
                 
                 default:

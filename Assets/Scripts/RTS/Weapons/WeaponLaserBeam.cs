@@ -6,6 +6,8 @@ namespace RTS.Weapons
 {
     public class WeaponLaserBeam : MainWeaponBase
     {
+        [Header("Laser Beam")]
+        
         [SerializeField] private float beamMaxThickness;
         [SerializeField] private float beamMinThickness;
         [SerializeField] private float beamIncSpd;
