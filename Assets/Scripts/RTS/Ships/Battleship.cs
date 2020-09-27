@@ -27,6 +27,11 @@ namespace RTS.Ships
         [SerializeField] private ParticleSystem selectedMarker;
 
         [Header("Destruction")] 
+        [SerializeField] private float explosionForce;
+        [SerializeField] private float explosionRadius;
+        [SerializeField] private float coreForceModifier;
+        [SerializeField] private float dragForCore;
+        [SerializeField] private float dragForParts;
         [SerializeField] private GameObject mainExplosion;
         [SerializeField] private GameObject[] destructLvlMeshes;
         [Range(0, 1)] [SerializeField] private float partsStayOnExplChance;
@@ -269,8 +274,8 @@ namespace RTS.Ships
             var rbCore = corePartsTransform.gameObject.AddComponent<Rigidbody>();
             rbCore.mass = _rigidbody.mass;
             rbCore.useGravity = false;
-            rbCore.drag = rbCore.angularDrag = 0.5f;
-            rbCore.AddForce(_movement * 2.5f);
+            rbCore.drag = rbCore.angularDrag = dragForCore;
+            rbCore.AddForce(_movement * coreForceModifier);
             
             var destructibleParts = destructiblePartsTransform.Cast<Transform>().ToList();
             foreach (var part in destructibleParts)
@@ -285,16 +290,11 @@ namespace RTS.Ships
                 part.SetParent(null);
                 var rbPart = part.gameObject.AddComponent<Rigidbody>();
                 rbPart.useGravity = false;
-                rbPart.drag = rbPart.angularDrag = 0.2f;
-
-                var randomVector = new Vector3(
-                    Random.Range(-100,100),
-                    Random.Range(-100,100),
-                    Random.Range(-100,100));
-
-                rbPart.AddForce(randomVector);
-                rbPart.AddTorque(randomVector);
+                rbPart.drag = rbPart.angularDrag = dragForParts;
             }
+
+            // Refactor this later
+            RTSGameController.Instance.CreateExplosionAtPos(transform.position, explosionRadius, explosionForce);
 
             Destroy(gameObject);
         }

@@ -432,7 +432,7 @@ PrefabInstance:
     - target: {fileID: 5127436190451837181, guid: ce3e003a4545afa458e59167abd257d8,
         type: 3}
       propertyPath: maxHealthPoints
-      value: 1000000
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 6325882078115116970, guid: ce3e003a4545afa458e59167abd257d8,
         type: 3}
@@ -495,6 +495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a450c1cb55243069158da65c29859e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  upwardExplosionModifier: 5
   shipToSpawn: {fileID: 6624679407273337055, guid: ce3e003a4545afa458e59167abd257d8,
     type: 3}
 --- !u!4 &599025673
@@ -4460,6 +4461,11 @@ PrefabInstance:
         type: 3}
       propertyPath: fireRate
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8212996829436003507, guid: ce3e003a4545afa458e59167abd257d8,
+        type: 3}
+      propertyPath: damage
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8303742777589244297, guid: ce3e003a4545afa458e59167abd257d8,
         type: 3}

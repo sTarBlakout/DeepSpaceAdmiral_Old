@@ -7,6 +7,8 @@ namespace RTS
 {
     public class RTSGameController : MonoBehaviour
     {
+        [SerializeField] private float upwardExplosionModifier;
+        
         public GameObject shipToSpawn;
         
         private static RTSGameController _instance;
@@ -27,5 +29,23 @@ namespace RTS
             ship.GetComponent<Battleship>().isFriend = false;
             ship.AddComponent<AIShipController>();
         }
+
+        #region Public Methods
+
+        public Collider[] CreateExplosionAtPos(Vector3 position, float radius, float force)
+        {
+            var collidersInRadius = Physics.OverlapSphere(position, radius);
+            foreach (var colliderInRadius in collidersInRadius)
+            {
+                var randomModifier = Random.Range(-upwardExplosionModifier, upwardExplosionModifier);
+                var rb = colliderInRadius.GetComponent<Rigidbody>();
+                if (rb != null)
+                    rb.AddExplosionForce(force, position, radius, randomModifier);
+            }
+
+            return collidersInRadius;
+        }
+        
+        #endregion
     }
 }
