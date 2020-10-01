@@ -8,12 +8,12 @@ using Random = UnityEngine.Random;
 
 namespace RTS.Ships
 {
-    public class Battleship : MonoBehaviour, IMoveable, IDamageable, IAttackable, ISelectable
+    public class Battleship : MonoBehaviour, IMoveable, IDamageable, IAttackable, ISelectable, IExplosible
     {
         #region Data
 
         [Header("General")]
-        [SerializeField] public bool isFriend; //public for testing purpose
+        [SerializeField] public bool isFriend; //public for testing 
         [SerializeField] private float maxHealthPoints;
 
         [Header("Movement")]
@@ -35,6 +35,8 @@ namespace RTS.Ships
         [SerializeField] private GameObject mainExplosion;
         [SerializeField] private GameObject[] destructLvlMeshes;
         [Range(0, 1)] [SerializeField] private float partsStayOnExplChance;
+        
+        public Action<GameObject> OnShipDestroyed;
 
         private readonly List<ParticleManager> _mainExplosionParticles = new List<ParticleManager>();
 
@@ -64,6 +66,16 @@ namespace RTS.Ships
 
         private MonoBehaviour _currTarget;
         private IDamageable _currTargetDamageable;
+
+        #endregion
+
+        #region Properties
+
+        public bool IsReachedDestination => _isReachedDestination;
+        public bool IsFriend => isFriend;
+        public float ExplosionForce => explosionForce;
+        public float ExplosionRadius => explosionRadius;
+        public Vector3 Position => transform.position;
 
         #endregion
 
@@ -292,10 +304,8 @@ namespace RTS.Ships
                 rbPart.useGravity = false;
                 rbPart.drag = rbPart.angularDrag = dragForParts;
             }
-
-            // Refactor this later
-            RTSGameController.Instance.CreateExplosionAtPos(transform.position, explosionRadius, explosionForce);
-
+            
+            OnShipDestroyed?.Invoke(gameObject);
             Destroy(gameObject);
         }
 
@@ -314,8 +324,6 @@ namespace RTS.Ships
         #endregion
 
         #region IMoveable Implementation
-
-        public bool IsReachedDestination => _isReachedDestination;
 
         public void MoveToPositon(Vector3 position, Stance stance = Stance.MoveToPosition)
         {
@@ -365,8 +373,6 @@ namespace RTS.Ships
         #endregion
 
         #region IDamageable Implementation
-
-        public bool IsFriend => isFriend;
 
         public bool CanBeDamaged()
         {
