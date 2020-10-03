@@ -18,7 +18,6 @@ namespace RTS
         private List<GameObject> _enemyShips = new List<GameObject>();
         private List<GameObject> _spaceDerbis = new List<GameObject>();
         
-
         #endregion
 
         #region Singleton

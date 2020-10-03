@@ -131,8 +131,9 @@ namespace RTS.Ships
                     throw new ArgumentOutOfRangeException();
             }
 
-            _isShipMoving = !GlobalData.VectorsApproxEqual(_rigidbody.velocity, Vector3.zero, _slowDownEndPrec);
-            _engineManager.UpdateEngines(_dotForward, _dotSide, _isShipMoving);
+            var anyMovements = !GlobalData.VectorsApproxEqual(_rigidbody.velocity, Vector3.zero, _slowDownEndPrec);
+            _isShipMoving = anyMovements && _stance == Stance.MoveToPosition;
+            _engineManager.UpdateEngines(_dotForward, _dotSide, _rigidbody.angularVelocity.y, _isShipMoving);
         }
         
         #endregion

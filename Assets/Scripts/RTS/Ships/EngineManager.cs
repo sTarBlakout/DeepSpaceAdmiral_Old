@@ -53,7 +53,7 @@ namespace RTS.Ships
             ActivateEngineSection(EngineSection.Right, false);
         }
 
-        public void UpdateEngines(float dotForward, float dotSide, bool isShipMoving)
+        public void UpdateEngines(float dotForward, float dotSide, float angularVelY, bool isShipMoving)
         {
             if (!_isEngineSystemOn) return;
             
@@ -70,12 +70,12 @@ namespace RTS.Ships
                 shouldSideEnginesWork = dotForward < _sideEngineActTrigStay;
             }
             
-            if (dotSide > 0)
+            if (dotSide > 0 && angularVelY != 0)
             {
                 ActivateEngineSection(EngineSection.Right, shouldSideEnginesWork);
                 ActivateEngineSection(EngineSection.Left, false);
             }
-            else if (dotSide < 0)
+            else if (dotSide < 0 && angularVelY != 0)
             {
                 ActivateEngineSection(EngineSection.Left, shouldSideEnginesWork);
                 ActivateEngineSection(EngineSection.Right, false);
