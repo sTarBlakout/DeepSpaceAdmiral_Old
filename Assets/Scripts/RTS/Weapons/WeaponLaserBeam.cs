@@ -24,6 +24,7 @@ namespace RTS.Weapons
         private ParticleSystem _laserBeamEnd;
 
         private bool _isBeamActive;
+        private bool _shouldDamage;
         private float _nextDamageTime;
 
         public override void InitWeapon()
@@ -42,7 +43,7 @@ namespace RTS.Weapons
         {
             var turnOnBeam = false;
             var beamEndPoint = targetPoint.position;
-            
+
             ShouldHeat = false;
 
             if (process || _isBeamActive)
@@ -59,7 +60,7 @@ namespace RTS.Weapons
                             if (MainGunTemp >= borderGunTemp)
                             {
                                 turnOnBeam = process;
-                                if (_nextDamageTime <= Time.time)
+                                if (_nextDamageTime <= Time.time && _shouldDamage) 
                                 {
                                     _nextDamageTime = Time.time + fireRate;
                                     hitDamageable.Damage(damage);
@@ -112,6 +113,8 @@ namespace RTS.Weapons
                 _laserBeamRenderer.startWidth = _laserBeamRenderer.endWidth = width;
                 _isBeamActive = !Mathf.Approximately(_laserBeamRenderer.startWidth, beamMinThickness);
             }
+            
+            _shouldDamage = Mathf.Approximately(_laserBeamRenderer.startWidth, beamMaxThickness);
             
             if (_laserBeamRenderer.enabled != _isBeamActive)
                 _laserBeamRenderer.enabled = activate;
