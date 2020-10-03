@@ -13,6 +13,8 @@ namespace GameGlobal
         [SerializeField] private float battleshipFacingTargetPrec = 0.999f;
         [SerializeField] private float battleshipSideEngineTriggerMove = 0.5f;
         [SerializeField] private float battleshipSideEngineTriggerStay = 0.999f;
+
+        [SerializeField] private Transform particleContainer;
         
         #endregion
 
@@ -22,6 +24,8 @@ namespace GameGlobal
         public float BattleshipFacingTargetPrec => battleshipFacingTargetPrec;
         public float BattleshipSideEngineTriggerMove => battleshipSideEngineTriggerMove;
         public float BattleshipSideEngineTriggerStay => battleshipSideEngineTriggerStay;
+        public Transform ParticleContainer => particleContainer;
+
         #endregion
         
         #region Singleton Implementation
@@ -44,6 +48,7 @@ namespace GameGlobal
         private void Awake() 
         { 
             DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(particleContainer);
         }
         
         #endregion

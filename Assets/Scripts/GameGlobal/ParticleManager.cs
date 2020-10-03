@@ -23,7 +23,7 @@ namespace GameGlobal
 
         public void ActivateParticle()
         {
-            transform.SetParent(null);
+            transform.SetParent(GlobalData.Instance.ParticleContainer);
             _particleSystem.Play();
             _activateDestroy = true;
         }

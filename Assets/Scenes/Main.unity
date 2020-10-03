@@ -155,6 +155,7 @@ MonoBehaviour:
   battleshipFacingTargetPrec: 0.999
   battleshipSideEngineTriggerMove: 0.5
   battleshipSideEngineTriggerStay: 0.999
+  particleContainer: {fileID: 1291819977}
 --- !u!4 &99946245
 Transform:
   m_ObjectHideFlags: 0
@@ -302,6 +303,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9801fc5ab63335499af43cf35ca9f09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &553779642
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 553779643}
+  m_Layer: 0
+  m_Name: SpaceDerbis
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &553779643
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 553779642}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &599025671
 GameObject:
   m_ObjectHideFlags: 0
@@ -332,6 +363,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   upwardExplosionModifier: 5
+  spaceDerbisTransform: {fileID: 553779643}
   shipToSpawn: {fileID: 6624679407273337055, guid: ce3e003a4545afa458e59167abd257d8,
     type: 3}
 --- !u!4 &599025673
@@ -723,6 +755,36 @@ Transform:
   - {fileID: 1792582534}
   m_Father: {fileID: 215096321}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1291819976
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1291819977}
+  m_Layer: 0
+  m_Name: ParticleContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1291819977
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291819976}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1619014964
 GameObject:

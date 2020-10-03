@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using GameGlobal;
 using RTS.Controls;
 using RTS.Ships;
@@ -13,9 +12,12 @@ namespace RTS
         #region Data
 
         [SerializeField] private float upwardExplosionModifier;
+        [SerializeField] private Transform spaceDerbisTransform;
 
         private List<GameObject> _friendShips = new List<GameObject>();
         private List<GameObject> _enemyShips = new List<GameObject>();
+        private List<GameObject> _spaceDerbis = new List<GameObject>();
+        
 
         #endregion
 
@@ -105,6 +107,11 @@ namespace RTS
             if (explosible != null)
             {
                 CreateExplosionAtPos(explosible.Position, explosible.ExplosionRadius, explosible.ExplosionForce);
+                foreach (var derbis in explosible.CreatedSpaceDerbis)
+                {
+                    derbis.transform.SetParent(spaceDerbisTransform);
+                    _spaceDerbis.Add(derbis);
+                }
             }
         }
     }

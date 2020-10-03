@@ -39,6 +39,7 @@ namespace RTS.Ships
         public Action<GameObject> OnShipDestroyed;
 
         private readonly List<ParticleManager> _mainExplosionParticles = new List<ParticleManager>();
+        private readonly List<GameObject> _createdSpaceDerbis = new List<GameObject>();
 
         private float _slowDownEndPrec;
         private float _facingTargetPrec;
@@ -76,6 +77,7 @@ namespace RTS.Ships
         public float ExplosionForce => explosionForce;
         public float ExplosionRadius => explosionRadius;
         public Vector3 Position => transform.position;
+        public List<GameObject> CreatedSpaceDerbis => _createdSpaceDerbis;
 
         #endregion
 
@@ -303,6 +305,8 @@ namespace RTS.Ships
                 var rbPart = part.gameObject.AddComponent<Rigidbody>();
                 rbPart.useGravity = false;
                 rbPart.drag = rbPart.angularDrag = dragForParts;
+                if (part.gameObject != null)
+                    _createdSpaceDerbis.Add(part.gameObject);
             }
             
             OnShipDestroyed?.Invoke(gameObject);
