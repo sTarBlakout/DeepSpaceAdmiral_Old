@@ -8,8 +8,6 @@ namespace RTS.Ships
     public class WeaponManager : MonoBehaviour
     {
         #region Data
-        
-        private Transform _mainWeaponTransform;
 
         private bool _shouldAttackMain;
         private MonoBehaviour _currTarget;
@@ -18,6 +16,7 @@ namespace RTS.Ships
         private Coroutine _lockGunCoroutine;
         
         private MainWeaponBase _mainWeapon;
+        private OnboardWeaponBase _onboardWeapon;
 
         public ActiveDirection ActiveDirection => _mainWeapon.ActiveDirection;
         public float AttackRange => _mainWeapon.AttackRange;
@@ -28,8 +27,8 @@ namespace RTS.Ships
 
         private void Awake()
         {
-            _mainWeaponTransform = transform.GetChild(0);
-            _mainWeapon = _mainWeaponTransform.GetComponentInChildren<MainWeaponBase>();
+            _mainWeapon = transform.GetChild(0).GetComponentInChildren<MainWeaponBase>();
+            _onboardWeapon = transform.GetChild(1).GetComponentInChildren<OnboardWeaponBase>();
         }
 
         private void Start()
@@ -77,7 +76,9 @@ namespace RTS.Ships
 
         private void InitWeaponSystem()
         {
-            _mainWeapon.InitWeapon();
+            var parent = transform.parent;
+            _mainWeapon.InitWeapon(parent);
+            _onboardWeapon.InitWeapon(parent);
         }
 
         #endregion

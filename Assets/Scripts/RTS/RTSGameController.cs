@@ -45,8 +45,8 @@ namespace RTS
             var ship = Instantiate(shipToSpawn, spawnPos, Quaternion.identity);
             ship.GetComponent<Battleship>().isFriend = false;
             ship.GetComponent<Battleship>().OnShipDestroyed += DestroyShip;
-            ship.AddComponent<AIShipController>();
-            
+            ship.AddComponent<AIShipController>().enabled = false;
+
             _enemyShips.Add(ship);
         }
 

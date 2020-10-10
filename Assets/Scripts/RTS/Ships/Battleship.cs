@@ -78,6 +78,7 @@ namespace RTS.Ships
         public float ExplosionRadius => explosionRadius;
         public Vector3 Position => transform.position;
         public List<GameObject> CreatedSpaceDerbis => _createdSpaceDerbis;
+        public MonoBehaviour MonoBehaviour => this;
 
         #endregion
 

@@ -3,6 +3,7 @@
     public enum ActiveDirection
     {
         Front,
-        Sides
+        Sides,
+        Area
     }
 }

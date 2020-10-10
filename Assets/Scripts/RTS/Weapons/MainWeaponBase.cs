@@ -8,6 +8,7 @@ namespace RTS.Weapons
         
         [Header("Main Weapon")]
 
+        [SerializeField] private ActiveDirection activeDirection;
         [SerializeField] protected float minGunTemp = -1;
         [SerializeField] protected float maxGunTemp = 1;
         [SerializeField] protected float borderGunTemp;
@@ -20,9 +21,15 @@ namespace RTS.Weapons
 
         public bool ShouldHeat { get; protected set; }
         public bool ShouldLock { get; protected set; }
-        
         public float MainGunTemp { get; protected set; }
+        public ActiveDirection ActiveDirection => activeDirection;
 
+        #endregion
+
+        #region Abstract Methods
+
+        public abstract void ProcessWeaponTemperature();
+        
         #endregion
     }
 }

@@ -8,21 +8,30 @@ namespace RTS.Weapons
         
         [Header("General Stats")]
         
-        [SerializeField] private ActiveDirection activeDirection;
         [SerializeField] protected float damage = 1f;
         [SerializeField] protected float attackRange = 1f;
         [SerializeField] protected float fireRate = 1f;
 
-        public ActiveDirection ActiveDirection => activeDirection;
+        protected Transform ParentShip { get; private set; }
+        
         public float AttackRange => attackRange;
 
+        #endregion
+
+        #region Public Methods
+        
+        public void InitWeapon(Transform parentShip)
+        {
+            ParentShip = parentShip;
+            Init();
+        }
+        
         #endregion
         
         #region Abstract Methods
 
-        public abstract void InitWeapon();
+        protected abstract void Init();
         public abstract void ProcessWeapon(bool process);
-        public abstract void ProcessWeaponTemperature();
 
         #endregion
     }
