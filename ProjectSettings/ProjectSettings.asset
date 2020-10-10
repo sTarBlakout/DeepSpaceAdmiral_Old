@@ -47,7 +47,7 @@ PlayerSettings:
   defaultScreenWidthWeb: 960
   defaultScreenHeightWeb: 600
   m_StereoRenderingPath: 0
-  m_ActiveColorSpace: 0
+  m_ActiveColorSpace: 1
   m_MTRendering: 1
   m_StackTraceTypes: 010000000100000001000000010000000100000001000000
   iosShowActivityIndicatorOnLoading: -1
@@ -685,6 +685,7 @@ PlayerSettings:
     27: dUI_MANAGER
     28: dUI_MANAGER
     29: dUI_MANAGER
+    30: dUI_MANAGER
   platformArchitecture: {}
   scriptingBackend:
     Standalone: 1
@@ -697,6 +698,7 @@ PlayerSettings:
   gcIncremental: 0
   gcWBarrierValidation: 0
   apiCompatibilityLevelPerPlatform:
+    Android: 3
     Standalone: 3
     WebGL: 3
   m_RenderingPath: 1
