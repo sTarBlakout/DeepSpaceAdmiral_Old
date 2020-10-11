@@ -77,7 +77,6 @@ namespace RTS.Weapons
             _timeNextDamage = Time.time + fireRate;
             
             target.Damage(damage);
-            Debug.Log("damage");
         }
         
         #endregion
