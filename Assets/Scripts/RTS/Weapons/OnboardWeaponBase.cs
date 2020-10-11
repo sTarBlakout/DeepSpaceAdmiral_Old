@@ -18,11 +18,14 @@ namespace RTS.Weapons
 
         #region Protected Methods
         
-        protected virtual void FixedUpdate()
+        public override void ProcessWeapon(bool process)
         {
-            ProcessTarget();
-            DamageTarget(_currentTarget);
-            ProcessVisuals();
+            if (process)
+            {
+                ProcessTarget();
+                DamageTarget(_currentTarget);
+                ProcessVisuals();
+            }
         }
 
         protected void ProcessTarget()

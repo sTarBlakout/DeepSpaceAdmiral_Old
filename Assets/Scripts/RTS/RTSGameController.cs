@@ -47,6 +47,8 @@ namespace RTS
             ship.GetComponent<Battleship>().OnShipDestroyed += DestroyShip;
             ship.AddComponent<AIShipController>().enabled = false;
 
+            ship.transform.Find("Weapons").gameObject.SetActive(false);
+            
             _enemyShips.Add(ship);
         }
 

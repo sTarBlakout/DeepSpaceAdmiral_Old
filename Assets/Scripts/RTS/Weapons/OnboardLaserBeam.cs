@@ -6,12 +6,7 @@
         {
             
         }
-
-        public override void ProcessWeapon(bool process)
-        {
-            
-        }
-
+        
         protected override void ProcessVisuals()
         {
             
