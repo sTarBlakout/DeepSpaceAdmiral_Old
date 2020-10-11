@@ -13,7 +13,7 @@ namespace RTS.Ships
         #region Data
 
         [Header("General")]
-        [SerializeField] public bool isFriend; //public for testing 
+        [SerializeField] public byte teamId; 
         [SerializeField] private float maxHealthPoints;
 
         [Header("Movement")]
@@ -72,8 +72,8 @@ namespace RTS.Ships
 
         #region Properties
 
+        public byte TeamId => teamId;
         public bool IsReachedDestination => _isReachedDestination;
-        public bool IsFriend => isFriend;
         public float ExplosionForce => explosionForce;
         public float ExplosionRadius => explosionRadius;
         public Vector3 Position => transform.position;
@@ -380,6 +380,11 @@ namespace RTS.Ships
 
         #region IDamageable Implementation
 
+        public bool IsEnemy(byte askerTeamId)
+        {
+            return askerTeamId != teamId;
+        }
+        
         public bool CanBeDamaged()
         {
             return _stance != Stance.Destroyed;

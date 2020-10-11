@@ -34,7 +34,7 @@ namespace RTS.Controls
             if (_damageable != null)
             {
                 // If enemy, don't select.
-                if (!_damageable.IsFriend)
+                if (_damageable.IsEnemy(1))
                 {
                     UninitObject();
                     return;
@@ -77,7 +77,7 @@ namespace RTS.Controls
             var damageable = monoBehaviourObj.GetComponent<IDamageable>();
             if (damageable != null)
             {
-                if (!damageable.IsFriend && damageable.CanBeDamaged())
+                if (damageable.IsEnemy(1) && damageable.CanBeDamaged())
                 {
                     _attackable.AttackTarget(monoBehaviourObj);
                     return true;

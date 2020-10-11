@@ -4,7 +4,7 @@ namespace RTS.Controls
 {
     public interface IDamageable
     {
-        bool IsFriend { get; }
+        bool IsEnemy(byte askerTeamId);
         bool CanBeDamaged();
         void Damage(float damage);
         Vector3 Position { get; }

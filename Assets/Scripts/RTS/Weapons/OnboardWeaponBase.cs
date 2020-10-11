@@ -1,5 +1,4 @@
-﻿using System;
-using RTS.Controls;
+﻿using RTS.Controls;
 using UnityEngine;
 
 namespace RTS.Weapons
@@ -30,7 +29,7 @@ namespace RTS.Weapons
 
         protected void ProcessTarget()
         {
-            if (_currentTarget != null && !_currentTarget.IsFriend && _currentTarget.CanBeDamaged())
+            if (_currentTarget != null && _currentTarget.IsEnemy(SelectableShip.TeamId) && _currentTarget.CanBeDamaged())
             {
                 if (Vector3.Distance(transform.position, _currentTarget.Position) <= attackRange)
                     return;
@@ -45,7 +44,8 @@ namespace RTS.Weapons
             {
                 if (target.transform == ParentShip) continue;
                 var targetDamageable = target.GetComponent<IDamageable>();
-                if (targetDamageable == null || !targetDamageable.CanBeDamaged() || targetDamageable.IsFriend) continue;
+                if (targetDamageable == null) continue;
+                if (!targetDamageable.CanBeDamaged() || !targetDamageable.IsEnemy(SelectableShip.TeamId)) continue;
                 if (targetDamageable == _preferredTarget)
                 {
                     possibleTarget = _preferredTarget;
@@ -73,10 +73,11 @@ namespace RTS.Weapons
                 _lastTraget = target;
                 return;
             }
-            if (_timeNextDamage > Time.time || target.IsFriend || !target.CanBeDamaged()) return;
+            if (_timeNextDamage > Time.time || !target.IsEnemy(SelectableShip.TeamId) || !target.CanBeDamaged()) return;
             _timeNextDamage = Time.time + fireRate;
             
             target.Damage(damage);
+            Debug.Log("damage");
         }
         
         #endregion

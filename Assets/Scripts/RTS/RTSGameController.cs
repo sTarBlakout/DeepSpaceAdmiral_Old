@@ -14,8 +14,7 @@ namespace RTS
         [SerializeField] private float upwardExplosionModifier;
         [SerializeField] private Transform spaceDerbisTransform;
 
-        private List<GameObject> _friendShips = new List<GameObject>();
-        private List<GameObject> _enemyShips = new List<GameObject>();
+        private List<GameObject> _allShips = new List<GameObject>();
         private List<GameObject> _spaceDerbis = new List<GameObject>();
         
         #endregion
@@ -43,13 +42,13 @@ namespace RTS
         {
             var spawnPos = new Vector3(0f, GlobalData.Instance.RtsShipsPosY, 0f);
             var ship = Instantiate(shipToSpawn, spawnPos, Quaternion.identity);
-            ship.GetComponent<Battleship>().isFriend = false;
+            ship.GetComponent<Battleship>().teamId = 2;
             ship.GetComponent<Battleship>().OnShipDestroyed += DestroyShip;
             ship.AddComponent<AIShipController>().enabled = false;
 
             ship.transform.Find("Weapons").gameObject.SetActive(false);
             
-            _enemyShips.Add(ship);
+            _allShips.Add(ship);
         }
 
         #endregion
@@ -70,14 +69,11 @@ namespace RTS
             var spawnPos = new Vector3(position.x, GlobalData.Instance.RtsShipsPosY, position.z);
             var shipGameObject = Instantiate(shipToSpawn, spawnPos, Quaternion.identity);
             var battleship = shipGameObject.GetComponent<Battleship>();
-            battleship.isFriend = isFriend;
+            battleship.teamId = 1;
             battleship.OnShipDestroyed += DestroyShip;
             shipGameObject.AddComponent<AIShipController>().enabled = !isFriend;
-            
-            if (isFriend)
-                _friendShips.Add(shipGameObject);
-            else
-                _enemyShips.Add(shipGameObject);
+
+            _allShips.Add(shipGameObject);
         }
 
         #endregion
@@ -98,12 +94,8 @@ namespace RTS
         {
             var damageable = shipGameObject.GetComponent<IDamageable>();
             if (damageable != null)
-            {
-                if (damageable.IsFriend)
-                    _friendShips.Remove(shipGameObject);
-                else
-                    _enemyShips.Remove(shipGameObject);
-            }
+                _allShips.Remove(shipGameObject);
+            
             var explosible = shipGameObject.GetComponent<IExplosible>();
             if (explosible != null)
             {

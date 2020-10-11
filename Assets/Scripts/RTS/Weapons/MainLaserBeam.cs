@@ -54,7 +54,7 @@ namespace RTS.Weapons
                     var hitDamageable = hit.collider.GetComponent<IDamageable>();
                     if (hitDamageable != null)
                     {
-                        if (!hitDamageable.IsFriend)
+                        if (hitDamageable.IsEnemy(SelectableShip.TeamId))
                         {
                             ShouldHeat = true;
                             if (MainGunTemp >= borderGunTemp)

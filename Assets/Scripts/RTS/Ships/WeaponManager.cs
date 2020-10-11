@@ -40,6 +40,7 @@ namespace RTS.Ships
         {
             UpdateWeaponTemperature();
             ProcessMainWeapon(_shouldAttackMain && !_isMainGunLocked);
+            _onboardWeapon.ProcessWeapon(true);
         }
         
         #endregion

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using RTS.Controls;
+using UnityEngine;
 
 namespace RTS.Weapons
 {
@@ -13,6 +14,7 @@ namespace RTS.Weapons
         [SerializeField] protected float fireRate = 1f;
 
         protected Transform ParentShip { get; private set; }
+        protected ISelectable SelectableShip { get; private set; }
         
         public float AttackRange => attackRange;
 
@@ -23,6 +25,7 @@ namespace RTS.Weapons
         public void InitWeapon(Transform parentShip)
         {
             ParentShip = parentShip;
+            SelectableShip = ParentShip.GetComponent<ISelectable>();
             Init();
         }
         
