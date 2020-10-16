@@ -7,27 +7,46 @@ namespace RTS.Weapons
     {
         #region Data
         
+        [Header("Onboard Weapon")]
+        [SerializeField] protected Transform leftSidedGuns;
+        [SerializeField] protected Transform rightSidedGuns;
+        [SerializeField] protected Transform bothSidedGuns;
+        
         private IDamageable _preferredTarget;
         private IDamageable _currentTarget;
         
         private IDamageable _lastTraget;
         private float _timeNextDamage;
 
+        private float _rightSideDot;
+
+        protected IDamageable CurrentTarget => _currentTarget;
+
         #endregion
 
-        #region Protected Methods
+        #region Normal Methods
         
         public override void ProcessWeapon(bool process)
         {
             if (process)
             {
+                if (_currentTarget != null)
+                {
+                    var weaponTransform = transform;
+                    var rotation = (_currentTarget.Position - weaponTransform.position).normalized;
+                    _rightSideDot = Vector3.Dot(rotation.normalized, weaponTransform.right);
+                }
+
                 ProcessTarget();
                 DamageTarget(_currentTarget);
-                ProcessVisuals();
+                
+                ProcessVisuals(bothSidedGuns, _currentTarget != null);
+                ProcessVisuals(rightSidedGuns, _rightSideDot > 0f && _currentTarget != null);
+                ProcessVisuals(leftSidedGuns, _rightSideDot < 0f && _currentTarget != null);
             }
         }
 
-        protected void ProcessTarget()
+        private void ProcessTarget()
         {
             if (_currentTarget != null && _currentTarget.IsEnemy(SelectableShip.TeamId) && _currentTarget.CanBeDamaged())
             {
@@ -63,7 +82,7 @@ namespace RTS.Weapons
             _currentTarget = possibleTarget;
         }
         
-        protected void DamageTarget(IDamageable target)
+        private void DamageTarget(IDamageable target)
         {
             if (target == null) return;
 
@@ -83,7 +102,7 @@ namespace RTS.Weapons
 
         #region Abstract Methods
         
-        protected abstract void ProcessVisuals();
+        protected abstract void ProcessVisuals(Transform gunContainer, bool activate);
 
         #endregion
     }
