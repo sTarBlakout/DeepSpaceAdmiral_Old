@@ -1,4 +1,6 @@
-﻿using RTS.Controls;
+﻿using System.Collections.Generic;
+using System.Linq;
+using RTS.Controls;
 using UnityEngine;
 
 namespace RTS.Weapons
@@ -6,46 +8,59 @@ namespace RTS.Weapons
     public abstract class OnboardWeaponBase : WeaponBase
     {
         #region Data
-        
-        [Header("Onboard Weapon")]
-        [SerializeField] protected Transform leftSidedGuns;
-        [SerializeField] protected Transform rightSidedGuns;
-        [SerializeField] protected Transform bothSidedGuns;
-        
+
+        [Header("Onboard Weapon")] 
+        [SerializeField] protected Transform turretsContainer;
+
         private IDamageable _preferredTarget;
         private IDamageable _currentTarget;
         
         private IDamageable _lastTraget;
         private float _timeNextDamage;
 
-        private float _rightSideDot;
+        private List<OnboardTurretBase> _turrets = new List<OnboardTurretBase>();
 
         protected IDamageable CurrentTarget => _currentTarget;
 
         #endregion
 
-        #region Normal Methods
+        #region Public Methods
+        
+        protected override void Init()
+        {
+            var turretTransforms = turretsContainer.Cast<Transform>().ToList();
+            foreach (var turretTransform in turretTransforms)
+            {
+                var turretBase = turretTransform.GetComponent<OnboardTurretBase>();
+                if (turretBase != null) _turrets.Add(turretBase);
+            }
+        }
         
         public override void ProcessWeapon(bool process)
         {
-            if (process)
-            {
-                if (_currentTarget != null)
-                {
-                    var weaponTransform = transform;
-                    var rotation = (_currentTarget.Position - weaponTransform.position).normalized;
-                    _rightSideDot = Vector3.Dot(rotation.normalized, weaponTransform.right);
-                }
-
-                ProcessTarget();
-                DamageTarget(_currentTarget);
+            if (!process) return;
+            
+            ProcessTarget();
+            DamageTarget(_currentTarget);
                 
-                ProcessVisuals(bothSidedGuns, _currentTarget != null);
-                ProcessVisuals(rightSidedGuns, _rightSideDot > 0f && _currentTarget != null);
-                ProcessVisuals(leftSidedGuns, _rightSideDot < 0f && _currentTarget != null);
-            }
+            ProcessTurretRotating();
+            ProcessVisuals();
         }
+        
+        #endregion
+        
+        #region Private Methods
 
+        private void ProcessTurretRotating()
+        {
+            var targetPos = Vector3.zero;
+            var hasTarget = _currentTarget != null;
+            if (hasTarget) targetPos = _currentTarget.Position;
+
+            foreach (var turret in _turrets)
+                turret.UpdateRotation(hasTarget, targetPos);
+        }
+        
         private void ProcessTarget()
         {
             if (_currentTarget != null && _currentTarget.IsEnemy(SelectableShip.TeamId) && _currentTarget.CanBeDamaged())
@@ -102,7 +117,7 @@ namespace RTS.Weapons
 
         #region Abstract Methods
         
-        protected abstract void ProcessVisuals(Transform gunContainer, bool activate);
+        protected abstract void ProcessVisuals();
 
         #endregion
     }

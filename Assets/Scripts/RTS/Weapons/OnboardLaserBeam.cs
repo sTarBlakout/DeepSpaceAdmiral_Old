@@ -6,25 +6,12 @@ namespace RTS.Weapons
     {
         protected override void Init()
         {
-            
+            base.Init();
         }
         
-        protected override void ProcessVisuals(Transform gunContainer, bool activate)
+        protected override void ProcessVisuals()
         {
-            foreach (Transform gun in gunContainer)
-            {
-                Vector3 direction;
-                if (activate)
-                {
-                    var targetDirection = CurrentTarget.Position - gun.position;
-                    direction = Vector3.RotateTowards(gun.forward, targetDirection, 0.1f, 0f);
-                }
-                else
-                {
-                    direction = Vector3.RotateTowards(gun.forward, gunContainer.forward, 0.1f, 0f);
-                }
-                gun.rotation = Quaternion.LookRotation(direction);
-            }
+            
         }
     }
 }
