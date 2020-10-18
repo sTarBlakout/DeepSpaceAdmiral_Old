@@ -24,11 +24,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 928978232977459890}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 7394554634122356593}
+  m_Father: {fileID: 5010901665499992384}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!120 &4969384694504610271
@@ -157,7 +157,7 @@ Transform:
   m_Children:
   - {fileID: 5010901665499992384}
   m_Father: {fileID: 7394554634122356593}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3208153463135140457
 GameObject:
@@ -168,7 +168,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7394554634122356593}
-  - component: {fileID: 2903726787152463372}
+  - component: {fileID: 6482580844968838383}
   m_Layer: 0
   m_Name: OnboardLaserBeamTurret
   m_TagString: Untagged
@@ -187,12 +187,11 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2393669941361911783}
   - {fileID: 4668077500585639142}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2903726787152463372
+--- !u!114 &6482580844968838383
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -201,7 +200,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3208153463135140457}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47b8cdbff4b5fee48b8ab92863af3c62, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a403fc3df604544905ba9264968f1d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   graphicsContainer: {fileID: 4668077500585639142}
@@ -209,6 +208,7 @@ MonoBehaviour:
   maxRotatingAngleX: 0
   maxRotatingAngleY: 0
   rotatingSpeed: 0
+  lineRenderer: {fileID: 4969384694504610271}
 --- !u!1 &6453421386342800112
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,7 +238,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 2.3600001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 5010901665499992384}
+  m_Father: {fileID: 1111383808022491044}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6483990804553953692
@@ -288,6 +288,38 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1 &8471675992004937669
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1111383808022491044}
+  m_Layer: 0
+  m_Name: Graphics
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1111383808022491044
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8471675992004937669}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 6457188387092809306}
+  - {fileID: 9189681601298154514}
+  m_Father: {fileID: 5010901665499992384}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8961749208364792442
 GameObject:
   m_ObjectHideFlags: 0
@@ -315,8 +347,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 6457188387092809306}
-  - {fileID: 9189681601298154514}
+  - {fileID: 2393669941361911783}
+  - {fileID: 1111383808022491044}
   m_Father: {fileID: 4668077500585639142}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -349,7 +381,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0.22}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 5010901665499992384}
+  m_Father: {fileID: 1111383808022491044}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &9218934519790656786

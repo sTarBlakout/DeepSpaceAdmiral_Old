@@ -1,10 +1,10 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RTS.Weapons
 {
     public class OnboardTurretBase : MonoBehaviour
     {
+        [Header("General Stats")]
         [SerializeField] private Transform graphicsContainer;
         [SerializeField] private Transform graphicsRotator;
         [SerializeField] private float maxRotatingAngleX;

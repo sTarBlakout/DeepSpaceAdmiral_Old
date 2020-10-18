@@ -20,7 +20,7 @@ namespace RTS.Weapons
 
         private List<OnboardTurretBase> _turrets = new List<OnboardTurretBase>();
 
-        protected IDamageable CurrentTarget => _currentTarget;
+        protected List<Transform> TurretTransforms { get; private set; }
 
         #endregion
 
@@ -28,8 +28,8 @@ namespace RTS.Weapons
         
         protected override void Init()
         {
-            var turretTransforms = turretsContainer.Cast<Transform>().ToList();
-            foreach (var turretTransform in turretTransforms)
+            TurretTransforms = turretsContainer.Cast<Transform>().ToList();
+            foreach (var turretTransform in TurretTransforms)
             {
                 var turretBase = turretTransform.GetComponent<OnboardTurretBase>();
                 if (turretBase != null) _turrets.Add(turretBase);
