@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 928978232977459890}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 4.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7394554634122356593}
@@ -128,6 +128,37 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!1 &1991315672060058052
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4668077500585639142}
+  m_Layer: 0
+  m_Name: GraphicsContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4668077500585639142
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1991315672060058052}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 5010901665499992384}
+  m_Father: {fileID: 7394554634122356593}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3208153463135140457
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,7 +188,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2393669941361911783}
-  - {fileID: 5010901665499992384}
+  - {fileID: 4668077500585639142}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -173,8 +204,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47b8cdbff4b5fee48b8ab92863af3c62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  graphicsTransform: {fileID: 5010901665499992384}
-  rotatingAngle: 0
+  graphicsContainer: {fileID: 4668077500585639142}
+  graphicsRotator: {fileID: 5010901665499992384}
+  maxRotatingAngleX: 0
+  maxRotatingAngleY: 0
+  rotatingSpeed: 0
 --- !u!1 &6453421386342800112
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,7 +298,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5010901665499992384}
   m_Layer: 0
-  m_Name: Graphics
+  m_Name: GraphicsRotator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -277,14 +311,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8961749208364792442}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6457188387092809306}
   - {fileID: 9189681601298154514}
-  m_Father: {fileID: 7394554634122356593}
-  m_RootOrder: 1
+  m_Father: {fileID: 4668077500585639142}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9187971732568447768
 GameObject:
