@@ -5,8 +5,13 @@ namespace RTS.Weapons
 {
     public class OnboardLaserBeam : OnboardWeaponBase
     {
-        private List<OnboardTurretLaserBeam> _laserTurrets = new List<OnboardTurretLaserBeam>();
+        [Header("Onboard Laser Weapon")] 
         
+        [SerializeField] [Range(0, 1)] private float shootChance;
+        [SerializeField] private float minTimeBetwShots;
+        
+        private List<OnboardTurretLaserBeam> _laserTurrets = new List<OnboardTurretLaserBeam>();
+
         protected override void Init()
         {
             base.Init();
@@ -21,7 +26,8 @@ namespace RTS.Weapons
         {
             foreach (var laserTurret in _laserTurrets)
             {
-                laserTurret.MakeShot(CurrentTargetPos);
+                if (Random.value < shootChance)
+                    laserTurret.MakeShot(CurrentTargetPos);
             }
         }
     }

@@ -10,6 +10,7 @@ namespace RTS.Weapons
         #region Data
 
         [Header("Onboard Weapon")] 
+        
         [SerializeField] protected Transform turretsContainer;
 
         private IDamageable _preferredTarget;
