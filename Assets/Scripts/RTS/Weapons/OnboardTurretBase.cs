@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameGlobal;
+using UnityEngine;
 
 namespace RTS.Weapons
 {
@@ -10,6 +11,8 @@ namespace RTS.Weapons
         [SerializeField] private float maxRotatingAngleX;
         [SerializeField] private float maxRotatingAngleY;
         [SerializeField] private float rotatingSpeed;
+        
+        protected bool ReadyToShoot { get; private set; }
 
         public void UpdateRotation(bool shouldProcess, Vector3 targetPos)
         {
@@ -21,6 +24,9 @@ namespace RTS.Weapons
 
             var process = rotateAngle < maxRotatingAngleY && shouldProcess;
             RotateGraphics(process ? directionToTarget : graphicsContainer.forward);
+            
+            var dotProd = Vector3.Dot(directionToTarget, graphicsRotator.forward);
+            ReadyToShoot = dotProd > GlobalData.Instance.BattleshipFacingTargetPrec && process;
         }
 
         private void RotateGraphics(Vector3 targetDirection)

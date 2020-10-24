@@ -21,6 +21,7 @@ namespace RTS.Weapons
         private List<OnboardTurretBase> _turrets = new List<OnboardTurretBase>();
 
         protected List<Transform> TurretTransforms { get; private set; }
+        protected Vector3 CurrentTargetPos => _currentTarget?.Position ?? Vector3.zero;
 
         #endregion
 

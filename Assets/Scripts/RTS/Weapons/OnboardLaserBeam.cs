@@ -19,7 +19,10 @@ namespace RTS.Weapons
         
         protected override void ProcessVisuals()
         {
-            
+            foreach (var laserTurret in _laserTurrets)
+            {
+                laserTurret.MakeShot(CurrentTargetPos);
+            }
         }
     }
 }
