@@ -1,4 +1,5 @@
 ﻿using System;
+using GameGlobal;
 using UnityEngine;
 
 namespace RTS.Weapons
@@ -7,6 +8,7 @@ namespace RTS.Weapons
     {
         [Header("Laser Beam")] 
         [SerializeField] private LineRenderer lineRenderer;
+        [SerializeField] private GameObject explosionPrefab;
 
         private float _minTimeBetwShots;
         private float _laserFadeSpeed;
@@ -47,6 +49,7 @@ namespace RTS.Weapons
                 lineRenderer.startWidth = lineRenderer.endWidth = _maxBeamWidth;
                 lineRenderer.SetPosition(0, lineRenderer.transform.position);
                 lineRenderer.SetPosition(1, targetPos);
+                Instantiate(explosionPrefab, lineRenderer.GetPosition(1), Quaternion.identity);
                 _shooted = true;
             }
         }

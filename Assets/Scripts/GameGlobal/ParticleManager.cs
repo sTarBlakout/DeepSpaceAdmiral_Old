@@ -1,9 +1,12 @@
-﻿using UnityEngine;
+﻿using UnityEditorInternal;
+using UnityEngine;
 
 namespace GameGlobal
 {
     public class ParticleManager : MonoBehaviour
     {
+        [SerializeField] private bool activateOnAwake = true;
+        
         private ParticleSystem _particleSystem;
 
         private bool _activateDestroy;
@@ -11,6 +14,7 @@ namespace GameGlobal
         private void Awake()
         {
             _particleSystem = GetComponent<ParticleSystem>();
+            if (activateOnAwake) ActivateParticle();
         }
 
         private void Update()

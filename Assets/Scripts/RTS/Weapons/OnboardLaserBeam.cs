@@ -30,7 +30,10 @@ namespace RTS.Weapons
             foreach (var laserTurret in _laserTurrets)
             {
                 if (Random.value <= shootChance)
-                    laserTurret.MakeShot(CurrentTargetPos);
+                {
+                    var randomizedPoint = Random.insideUnitSphere * 4;
+                    laserTurret.MakeShot(CurrentTargetPos + randomizedPoint);
+                }
             }
         }
     }

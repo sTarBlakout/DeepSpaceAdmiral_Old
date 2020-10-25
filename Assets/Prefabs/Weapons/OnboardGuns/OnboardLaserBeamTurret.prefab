@@ -209,6 +209,8 @@ MonoBehaviour:
   maxRotatingAngleY: 0
   rotatingSpeed: 0
   lineRenderer: {fileID: 4969384694504610271}
+  explosionPrefab: {fileID: 1238872198266200, guid: 68be5f30e7a81ff499df50bee327a137,
+    type: 3}
 --- !u!1 &6453421386342800112
 GameObject:
   m_ObjectHideFlags: 0
