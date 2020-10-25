@@ -34,12 +34,14 @@ namespace RTS.Ships
         [SerializeField] private float dragForParts;
         [SerializeField] private GameObject mainExplosion;
         [SerializeField] private GameObject[] destructLvlMeshes;
+        [SerializeField] private Transform hitPointsTransform;
         [Range(0, 1)] [SerializeField] private float partsStayOnExplChance;
         
         public Action<GameObject> OnShipDestroyed;
 
         private readonly List<ParticleManager> _mainExplosionParticles = new List<ParticleManager>();
         private readonly List<GameObject> _createdSpaceDerbis = new List<GameObject>();
+        private List<Transform> _hitPositions;
 
         private float _slowDownEndPrec;
         private float _facingTargetPrec;
@@ -78,7 +80,7 @@ namespace RTS.Ships
         public float ExplosionRadius => explosionRadius;
         public Vector3 Position => transform.position;
         public List<GameObject> CreatedSpaceDerbis => _createdSpaceDerbis;
-
+        public List<Transform> HitPositions => _hitPositions;
 
         #endregion
 
@@ -99,6 +101,8 @@ namespace RTS.Ships
             _stanceToSwitch = Stance.Empty;
             _stance = Stance.Idle;
             _isReachedDestination = true;
+            
+            _hitPositions = hitPointsTransform.Cast<Transform>().ToList();
         }
 
         private void Start()

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace RTS.Controls
 {
@@ -8,5 +9,6 @@ namespace RTS.Controls
         bool CanBeDamaged();
         void Damage(float damage);
         Vector3 Position { get; }
+        List<Transform> HitPositions { get; }
     }
 }
