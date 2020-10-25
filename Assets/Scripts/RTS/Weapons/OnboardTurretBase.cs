@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RTS.Weapons
 {
-    public class OnboardTurretBase : MonoBehaviour
+    public abstract class OnboardTurretBase : MonoBehaviour
     {
         [Header("General Stats")]
         [SerializeField] private Transform graphicsContainer;
@@ -14,7 +14,7 @@ namespace RTS.Weapons
         
         protected bool ReadyToShoot { get; private set; }
 
-        public void UpdateRotation(bool shouldProcess, Vector3 targetPos)
+        public void UpdateTurret(bool shouldProcess, Vector3 targetPos)
         {
             var turretTransform = transform;
             var turretForward = turretTransform.forward;
@@ -27,6 +27,8 @@ namespace RTS.Weapons
             
             var dotProd = Vector3.Dot(directionToTarget, graphicsRotator.forward);
             ReadyToShoot = dotProd > GlobalData.Instance.BattleshipFacingTargetPrec && process;
+            
+            TurretUpdater();
         }
 
         private void RotateGraphics(Vector3 targetDirection)
@@ -49,5 +51,7 @@ namespace RTS.Weapons
 
             return angle;
         }
+
+        protected abstract void TurretUpdater();
     }
 }

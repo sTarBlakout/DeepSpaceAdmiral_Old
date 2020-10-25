@@ -60,7 +60,7 @@ namespace RTS.Weapons
             if (hasTarget) targetPos = _currentTarget.Position;
 
             foreach (var turret in _turrets)
-                turret.UpdateRotation(hasTarget, targetPos);
+                turret.UpdateTurret(hasTarget, targetPos);
         }
         
         private void ProcessTarget()

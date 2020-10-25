@@ -9,6 +9,7 @@ namespace RTS.Weapons
         
         [SerializeField] [Range(0, 1)] private float shootChance;
         [SerializeField] private float minTimeBetwShots;
+        [SerializeField] private float laserFadeSpeed;
         
         private List<OnboardTurretLaserBeam> _laserTurrets = new List<OnboardTurretLaserBeam>();
 
@@ -18,7 +19,9 @@ namespace RTS.Weapons
             foreach (var turretTransform in TurretTransforms)
             {
                 var turretBeam = turretTransform.GetComponent<OnboardTurretLaserBeam>();
-                if (turretBeam != null) _laserTurrets.Add(turretBeam);
+                if (turretBeam == null) continue;
+                turretBeam.Init(minTimeBetwShots, laserFadeSpeed);
+                _laserTurrets.Add(turretBeam);
             }
         }
         
@@ -26,7 +29,7 @@ namespace RTS.Weapons
         {
             foreach (var laserTurret in _laserTurrets)
             {
-                if (Random.value < shootChance)
+                if (Random.value <= shootChance)
                     laserTurret.MakeShot(CurrentTargetPos);
             }
         }
