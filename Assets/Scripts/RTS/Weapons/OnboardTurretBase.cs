@@ -1,4 +1,5 @@
-﻿using GameGlobal;
+﻿using System.Collections.Generic;
+using GameGlobal;
 using UnityEngine;
 
 namespace RTS.Weapons
@@ -6,52 +7,49 @@ namespace RTS.Weapons
     public abstract class OnboardTurretBase : MonoBehaviour
     {
         [Header("General Stats")]
-        [SerializeField] private Transform graphicsContainer;
-        [SerializeField] private Transform graphicsRotator;
+        [SerializeField] protected Transform graphicsContainer;
+        [SerializeField] protected Transform graphicsRotator;
         [SerializeField] private float maxRotatingAngleX;
         [SerializeField] private float maxRotatingAngleY;
         [SerializeField] private float rotatingSpeed;
-        
-        protected bool ReadyToShoot { get; private set; }
 
-        public void UpdateTurret(bool shouldProcess, Vector3 targetPos)
+        private Vector3 _directionToTarget;
+
+        protected bool ShouldAttack { get; private set; }
+
+        public void UpdateTurret(bool shouldProcess, Vector3 targetPosition)
         {
             var turretTransform = transform;
             var turretForward = turretTransform.forward;
-            
-            var directionToTarget = (targetPos - turretTransform.position).normalized;
-            var rotateAngle = Vector3.Angle(turretForward, directionToTarget);
-
-            var process = rotateAngle < maxRotatingAngleY && shouldProcess;
-            RotateGraphics(process ? directionToTarget : graphicsContainer.forward);
-            
-            var dotProd = Vector3.Dot(directionToTarget, graphicsRotator.forward);
-            ReadyToShoot = dotProd > GlobalData.Instance.BattleshipFacingTargetPrec && process;
+            _directionToTarget = (targetPosition - turretTransform.position).normalized;
+            var rotateAngle = Vector3.Angle(turretForward, _directionToTarget);
+            ShouldAttack = rotateAngle < maxRotatingAngleY && shouldProcess;
             
             TurretUpdater();
         }
+        
+        protected virtual void TurretUpdater()
+        {
+            RotationBehavior();
+        }
 
-        private void RotateGraphics(Vector3 targetDirection)
+        protected virtual bool RotationBehavior()
+        {
+            RotateGraphics(ShouldAttack ? _directionToTarget : graphicsContainer.forward);
+            var dotProd = Vector3.Dot(_directionToTarget, graphicsRotator.forward);
+            var readyToShoot = dotProd > GlobalData.Instance.BattleshipFacingTargetPrec && ShouldAttack;
+            return readyToShoot;
+        }
+
+        protected void RotateGraphics(Vector3 targetDirection)
         {
             var direction = Vector3.RotateTowards(graphicsRotator.forward, targetDirection, rotatingSpeed, 0f);
             graphicsRotator.rotation = Quaternion.LookRotation(direction);
 
             var graphicsEulerAngles = graphicsRotator.localEulerAngles;
-            var xClamped = ClampAngle(graphicsEulerAngles.x, maxRotatingAngleX);
+            var xClamped = GlobalData.ClampAngle(graphicsEulerAngles.x, maxRotatingAngleX);
             var correctedAngles = new Vector3(xClamped, graphicsEulerAngles.y, 0f);
             graphicsRotator.localEulerAngles = correctedAngles;
         }
-        
-        private static float ClampAngle(float angle, float neededAngle) 
-        {
-            if (angle > 180)
-                angle = Mathf.Clamp(angle, 360f - neededAngle, 360f);
-            else
-                angle = Mathf.Clamp(angle, 0, neededAngle);
-
-            return angle;
-        }
-
-        protected abstract void TurretUpdater();
     }
 }

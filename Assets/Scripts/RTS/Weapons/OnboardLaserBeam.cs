@@ -31,11 +31,9 @@ namespace RTS.Weapons
             
             foreach (var laserTurret in _laserTurrets)
             {
-                if (Random.value <= shootChance)
-                {
-                    var randomPointId = Random.Range(0, CurrentTarget.HitPositions.Count);
-                    laserTurret.MakeShot(CurrentTarget.HitPositions[randomPointId].position);
-                }
+                if (!(Random.value <= shootChance)) continue;
+                var randomPointId = Random.Range(0, CurrentTarget.HitPositions.Count);
+                laserTurret.Shoot(CurrentTarget.HitPositions[randomPointId].position);
             }
         }
     }

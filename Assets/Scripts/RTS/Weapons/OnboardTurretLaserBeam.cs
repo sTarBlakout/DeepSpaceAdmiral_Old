@@ -15,7 +15,10 @@ namespace RTS.Weapons
         private float _lastTimeShot;
         private float _maxBeamWidth;
 
+        private bool _readyToShoot;
         private bool _shooted;
+
+        private Vector3 _posToShoot;
 
         public void Init(float minTimeBetwShots, float laserFadeSpeed)
         {
@@ -23,11 +26,16 @@ namespace RTS.Weapons
             _laserFadeSpeed = laserFadeSpeed;
             _maxBeamWidth = lineRenderer.startWidth;
         }
-        
+
         protected override void TurretUpdater()
         {
+            _readyToShoot = RotationBehavior();
+            ProcessBeam();
+        }
+
+        private void ProcessBeam()
+        {
             if (!_shooted) return;
-            
             if (lineRenderer.startWidth != 0f)
             {
                 var width = Mathf.Max(lineRenderer.startWidth - _laserFadeSpeed, 0f);
@@ -35,20 +43,32 @@ namespace RTS.Weapons
             }
             else
             {
+                _posToShoot = Vector3.zero;
                 _lastTimeShot = Time.time;
                 lineRenderer.enabled = false;
                 _shooted = false;
             }
         }
 
-        public void MakeShot(Vector3 targetPos)
+        protected override bool RotationBehavior()
         {
-            if (ReadyToShoot && !_shooted && Time.time > _lastTimeShot + _minTimeBetwShots)
+            var directionToTarget = (_posToShoot - transform.position).normalized;
+            RotateGraphics(ShouldAttack ? directionToTarget : graphicsContainer.forward);
+            var dotProd = Vector3.Dot(directionToTarget, graphicsRotator.forward);
+            return dotProd > GlobalData.Instance.BattleshipFacingTargetPrec && ShouldAttack;
+        }
+
+        public void Shoot(Vector3 targetPos)
+        {
+            if (_posToShoot == Vector3.zero)
+                _posToShoot = targetPos;
+
+            if (_readyToShoot && !_shooted && Time.time > _lastTimeShot + _minTimeBetwShots)
             {
                 lineRenderer.enabled = true;
                 lineRenderer.startWidth = lineRenderer.endWidth = _maxBeamWidth;
                 lineRenderer.SetPosition(0, lineRenderer.transform.position);
-                lineRenderer.SetPosition(1, targetPos);
+                lineRenderer.SetPosition(1, _posToShoot);
                 Instantiate(explosionPrefab, lineRenderer.GetPosition(1), Quaternion.identity);
                 _shooted = true;
             }

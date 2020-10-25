@@ -70,6 +70,16 @@ namespace GameGlobal
                 particleSystem.Stop();    
         }
         
+        public static float ClampAngle(float angle, float neededAngle) 
+        {
+            if (angle > 180)
+                angle = Mathf.Clamp(angle, 360f - neededAngle, 360f);
+            else
+                angle = Mathf.Clamp(angle, 0, neededAngle);
+
+            return angle;
+        }
+        
         #endregion
     }
 }

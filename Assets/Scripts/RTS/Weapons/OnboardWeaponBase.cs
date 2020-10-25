@@ -9,13 +9,12 @@ namespace RTS.Weapons
     {
         #region Data
 
-        [Header("Onboard Weapon")] 
-        
-        [SerializeField] protected Transform turretsContainer;
+        [Header("Onboard Weapon")] [SerializeField]
+        protected Transform turretsContainer;
 
         private IDamageable _preferredTarget;
         private IDamageable _currentTarget;
-        
+
         private IDamageable _lastTraget;
         private float _timeNextDamage;
 
@@ -27,7 +26,7 @@ namespace RTS.Weapons
         #endregion
 
         #region Public Methods
-        
+
         protected override void Init()
         {
             TurretTransforms = turretsContainer.Cast<Transform>().ToList();
@@ -37,20 +36,20 @@ namespace RTS.Weapons
                 if (turretBase != null) _turrets.Add(turretBase);
             }
         }
-        
+
         public override void ProcessWeapon(bool process)
         {
             if (!process) return;
-            
+
             ProcessTarget();
             DamageTarget(_currentTarget);
-                
+
             ProcessTurretRotating();
             ProcessVisuals();
         }
-        
+
         #endregion
-        
+
         #region Private Methods
 
         private void ProcessTurretRotating()
@@ -62,7 +61,7 @@ namespace RTS.Weapons
             foreach (var turret in _turrets)
                 turret.UpdateTurret(hasTarget, targetPos);
         }
-        
+
         private void ProcessTarget()
         {
             if (_currentTarget != null && _currentTarget.IsEnemy(SelectableShip.TeamId) && _currentTarget.CanBeDamaged())
