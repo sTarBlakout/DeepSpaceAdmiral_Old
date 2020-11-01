@@ -1,6 +1,6 @@
 ﻿namespace RTS.Ships
 {
-    public enum Stance
+    public enum State
     {
         Idle,
         MoveToPosition,
