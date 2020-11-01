@@ -40,7 +40,7 @@ namespace RTS.Ships
         {
             UpdateWeaponTemperature();
             ProcessMainWeapon(_shouldAttackMain && !_isMainGunLocked);
-            _onboardWeapon.ProcessWeapon(true);
+            _onboardWeapon.ProcessWeapon(false);
         }
         
         #endregion
@@ -61,12 +61,12 @@ namespace RTS.Ships
                 case ActiveDirection.Front:
                     rotation = (_currTarget.transform.position - transform.position).normalized;
                     break;
-                
                 case ActiveDirection.Sides:
+                    var directToTarget = (_currTarget.transform.position - transform.position).normalized;
+                    var angle = 90f;
+                    if (Vector3.Angle(transform.right, directToTarget) < 90f) angle = -90f;
+                    rotation = Quaternion.AngleAxis(angle, Vector3.up) * directToTarget;
                     break;
-                
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
             return rotation;
         }
@@ -88,18 +88,7 @@ namespace RTS.Ships
         
         private void ProcessMainWeapon(bool process)
         {
-            switch (_mainWeapon.ActiveDirection)
-            {
-                case ActiveDirection.Front:
-                    _mainWeapon.ProcessWeapon(process);
-                    break;
-                
-                case ActiveDirection.Sides:
-                    break;
-                
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            _mainWeapon.ProcessWeapon(process);
         }
 
         private void UpdateWeaponTemperature()
