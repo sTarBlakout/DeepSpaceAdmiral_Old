@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using RTS.Weapons;
 
@@ -11,15 +13,12 @@ namespace RTS.Ships
 
         private bool _shouldAttackMain;
         private MonoBehaviour _currTarget;
-        
-        private bool _isMainGunLocked;
-        private Coroutine _lockGunCoroutine;
-        
-        private MainWeaponBase _mainWeapon;
+
+        private List<MainWeaponBase> _mainWeapons;
         private OnboardWeaponBase _onboardWeapon;
 
-        public ActiveDirection ActiveDirection => _mainWeapon.ActiveDirection;
-        public float AttackRange => _mainWeapon.AttackRange;
+        public ActiveDirection ActiveDirection => _mainWeapons[0].ActiveDirection;
+        public float AttackRange => _mainWeapons[0].AttackRange;
 
         #endregion
 
@@ -27,7 +26,7 @@ namespace RTS.Ships
 
         private void Awake()
         {
-            _mainWeapon = transform.GetChild(0).GetComponentInChildren<MainWeaponBase>();
+            _mainWeapons = transform.GetChild(0).GetComponentsInChildren<MainWeaponBase>().ToList();
             _onboardWeapon = transform.GetChild(1).GetComponentInChildren<OnboardWeaponBase>();
         }
 
@@ -39,7 +38,7 @@ namespace RTS.Ships
         private void FixedUpdate()
         {
             UpdateWeaponTemperature();
-            ProcessMainWeapon(_shouldAttackMain && !_isMainGunLocked);
+            ProcessMainWeapon(_shouldAttackMain);
             _onboardWeapon.ProcessWeapon(false);
         }
         
@@ -78,8 +77,9 @@ namespace RTS.Ships
         private void InitWeaponSystem()
         {
             var parent = transform.parent;
-            _mainWeapon.InitWeapon(parent);
             _onboardWeapon.InitWeapon(parent);
+            foreach (var mainWeapon in _mainWeapons)
+                mainWeapon.InitWeapon(parent);
         }
 
         #endregion
@@ -88,25 +88,18 @@ namespace RTS.Ships
         
         private void ProcessMainWeapon(bool process)
         {
-            _mainWeapon.ProcessWeapon(process);
+            foreach (var mainWeapon in _mainWeapons)
+                mainWeapon.ProcessWeapon(process && !mainWeapon.IsMainGunLocked);
         }
 
         private void UpdateWeaponTemperature()
         {
-            _mainWeapon.ProcessWeaponTemperature();
-            if (_mainWeapon.ShouldLock && _lockGunCoroutine == null)
-                _lockGunCoroutine = StartCoroutine(LockMainGun());
-        }
-
-        private IEnumerator LockMainGun(float seconds = 0f)
-        {
-            _isMainGunLocked = true;
-            if (seconds == 0f)
-                yield return new WaitUntil(() => _mainWeapon.ShouldLock);
-            else
-                yield return new WaitForSeconds(seconds);
-            _isMainGunLocked = false;
-            _lockGunCoroutine = null;
+            foreach (var mainWeapon in _mainWeapons)
+            {
+                mainWeapon.ProcessWeaponTemperature();
+                if (mainWeapon.ShouldLock && mainWeapon.LockGunCoroutine == null)
+                    mainWeapon.LockGunCoroutine = StartCoroutine(mainWeapon.LockMainGun());
+            }
         }
 
         #endregion
