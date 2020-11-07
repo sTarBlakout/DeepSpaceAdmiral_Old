@@ -1,5 +1,5 @@
-﻿using System;
-using Doozy.Engine.UI;
+﻿using Doozy.Engine.UI;
+using GameGlobal;
 using UnityEngine;
 
 namespace RTS.UI
@@ -8,15 +8,11 @@ namespace RTS.UI
     {
         [SerializeField] private UIPopup shipControlPanelPopup;
 
-        private void Update()
+        public void ActivatePopup(PopupType type, bool activate)
         {
-            if (Input.GetKeyDown(KeyCode.S))
+            switch (type)
             {
-                shipControlPanelPopup.Show();
-            }
-            if (Input.GetKeyDown(KeyCode.H))
-            {
-                shipControlPanelPopup.Hide();
+                case PopupType.ShipControlPanel: GlobalData.ShowPopup(shipControlPanelPopup, activate); break;
             }
         }
     }

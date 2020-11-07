@@ -16,5 +16,7 @@ MonoBehaviour:
   CategoryNames:
   - Custom
   - General
+  - ShipControlPanel
   Categories:
   - {fileID: 11400000, guid: 486db36ea56619c42ba204b5d42c47ce, type: 2}
+  - {fileID: 11400000, guid: 99649debdb0f6674b841091bebd8c8e5, type: 2}

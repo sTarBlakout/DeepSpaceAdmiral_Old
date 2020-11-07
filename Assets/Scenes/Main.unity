@@ -737,7 +737,7 @@ GameObject:
   - component: {fileID: 1022841124}
   - component: {fileID: 1022841126}
   - component: {fileID: 1022841125}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -777,7 +777,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.007843138, g: 0.039215688, b: 0.05882353, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -818,7 +818,7 @@ GameObject:
   - component: {fileID: 1155517744}
   - component: {fileID: 1155517743}
   - component: {fileID: 1155517742}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Overlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1004,7 +1004,7 @@ GameObject:
   - component: {fileID: 1601182762}
   - component: {fileID: 1601182761}
   - component: {fileID: 1601182760}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UIPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1045,7 +1045,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DebugMode: 0
-  StartPosition: {x: 346, y: -241, z: 0}
+  StartPosition: {x: 0, y: 0, z: 0}
   StartRotation: {x: -0, y: 0, z: 0}
   StartScale: {x: 1, y: 1, z: 1}
   StartAlpha: 1
@@ -1265,7 +1265,7 @@ MonoBehaviour:
       Rotate:
         AnimationType: 1
         Enabled: 0
-        From: {x: 0, y: 0, z: 0}
+        From: {x: 7.68, y: 8.37, z: -13.23}
         To: {x: 0, y: 0, z: 0}
         By: {x: 0, y: 0, z: 0}
         UseCustomFromAndTo: 0
@@ -1315,7 +1315,7 @@ MonoBehaviour:
         NumberOfLoops: -1
         LoopType: 1
         EaseType: 0
-        Ease: 1
+        Ease: 24
         AnimationCurve:
           serializedVersion: 2
           m_Curve: []
@@ -1323,7 +1323,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         StartDelay: 0
-        Duration: 1
+        Duration: 100
     LoadSelectedPresetAtRuntime: 0
     InstantAnimation: 0
     OnFinished:
@@ -1421,6 +1421,7 @@ GameObject:
   - component: {fileID: 1619014966}
   - component: {fileID: 1619014967}
   - component: {fileID: 1619014965}
+  - component: {fileID: 1619014968}
   m_Layer: 0
   m_Name: InputManager
   m_TagString: Untagged
@@ -1481,6 +1482,35 @@ MonoBehaviour:
   MovePivotKey: 308
   MultiDragKey: 308
   FingerTexture: {fileID: 2800000, guid: 25c48be3a87ea0f489a6d41c9c9a2194, type: 3}
+--- !u!114 &1619014968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1619014964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ea9f92203d31e240bc110ff7b26d05c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DebugMode: 0
+  Event:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1619014965}
+        m_MethodName: ResetSelection
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  GameEvent: CancelShipSelection
+  ListenForAllGameEvents: 0
 --- !u!1 &1649178558
 GameObject:
   m_ObjectHideFlags: 0
@@ -3984,7 +4014,7 @@ GameObject:
   - component: {fileID: 1743219911}
   - component: {fileID: 1743219910}
   - component: {fileID: 1743219909}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4009,7 +4039,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 334, y: -189}
+  m_AnchoredPosition: {x: 342, y: -198}
   m_SizeDelta: {x: 637.02905, y: 342.9472}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1743219909
@@ -4889,8 +4919,9 @@ GameObject:
   - component: {fileID: 1969348858}
   - component: {fileID: 1969348857}
   - component: {fileID: 1969348856}
-  m_Layer: 0
-  m_Name: Button - Ok
+  - component: {fileID: 1969348860}
+  m_Layer: 5
+  m_Name: Button - Cancel Selection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4913,8 +4944,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: -32}
-  m_SizeDelta: {x: 169.4417, y: 64.21065}
+  m_AnchoredPosition: {x: 263.7, y: 14}
+  m_SizeDelta: {x: 93.614365, y: 94.23448}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1969348856
 MonoBehaviour:
@@ -4933,20 +4964,20 @@ MonoBehaviour:
   StartRotation: {x: 0, y: 0, z: 0}
   StartScale: {x: 1, y: 1, z: 1}
   StartAlpha: 1
-  AllowMultipleClicks: 1
-  ButtonCategory: Custom
-  ButtonName: Ok
+  AllowMultipleClicks: 0
+  ButtonCategory: ShipControlPanel
+  ButtonName: Cancel Selection
   ClickMode: 0
   DeselectButtonAfterClick: 0
   DisableButtonBetweenClicksInterval: 0.2
   DoubleClickRegisterInterval: 0.2
   InputData:
-    EnableAlternateInputs: 1
-    InputMode: 2
+    EnableAlternateInputs: 0
+    InputMode: 0
     KeyCode: 13
     KeyCodeAlt: 32
     VirtualButtonName: Submit
-    VirtualButtonNameAlt: Jump
+    VirtualButtonNameAlt: 
   LongClickRegisterInterval: 0.5
   OnPointerEnter:
     Animators: []
@@ -5796,7 +5827,8 @@ MonoBehaviour:
       Event:
         m_PersistentCalls:
           m_Calls: []
-      GameEvents: []
+      GameEvents:
+      - CancelShipSelection
       SoundData:
         SoundSource: 0
         DatabaseName: General
@@ -7288,6 +7320,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1969348854}
   m_CullTransparentMesh: 0
+--- !u!225 &1969348860
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1969348854}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2038906215
 GameObject:
   m_ObjectHideFlags: 0
@@ -7299,7 +7343,7 @@ GameObject:
   - component: {fileID: 2038906216}
   - component: {fileID: 2038906218}
   - component: {fileID: 2038906217}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7348,7 +7392,7 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 36
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 3
     m_MaxSize: 36
     m_Alignment: 4
@@ -7357,7 +7401,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: CLOSE
+  m_Text: cancel selection
 --- !u!222 &2038906218
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -46,7 +46,7 @@ namespace RTS.Controls
             _isInit = true;
         }
 
-        private void UninitObject()
+        public void UninitObject()
         {
             if (_isInit)
                 _selectable.Unselect();

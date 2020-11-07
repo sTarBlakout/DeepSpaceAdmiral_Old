@@ -1,4 +1,5 @@
 ﻿using System;
+using Doozy.Engine.UI;
 using UnityEngine;
 
 namespace GameGlobal
@@ -55,6 +56,18 @@ namespace GameGlobal
 
         #region Static Functions
 
+        #region UI
+
+        public static void ShowPopup(UIPopup popup, bool show)
+        {
+            if (show)
+                popup.Show();
+            else
+                popup.Hide();    
+        }
+
+        #endregion
+        
         #region VFX
 
         public static void ActivateParticle(ParticleSystem particleSystem, bool activate)

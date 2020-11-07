@@ -76,6 +76,7 @@ namespace RTS.Controls
                 if (!_selectedObject.SameObject(monoBehaviorObj))
                 {
                     _selectedObject.InitObject(monoBehaviorObj);
+                    _managerUI.ActivatePopup(PopupType.ShipControlPanel, true);
                 }
                 else
                 {
@@ -92,6 +93,12 @@ namespace RTS.Controls
                 var moveToPos = new Vector3(hitInfo.point.x, GlobalData.Instance.RtsShipsPosY, hitInfo.point.z);
                 _selectedObject.TryMoveToPos(moveToPos);
             }
+        }
+
+        public void ResetSelection()
+        {
+            _selectedObject.UninitObject();
+            _managerUI.ActivatePopup(PopupType.ShipControlPanel, false);
         }
     }
 }
