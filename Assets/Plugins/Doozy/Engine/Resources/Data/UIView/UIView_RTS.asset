@@ -9,14 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 889794c411054f7ca8e6fbdc6728c846, type: 3}
-  m_Name: _UIViewDatabase
+  m_Script: {fileID: 11500000, guid: f42f06ff6cc543ea942180e019f0fc8d, type: 3}
+  m_Name: UIView_RTS
   m_EditorClassIdentifier: 
+  CategoryName: RTS
   DatabaseType: 2
-  CategoryNames:
-  - Custom
-  - General
-  - RTS
-  Categories:
-  - {fileID: 11400000, guid: 89bfaf970e83a414cb05bd26fddec5e9, type: 2}
-  - {fileID: 11400000, guid: d455433da7bdd514f943fbb177252fda, type: 2}
+  Names:
+  - Gameplay
+  - Test Tools

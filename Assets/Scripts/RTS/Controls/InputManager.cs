@@ -1,20 +1,28 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using Lean.Touch;
 using GameGlobal;
+using RTS.UI;
 
 namespace RTS.Controls
 {
     public class InputManager : MonoBehaviour
     {
         [SerializeField] private float doubleTapThreshold;
-        
-        private readonly SelectedObject _selectedObject = new SelectedObject();
 
-        private float _lastTappedTime;
+        private readonly SelectedObject _selectedObject = new SelectedObject();
         
+        private float _lastTappedTime;
         private byte _doubleTapCounter;
         private Coroutine _doubleTapResetCoroutine;
+
+        private ManagerUI _managerUI;
+
+        private void Awake()
+        {
+            _managerUI = FindObjectOfType<ManagerUI>();
+        }
 
         private void OnEnable()
         {
@@ -66,7 +74,9 @@ namespace RTS.Controls
                 
                 // Can't interact in any way, reselect.
                 if (!_selectedObject.SameObject(monoBehaviorObj))
+                {
                     _selectedObject.InitObject(monoBehaviorObj);
+                }
                 else
                 {
                     // Zoom on selected

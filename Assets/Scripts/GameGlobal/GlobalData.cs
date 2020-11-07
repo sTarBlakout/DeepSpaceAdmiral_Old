@@ -55,11 +55,8 @@ namespace GameGlobal
 
         #region Static Functions
 
-        public static bool VectorsApproxEqual(Vector3 v1, Vector3 v2, float precision)
-        {
-            return Vector3.SqrMagnitude(v1 - v2) < precision;
-        }
-        
+        #region VFX
+
         public static void ActivateParticle(ParticleSystem particleSystem, bool activate)
         {
             if (particleSystem.isPlaying == activate) return;
@@ -69,7 +66,16 @@ namespace GameGlobal
             else
                 particleSystem.Stop();    
         }
+
+        #endregion
+
+        #region Maths
         
+        public static bool VectorsApproxEqual(Vector3 v1, Vector3 v2, float precision)
+        {
+            return Vector3.SqrMagnitude(v1 - v2) < precision;
+        }
+
         public static float ClampAngle(float angle, float neededAngle) 
         {
             if (angle > 180)
@@ -80,6 +86,8 @@ namespace GameGlobal
             return angle;
         }
         
+        #endregion
+
         #endregion
     }
 }
