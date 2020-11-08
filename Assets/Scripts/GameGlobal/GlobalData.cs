@@ -1,6 +1,7 @@
 ﻿using System;
 using Doozy.Engine.UI;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GameGlobal
 {
@@ -60,10 +61,13 @@ namespace GameGlobal
 
         public static void ShowPopup(UIPopup popup, bool show)
         {
+            foreach (var button in popup.Data.Buttons) 
+                button.Interactable = show;
+            
             if (show)
                 popup.Show();
             else
-                popup.Hide();    
+                popup.Hide();
         }
 
         #endregion

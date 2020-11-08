@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Doozy.Engine;
 using UnityEngine;
 using Lean.Touch;
 using GameGlobal;
+using RTS.Ships;
 using RTS.UI;
 
 namespace RTS.Controls
 {
     public class InputManager : MonoBehaviour
     {
+        #region Data
+        
         [SerializeField] private float doubleTapThreshold;
 
         private readonly SelectedObject _selectedObject = new SelectedObject();
@@ -20,6 +22,10 @@ namespace RTS.Controls
 
         private ManagerUI _managerUI;
         private GameEventListener _gameEventListener;
+        
+        #endregion
+
+        #region Unity Methods
 
         private void Awake()
         {
@@ -37,6 +43,10 @@ namespace RTS.Controls
             LeanTouch.OnFingerTap -= HandleFingerTap;
         }
 
+        #endregion
+
+        #region Touches Handling
+        
         private bool CheckForDoubleTap()
         {
             var isDoubleTap = _lastTappedTime + doubleTapThreshold >= Time.time;
@@ -79,7 +89,7 @@ namespace RTS.Controls
                 if (!_selectedObject.SameObject(monoBehaviorObj))
                 {
                     _selectedObject.InitObject(monoBehaviorObj);
-                    _managerUI.ActivatePopup(PopupType.ShipControlPanel, true);
+                    _managerUI.ActivatePopup(PopupType.ShipControl, true);
                 }
                 else
                 {
@@ -97,17 +107,21 @@ namespace RTS.Controls
                 _selectedObject.TryMoveToPos(moveToPos);
             }
         }
+        
+        #endregion
 
-        public void HandleGameEvent()
+        #region Handle General Game Events
+        
+        public void HandleGeneralGameEvents()
         {
             switch (_gameEventListener.GameEventName)
             {
-                case "CancelShipSelection": ResetSelection(); break;
-                case "StopAllActions": StopAllActionsSelected(); break;
+                case "CancelSelection": ResetSelection(); break;
+                case "StopAllActions": StopAllActions(); break;
             }
         }
 
-        private void StopAllActionsSelected()
+        private void StopAllActions()
         {
             _selectedObject.StopAllActions();
         }
@@ -115,7 +129,36 @@ namespace RTS.Controls
         private void ResetSelection()
         {
             _selectedObject.UninitObject();
-            _managerUI.ActivatePopup(PopupType.ShipControlPanel, false);
+            _managerUI.ActivatePopup(PopupType.ShipControl, false);
         }
+        
+        #endregion
+        
+        #region Handle Ship Game Events
+        
+        public void HandleShipGameEvents()
+        {
+            switch (_gameEventListener.GameEventName)
+            {
+                case "Ship_ChangeFireMode": OpenChangeFireModePanel(true); break;
+                case "Ship_StopAllGuns": ChangeFireMode(FireMode.NoGuns); break;
+                case "Ship_OnlyOnboardGuns": ChangeFireMode(FireMode.OnlyOnboard); break;
+                case "Ship_OnlyMainGuns": ChangeFireMode(FireMode.OnlyMain); break;
+                case "Ship_AllGuns": ChangeFireMode(FireMode.AllGuns); break;
+            }
+        }
+
+        private void OpenChangeFireModePanel(bool open)
+        {
+            _managerUI.ActivatePopup(PopupType.ShipControl, !open);
+            _managerUI.ActivatePopup(PopupType.ChangeFireMode, open);
+        }
+
+        private void ChangeFireMode(FireMode mode)
+        {
+            OpenChangeFireModePanel(false);
+        }
+        
+        #endregion
     }
 }

@@ -2,6 +2,7 @@
 {
     public enum PopupType
     {
-        ShipControlPanel
+        ShipControl,
+        ChangeFireMode
     }
 }

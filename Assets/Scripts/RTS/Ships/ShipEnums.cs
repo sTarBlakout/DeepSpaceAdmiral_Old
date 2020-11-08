@@ -21,4 +21,12 @@
         Right,
         Left
     }
+
+    public enum FireMode
+    {
+        NoGuns,
+        OnlyMain,
+        OnlyOnboard,
+        AllGuns
+    }
 }
