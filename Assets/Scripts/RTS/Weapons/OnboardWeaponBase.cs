@@ -39,10 +39,15 @@ namespace RTS.Weapons
 
         public override void ProcessWeapon(bool process)
         {
-            if (!process) return;
-
-            ProcessTarget();
-            DamageTarget(_currentTarget);
+            if (process)
+            {
+                ProcessTarget();
+                DamageTarget(_currentTarget);
+            }
+            else
+            {
+                _currentTarget = null;
+            }
 
             ProcessTurretRotating();
             ProcessVisuals();

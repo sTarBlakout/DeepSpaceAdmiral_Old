@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Doozy.Engine.Utils.ColorModels;
 using UnityEngine;
 using GameGlobal;
 using RTS.Controls;
@@ -156,13 +157,13 @@ namespace RTS.Ships
             var distToTarget = Vector3.Distance(transform.position, _currTarget.transform.position);
             if (distToTarget > _weaponManager.AttackRange)
             {
-                _weaponManager.UpdateWeaponSystem(false);
+                _weaponManager.UpdateWeaponSystem(false, true);
                 _targetMovePos = _currTarget.transform.position;
                 MoveToPositon(_targetMovePos, _state);
                 return;
             }
             
-            _weaponManager.UpdateWeaponSystem(true, _currTarget);
+            _weaponManager.UpdateWeaponSystem(true, true, _currTarget);
             var rotation = _weaponManager.CalculateRequiredRotation();
             UpdateRotating(rotation, out _dotForward, out _dotSide);
         }
@@ -170,7 +171,8 @@ namespace RTS.Ships
         private void StopAttack()
         {
             _state = State.Idle;
-            _weaponManager.UpdateWeaponSystem(false);
+            _stateToSwitch = State.Idle;
+            _weaponManager.UpdateWeaponSystem(false, false);
             _currTarget = null;
             _currTargetDamageable = null;
         }
@@ -333,9 +335,14 @@ namespace RTS.Ships
                 _stateToSwitch = state;
                 if (_stateToSwitch != State.AttackTarget)
                 {
-                    _weaponManager.UpdateWeaponSystem(false);
+                    _weaponManager.UpdateWeaponSystem(false, true);
                 }
             }
+        }
+
+        public void ForceStop()
+        {
+            MoveToPositon(transform.position);
         }
 
         #endregion
@@ -348,7 +355,12 @@ namespace RTS.Ships
             _currTargetDamageable = target.GetComponent<IDamageable>();
             _state = State.AttackTarget;
         }
-        
+
+        public void ForceLooseTarget()
+        {
+            StopAttack();
+        }
+
         #endregion
 
         #region ISelectable Implementation

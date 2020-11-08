@@ -12,6 +12,7 @@ namespace RTS.Ships
         #region Data
 
         private bool _shouldAttackMain;
+        private bool _shouldAttackOnboard;
         private MonoBehaviour _currTarget;
 
         private List<MainWeaponBase> _mainWeapons;
@@ -39,17 +40,18 @@ namespace RTS.Ships
         {
             UpdateWeaponTemperature();
             ProcessMainWeapon(_shouldAttackMain);
-            _onboardWeapon.ProcessWeapon(false);
+            _onboardWeapon.ProcessWeapon(_shouldAttackOnboard);
         }
         
         #endregion
 
         #region Public API
 
-        public void UpdateWeaponSystem(bool shouldAttackMain, MonoBehaviour target = null)
+        public void UpdateWeaponSystem(bool shouldAttackMain, bool shouldAttackOnboard, MonoBehaviour target = null)
         {
             _currTarget = target;
             _shouldAttackMain = shouldAttackMain;
+            _shouldAttackOnboard = shouldAttackOnboard;
         }
 
         public Vector3 CalculateRequiredRotation()

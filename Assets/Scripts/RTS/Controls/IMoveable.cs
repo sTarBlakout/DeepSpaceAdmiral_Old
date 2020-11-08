@@ -7,5 +7,6 @@ namespace RTS.Controls
     {
         bool IsReachedDestination { get; }
         void MoveToPositon(Vector3 position, State state = State.Empty);
+        void ForceStop();
     }
 }

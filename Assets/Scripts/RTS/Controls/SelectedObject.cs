@@ -72,7 +72,8 @@ namespace RTS.Controls
 
         public void StopAllActions()
         {
-            
+            _moveable?.ForceStop();
+            _attackable?.ForceLooseTarget();
         }
 
         public bool TryInteractWithObject(MonoBehaviour monoBehaviourObj)
