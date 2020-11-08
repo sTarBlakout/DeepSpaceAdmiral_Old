@@ -16,3 +16,4 @@ MonoBehaviour:
   DatabaseType: 0
   Names:
   - Cancel Selection
+  - Stop All Actions

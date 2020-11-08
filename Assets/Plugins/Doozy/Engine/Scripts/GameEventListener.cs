@@ -51,6 +51,8 @@ namespace Doozy.Engine
         /// <summary> Enables the execution of the Event callback every time a game event is received </summary>
         public bool ListenForAllGameEvents;
 
+        public string GameEventName;
+
         #endregion
 
         #region Unity Methods
@@ -94,6 +96,7 @@ namespace Doozy.Engine
         {
             if (!message.HasGameEvent) return;
             if (Event == null) return;
+            GameEventName = message.EventName;
             Event.Invoke(message.EventName);
             if (DebugComponent) DDebug.Log( "[" + name + "] Triggered Event: " + message.EventName, this);
         }

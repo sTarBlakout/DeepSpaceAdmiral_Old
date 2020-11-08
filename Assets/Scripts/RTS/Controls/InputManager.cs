@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Doozy.Engine;
 using UnityEngine;
 using Lean.Touch;
 using GameGlobal;
@@ -18,10 +19,12 @@ namespace RTS.Controls
         private Coroutine _doubleTapResetCoroutine;
 
         private ManagerUI _managerUI;
+        private GameEventListener _gameEventListener;
 
         private void Awake()
         {
             _managerUI = FindObjectOfType<ManagerUI>();
+            _gameEventListener = GetComponent<GameEventListener>();
         }
 
         private void OnEnable()
@@ -95,7 +98,21 @@ namespace RTS.Controls
             }
         }
 
-        public void ResetSelection()
+        public void HandleGameEvent()
+        {
+            switch (_gameEventListener.GameEventName)
+            {
+                case "CancelShipSelection": ResetSelection(); break;
+                case "StopAllActions": StopAllActionsSelected(); break;
+            }
+        }
+
+        private void StopAllActionsSelected()
+        {
+            _selectedObject.StopAllActions();
+        }
+        
+        private void ResetSelection()
         {
             _selectedObject.UninitObject();
             _managerUI.ActivatePopup(PopupType.ShipControlPanel, false);

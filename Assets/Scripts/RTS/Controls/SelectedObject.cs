@@ -70,6 +70,11 @@ namespace RTS.Controls
             _moveable?.MoveToPositon(position);
         }
 
+        public void StopAllActions()
+        {
+            
+        }
+
         public bool TryInteractWithObject(MonoBehaviour monoBehaviourObj)
         {
             if (!_isInit) return false;
