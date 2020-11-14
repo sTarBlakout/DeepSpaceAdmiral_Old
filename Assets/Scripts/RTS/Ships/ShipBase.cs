@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Doozy.Engine.Utils.ColorModels;
 using UnityEngine;
 using GameGlobal;
 using RTS.Controls;
@@ -9,7 +8,7 @@ using Random = UnityEngine.Random;
 
 namespace RTS.Ships
 {
-    public abstract class ShipBase : MonoBehaviour, IMoveable, IDamageable, IAttackable, ISelectable, IExplosible
+    public abstract class ShipBase : MonoBehaviour, IMoveable, IDamageable, IAttackable, ISelectable, IExplosible, IBehaviorSwitchable
     {
         #region Data
 
@@ -175,6 +174,11 @@ namespace RTS.Ships
             _weaponManager.UpdateWeaponSystem(false, false);
             _currTarget = null;
             _currTargetDamageable = null;
+        }
+
+        private void SwitchFireMode(FireMode mode)
+        {
+            _weaponManager.SwitchFireMode(mode);
         }
 
         #endregion
@@ -406,6 +410,16 @@ namespace RTS.Ships
             }
         }
 
+        #endregion
+
+        #region IBehaviorSwitchable Implementation
+        
+        public virtual void SwitchBehavior(Enum behavior)
+        {
+            if (behavior is FireMode fireMode)
+                SwitchFireMode(fireMode);
+        }
+        
         #endregion
     }
 }

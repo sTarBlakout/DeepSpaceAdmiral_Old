@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using GameGlobal;
 using RTS.Controls;
 using UnityEngine;
 
@@ -69,38 +70,11 @@ namespace RTS.Weapons
 
         private void ProcessTarget()
         {
-            if (_currentTarget != null && _currentTarget.IsEnemy(SelectableShip.TeamId) && _currentTarget.CanBeDamaged())
-            {
-                if (Vector3.Distance(transform.position, _currentTarget.Position) <= attackRange)
-                    return;
-                
-                _currentTarget = null;
-            }
+            if (RTSGameController.TargetExistAndReachable(ParentShip, SelectableShip.TeamId, attackRange, _currentTarget))
+                return;
 
-            var possibleTargets = Physics.OverlapSphere(transform.position, attackRange);
-            var minDist = float.MaxValue;
-            IDamageable possibleTarget = null;
-            foreach (var target in possibleTargets)
-            {
-                if (target.transform == ParentShip) continue;
-                var targetDamageable = target.GetComponent<IDamageable>();
-                if (targetDamageable == null) continue;
-                if (!targetDamageable.CanBeDamaged() || !targetDamageable.IsEnemy(SelectableShip.TeamId)) continue;
-                if (targetDamageable == _preferredTarget)
-                {
-                    possibleTarget = _preferredTarget;
-                    break;
-                }
-
-                var distToTarget = Vector3.Distance(target.transform.position, transform.position); 
-                if (distToTarget < minDist)
-                {
-                    minDist = distToTarget;
-                    possibleTarget = targetDamageable;
-                }
-            }
-            
-            _currentTarget = possibleTarget;
+            var target = RTSGameController.GetClosestTarget(ParentShip, SelectableShip.TeamId, attackRange, _preferredTarget);
+            if (target != null) _currentTarget = target.GetComponent<IDamageable>();
         }
         
         private void DamageTarget(IDamageable target)

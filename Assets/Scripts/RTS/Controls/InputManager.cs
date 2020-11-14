@@ -157,6 +157,7 @@ namespace RTS.Controls
         private void ChangeFireMode(FireMode mode)
         {
             OpenChangeFireModePanel(false);
+            _selectedObject.SwitchBehavior(mode);
         }
         
         #endregion

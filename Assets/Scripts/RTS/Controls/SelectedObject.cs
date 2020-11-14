@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace RTS.Controls
 {
@@ -10,6 +11,7 @@ namespace RTS.Controls
         private IDamageable _damageable;
         private IAttackable _attackable;
         private ISelectable _selectable;
+        private IBehaviorSwitchable _behaviorSwitchable;
 
         private bool _isInit;
         public bool IsInit => _isInit;
@@ -30,6 +32,7 @@ namespace RTS.Controls
             _damageable = _monoBehaviour.GetComponent<IDamageable>();
             _moveable = _monoBehaviour.GetComponent<IMoveable>();
             _attackable = _monoBehaviour.GetComponent<IAttackable>();
+            _behaviorSwitchable = _monoBehaviour.GetComponent<IBehaviorSwitchable>();
 
             if (_damageable != null)
             {
@@ -55,6 +58,7 @@ namespace RTS.Controls
             _damageable = null;
             _moveable = null;
             _attackable = null;
+            _behaviorSwitchable = null;
             _isInit = false;
         }
 
@@ -91,6 +95,11 @@ namespace RTS.Controls
             }
 
             return false;
+        }
+
+        public void SwitchBehavior(Enum behavior)
+        {
+            _behaviorSwitchable?.SwitchBehavior(behavior);
         }
     }
 }

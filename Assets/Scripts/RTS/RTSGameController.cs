@@ -77,6 +77,53 @@ namespace RTS
         }
 
         #endregion
+
+        #region Static Methods
+        
+        public static bool TargetExistAndReachable(Transform requesterTransform, byte requesterTeamId, float range, IDamageable target)
+        {
+            var conditionsMet = false;
+            if (target != null && target.IsEnemy(requesterTeamId) && target.CanBeDamaged())
+            {
+                if (Vector3.Distance(requesterTransform.position, target.Position) <= range)
+                    conditionsMet = true;
+            }
+            return conditionsMet;
+        }
+        
+
+        public static MonoBehaviour GetClosestTarget(Transform requesterTransform, byte requesterTeamId, float range, IDamageable preferredTarget = null)
+        {
+            var possibleTargets = Physics.OverlapSphere(requesterTransform.position, range);
+            var minDist = float.MaxValue;
+            Collider possibleTarget = null;
+            foreach (var target in possibleTargets)
+            {
+                if (target.transform == requesterTransform) continue;
+                var targetDamageable = target.GetComponent<IDamageable>();
+                if (targetDamageable == null) continue;
+                if (!targetDamageable.CanBeDamaged() || !targetDamageable.IsEnemy(requesterTeamId)) continue;
+                if (targetDamageable == preferredTarget)
+                {
+                    possibleTarget = target;
+                    break;
+                }
+
+                var distToTarget = Vector3.Distance(target.transform.position, requesterTransform.position); 
+                if (distToTarget < minDist)
+                {
+                    minDist = distToTarget;
+                    possibleTarget = target;
+                }
+            }
+
+            if (possibleTarget == null)
+                return null;
+
+            return possibleTarget.GetComponent<MonoBehaviour>();
+        }
+
+        #endregion
         
         private void CreateExplosionAtPos(Vector3 position, float radius, float force)
         {
