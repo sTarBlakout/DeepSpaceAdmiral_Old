@@ -11,7 +11,7 @@ namespace RTS.Ships
 
         private bool _shouldAttackMain;
         private bool _shouldAttackOnboard;
-        private MonoBehaviour _currTargetControls;
+        private MonoBehaviour _currTarget;
 
         private List<MainWeaponBase> _mainWeapons;
         private OnboardWeaponBase _onboardWeapon;
@@ -36,7 +36,6 @@ namespace RTS.Ships
 
         private void FixedUpdate()
         {
-            //ProcessFireMode();
             UpdateWeaponTemperature();
             ProcessMainWeapon(_shouldAttackMain);
             _onboardWeapon.ProcessWeapon(_shouldAttackOnboard);
@@ -48,7 +47,7 @@ namespace RTS.Ships
 
         public void UpdateWeaponSystem(bool shouldAttackMain, bool shouldAttackOnboard, MonoBehaviour target = null)
         {
-            _currTargetControls = target;
+            _currTarget = target;
             _shouldAttackMain = shouldAttackMain;
             _shouldAttackOnboard = shouldAttackOnboard;
         }
@@ -59,10 +58,10 @@ namespace RTS.Ships
             switch (ActiveDirection)
             {
                 case ActiveDirection.Front:
-                    rotation = (_currTargetControls.transform.position - transform.position).normalized;
+                    rotation = (_currTarget.transform.position - transform.position).normalized;
                     break;
                 case ActiveDirection.Sides:
-                    var directToTarget = (_currTargetControls.transform.position - transform.position).normalized;
+                    var directToTarget = (_currTarget.transform.position - transform.position).normalized;
                     var angle = 90f;
                     if (Vector3.Angle(transform.right, directToTarget) < 90f) angle = -90f;
                     rotation = Quaternion.AngleAxis(angle, Vector3.up) * directToTarget;

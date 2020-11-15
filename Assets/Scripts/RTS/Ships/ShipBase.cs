@@ -124,6 +124,7 @@ namespace RTS.Ships
             var anyMovements = !GlobalData.VectorsApproxEqual(_rigidbody.velocity, Vector3.zero, _slowDownEndPrec);
             _isShipMoving = anyMovements && _state == State.MoveToPosition;
             _engineManager.UpdateEngines(_dotForward, _dotSide, _rigidbody.angularVelocity.y, _isShipMoving);
+            
             _weaponManager.UpdateWeaponSystem(_shouldMainGunShoot, _shouldOnboardGunShoot, _currTarget);
         }
         
