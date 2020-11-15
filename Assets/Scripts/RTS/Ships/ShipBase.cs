@@ -49,6 +49,7 @@ namespace RTS.Ships
         private State _state;
         private State _stateToSwitch;
         private DestructionLevel _destrLvl;
+        private FireMode _fireMode;
 
         private Rigidbody _rigidbody;
         private Collider _mainCollider;
@@ -69,6 +70,9 @@ namespace RTS.Ships
 
         private MonoBehaviour _currTarget;
         private IDamageable _currTargetDamageable;
+
+        private bool _shouldOnboardGunShoot;
+        private bool _shouldMainGunShoot;
 
         #endregion
 
@@ -109,6 +113,8 @@ namespace RTS.Ships
         {
             SetDestructionLvl(DestructionLevel.New);
             InitParticles();
+            
+            SwitchFireMode(FireMode.NoGuns);
         }
 
         protected virtual void FixedUpdate()
@@ -118,6 +124,7 @@ namespace RTS.Ships
             var anyMovements = !GlobalData.VectorsApproxEqual(_rigidbody.velocity, Vector3.zero, _slowDownEndPrec);
             _isShipMoving = anyMovements && _state == State.MoveToPosition;
             _engineManager.UpdateEngines(_dotForward, _dotSide, _rigidbody.angularVelocity.y, _isShipMoving);
+            _weaponManager.UpdateWeaponSystem(_shouldMainGunShoot, _shouldOnboardGunShoot, _currTarget);
         }
         
         #endregion
@@ -128,6 +135,7 @@ namespace RTS.Ships
         {
             switch (_state)
             {
+                case State.Idle: AutoTargetAttack(); break;
                 case State.MoveToPosition: MoveToPositionBehavior(); break;
                 case State.AttackTarget: AttackTargetBehavior(); break;
             }
@@ -156,29 +164,67 @@ namespace RTS.Ships
             var distToTarget = Vector3.Distance(transform.position, _currTarget.transform.position);
             if (distToTarget > _weaponManager.AttackRange)
             {
-                _weaponManager.UpdateWeaponSystem(false, true);
                 _targetMovePos = _currTarget.transform.position;
                 MoveToPositon(_targetMovePos, _state);
                 return;
             }
             
-            _weaponManager.UpdateWeaponSystem(true, true, _currTarget);
-            var rotation = _weaponManager.CalculateRequiredRotation();
-            UpdateRotating(rotation, out _dotForward, out _dotSide);
+            ProcessShootMovements();
         }
 
         private void StopAttack()
         {
+            SwitchFireMode(FireMode.NoGuns);
             _state = State.Idle;
             _stateToSwitch = State.Idle;
-            _weaponManager.UpdateWeaponSystem(false, false);
             _currTarget = null;
             _currTargetDamageable = null;
         }
 
         private void SwitchFireMode(FireMode mode)
         {
-            _weaponManager.SwitchFireMode(mode);
+            if (mode == _fireMode) return;
+            _fireMode = mode;
+
+            switch (mode)
+            {
+                case FireMode.NoGuns:
+                    _shouldMainGunShoot = false;
+                    _shouldOnboardGunShoot = false;
+                    break;
+                case FireMode.OnlyMain:
+                    _shouldMainGunShoot = true;
+                    _shouldOnboardGunShoot = false;
+                    break;
+                case FireMode.OnlyOnboard:
+                    _shouldMainGunShoot = false;
+                    _shouldOnboardGunShoot = true;
+                    break;
+                case FireMode.AllGuns:
+                    _shouldMainGunShoot = true;
+                    _shouldOnboardGunShoot = true;
+                    break;
+            }
+        }
+
+        private void ProcessShootMovements()
+        {
+            var rotation = _weaponManager.CalculateRequiredRotation();
+            UpdateRotating(rotation, out _dotForward, out _dotSide);
+        }
+        
+        private void AutoTargetAttack()
+        {
+            if (_fireMode == FireMode.NoGuns || _fireMode == FireMode.OnlyOnboard) return;
+            
+            if (RTSGameController.TargetExistAndReachable(transform, teamId, _weaponManager.AttackRange, _currTarget))
+            {
+                ProcessShootMovements();
+                return;
+            }
+
+            _currTarget = RTSGameController.GetClosestTarget(transform, teamId, _weaponManager.AttackRange);
+            _currTargetDamageable = _currTarget != null ? _currTarget.GetComponent<IDamageable>() : null;
         }
 
         #endregion
@@ -335,13 +381,7 @@ namespace RTS.Ships
             _isReachedDestination = false;
             _state = State.MoveToPosition;
             if (state != State.MoveToPosition)
-            {
                 _stateToSwitch = state;
-                if (_stateToSwitch != State.AttackTarget)
-                {
-                    _weaponManager.UpdateWeaponSystem(false, true);
-                }
-            }
         }
 
         public void ForceStop()

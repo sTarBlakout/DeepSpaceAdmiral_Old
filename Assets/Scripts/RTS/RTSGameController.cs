@@ -80,6 +80,13 @@ namespace RTS
 
         #region Static Methods
         
+        public static bool TargetExistAndReachable(Transform requesterTransform, byte requesterTeamId, float range, MonoBehaviour targetMono)
+        {
+            if (targetMono == null) return false;
+            var target = targetMono.GetComponent<IDamageable>();
+            return TargetExistAndReachable(requesterTransform, requesterTeamId, range, target);
+        }
+        
         public static bool TargetExistAndReachable(Transform requesterTransform, byte requesterTeamId, float range, IDamageable target)
         {
             var conditionsMet = false;
@@ -90,7 +97,6 @@ namespace RTS
             }
             return conditionsMet;
         }
-        
 
         public static MonoBehaviour GetClosestTarget(Transform requesterTransform, byte requesterTeamId, float range, IDamageable preferredTarget = null)
         {

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using RTS.Controls;
 using UnityEngine;
 using RTS.Weapons;
 
@@ -13,15 +12,9 @@ namespace RTS.Ships
         private bool _shouldAttackMain;
         private bool _shouldAttackOnboard;
         private MonoBehaviour _currTargetControls;
-        private MonoBehaviour _currTargetAuto;
-        private IDamageable _currTargetAutoDamageable;
 
         private List<MainWeaponBase> _mainWeapons;
         private OnboardWeaponBase _onboardWeapon;
-
-        private ISelectable _parentSelectable;
-
-        private FireMode _fireMode;
 
         public ActiveDirection ActiveDirection => _mainWeapons[0].ActiveDirection;
         public float AttackRange => _mainWeapons[0].AttackRange;
@@ -34,7 +27,6 @@ namespace RTS.Ships
         {
             _mainWeapons = transform.GetChild(0).GetComponentsInChildren<MainWeaponBase>().ToList();
             _onboardWeapon = transform.GetChild(1).GetComponentInChildren<OnboardWeaponBase>();
-            _parentSelectable = transform.parent.GetComponent<ISelectable>();
         }
 
         private void Start()
@@ -44,7 +36,7 @@ namespace RTS.Ships
 
         private void FixedUpdate()
         {
-            ProcessFireMode();
+            //ProcessFireMode();
             UpdateWeaponTemperature();
             ProcessMainWeapon(_shouldAttackMain);
             _onboardWeapon.ProcessWeapon(_shouldAttackOnboard);
@@ -79,11 +71,6 @@ namespace RTS.Ships
             return rotation;
         }
 
-        public void SwitchFireMode(FireMode fireMode)
-        {
-            _fireMode = fireMode;
-        }
-        
         #endregion
 
         #region Private Functions
@@ -95,48 +82,6 @@ namespace RTS.Ships
             foreach (var mainWeapon in _mainWeapons)
                 mainWeapon.InitWeapon(parent);
         }
-
-        private void ProcessFireMode()
-        {
-            if (_currTargetControls != null)
-            {
-                _currTargetAuto = null;
-                _currTargetAutoDamageable = null;
-                return;
-            }
-
-            switch (_fireMode)
-            {
-                case FireMode.OnlyMain: 
-                    AutoTargetFind(); 
-                    _shouldAttackOnboard = false;
-                    break;
-                case FireMode.AllGuns: 
-                    AutoTargetFind();
-                    _shouldAttackOnboard = true;
-                    break;
-                case FireMode.OnlyOnboard: 
-                    _shouldAttackOnboard = true; 
-                    _currTargetAuto = null;
-                    _currTargetAutoDamageable = null;
-                    break;
-                case FireMode.NoGuns:
-                    _shouldAttackOnboard = false;
-                    _currTargetAuto = null;
-                    _currTargetAutoDamageable = null;
-                    break;
-            }
-        }
-
-        private void AutoTargetFind()
-        {
-            if (RTSGameController.TargetExistAndReachable(transform.parent, _parentSelectable.TeamId, AttackRange, _currTargetAutoDamageable))
-                return;
-            
-            _currTargetAuto = RTSGameController.GetClosestTarget(transform.parent, _parentSelectable.TeamId, AttackRange);
-            _currTargetAutoDamageable = _currTargetAuto != null ? _currTargetAuto.GetComponent<IDamageable>() : null;
-        }
-        
 
         #endregion
 
