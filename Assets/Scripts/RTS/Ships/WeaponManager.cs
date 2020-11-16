@@ -54,6 +54,8 @@ namespace RTS.Ships
 
         public Vector3 CalculateRequiredRotation()
         {
+            if (_currTarget == null) return Vector3.up;
+            
             Vector3 rotation = Vector3.zero;
             switch (ActiveDirection)
             {

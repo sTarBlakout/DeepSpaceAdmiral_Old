@@ -170,22 +170,29 @@ namespace RTS.Ships
                 return;
             }
             
+            if (_fireMode == FireMode.NoGuns)
+                SwitchFireMode(FireMode.OnlyMain, false);
+            else if (_fireMode == FireMode.OnlyOnboard)
+                SwitchFireMode(FireMode.AllGuns, false);
+            
             ProcessShootMovements();
         }
 
-        private void StopAttack()
+        private void StopAttack(bool isForceStop = false)
         {
-            SwitchFireMode(FireMode.NoGuns);
+            if (isForceStop)
+                SwitchFireMode(FireMode.NoGuns);
+            else
+                SwitchFireMode(_fireMode);
             _state = State.Idle;
             _stateToSwitch = State.Idle;
             _currTarget = null;
             _currTargetDamageable = null;
         }
 
-        private void SwitchFireMode(FireMode mode)
+        private void SwitchFireMode(FireMode mode, bool isMainFireMode = true)
         {
-            if (mode == _fireMode) return;
-            _fireMode = mode;
+            if (isMainFireMode) _fireMode = mode;
 
             switch (mode)
             {
@@ -211,6 +218,7 @@ namespace RTS.Ships
         private void ProcessShootMovements()
         {
             var rotation = _weaponManager.CalculateRequiredRotation();
+            if (rotation == Vector3.up) return;
             UpdateRotating(rotation, out _dotForward, out _dotSide);
         }
         
@@ -403,7 +411,7 @@ namespace RTS.Ships
 
         public void ForceLooseTarget()
         {
-            StopAttack();
+            StopAttack(true);
         }
 
         #endregion
