@@ -3156,7 +3156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   upwardExplosionModifier: 5
   spaceDerbisTransform: {fileID: 553779643}
-  shipToSpawn: {fileID: 6624679407273337055, guid: e2c369ac98686cd45bc531425ca33408,
+  shipToSpawn: {fileID: 6624679407273337055, guid: ce3e003a4545afa458e59167abd257d8,
     type: 3}
 --- !u!4 &599025673
 Transform:
@@ -22822,8 +22822,8 @@ MonoBehaviour:
   AddToPopupQueue: 0
   AutoHideAfterShow: 0
   AutoHideAfterShowDelay: 3
-  AutoSelectButtonAfterShow: 0
-  AutoSelectPreviouslySelectedButtonAfterHide: 1
+  AutoSelectButtonAfterShow: 1
+  AutoSelectPreviouslySelectedButtonAfterHide: 0
   BlockBackButton: 0
   CanvasName: RTS Game
   Container:
@@ -22843,8 +22843,8 @@ MonoBehaviour:
   Data:
     Buttons:
     - {fileID: 896467070}
-    - {fileID: 1408778378}
     - {fileID: 744802710}
+    - {fileID: 1408778378}
     - {fileID: 347954864}
     Images: []
     Labels: []
@@ -23007,7 +23007,7 @@ MonoBehaviour:
     StartPosition: {x: 0, y: 0, z: 0}
     StartRotation: {x: -0, y: 0, z: 0}
     StartScale: {x: 1, y: 1, z: 1}
-  SelectedButton: {fileID: 0}
+  SelectedButton: {fileID: 347954861}
   ShowBehavior:
     Animation:
       AnimationType: 1

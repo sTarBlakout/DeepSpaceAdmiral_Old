@@ -89,7 +89,7 @@ namespace RTS.Controls
                 if (!_selectedObject.SameObject(monoBehaviorObj))
                 {
                     _selectedObject.InitObject(monoBehaviorObj);
-                    _managerUI.ActivatePopup(PopupType.ShipControl, true);
+                    ShowProperControlsUI();
                 }
                 else
                 {
@@ -108,6 +108,23 @@ namespace RTS.Controls
             }
         }
         
+        #endregion
+
+        #region UI Control
+
+        private void ShowProperControlsUI()
+        {
+            // TODO: Should disable other control popaps
+
+            var mono = _selectedObject.Mono;
+            
+            if (mono is ShipBase ship)
+            {
+                _managerUI.ActivatePopup(PopupType.ShipControl, true);
+                _managerUI.ChangeSelectedButton(PopupType.ChangeFireMode, (int)ship.CurrFireMode);
+            }
+        }
+
         #endregion
 
         #region Handle General Game Events
@@ -158,6 +175,7 @@ namespace RTS.Controls
         {
             OpenChangeFireModePanel(false);
             _selectedObject.SwitchBehavior(mode);
+            _managerUI.ChangeSelectedButton(PopupType.ChangeFireMode, (int)mode);
         }
         
         #endregion

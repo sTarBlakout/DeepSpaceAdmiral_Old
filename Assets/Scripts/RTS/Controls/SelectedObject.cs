@@ -15,6 +15,7 @@ namespace RTS.Controls
 
         private bool _isInit;
         public bool IsInit => _isInit;
+        public MonoBehaviour Mono => _monoBehaviour;
 
         public void InitObject(MonoBehaviour monoBehaviourObj)
         {

@@ -58,6 +58,7 @@ namespace RTS
         private void Start()
         {
             SpawnBattleshipAtPosition(new Vector3(-19, 0, 5), true);
+            SpawnBattleshipAtPosition(new Vector3(-25, 0, 5), true);
         }
 
         #endregion
