@@ -1,8 +1,4 @@
-﻿using System;
-using Doozy.Engine.UI;
-using RTS.Controls;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 namespace GameGlobal
 {

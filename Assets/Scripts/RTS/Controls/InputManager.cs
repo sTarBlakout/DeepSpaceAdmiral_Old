@@ -114,10 +114,9 @@ namespace RTS.Controls
 
         private void ShowProperControlsUI()
         {
-            // TODO: Should disable other control popaps
+            _managerUI.HideAllControlsUI(true);
 
             var mono = _selectedObject.Mono;
-            
             if (mono is ShipBase ship)
             {
                 _managerUI.ActivatePopup(PopupType.ShipControl, true);
