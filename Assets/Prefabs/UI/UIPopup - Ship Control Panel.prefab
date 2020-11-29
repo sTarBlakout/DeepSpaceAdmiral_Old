@@ -371,6 +371,7 @@ MonoBehaviour:
   StartRotation: {x: 0, y: 0, z: 0}
   StartScale: {x: 1, y: 1, z: 1}
   StartAlpha: 1
+  SelectedParticle: {fileID: 0}
   AllowMultipleClicks: 1
   ButtonCategory: ShipControlPanel
   ButtonName: Change Fire Mode
@@ -2873,7 +2874,7 @@ MonoBehaviour:
   AutoHideAfterShow: 0
   AutoHideAfterShowDelay: 3
   AutoSelectButtonAfterShow: 0
-  AutoSelectPreviouslySelectedButtonAfterHide: 1
+  AutoSelectPreviouslySelectedButtonAfterHide: 0
   BlockBackButton: 0
   CanvasName: RTS Game
   Container:
@@ -3194,6 +3195,8 @@ MonoBehaviour:
   UpdateHideProgressorOnShow: 0
   UpdateShowProgressorOnHide: 0
   UseOverlay: 1
+  SelectedButtonParticle: {fileID: 0}
+  SelectedButtonIndex: 0
 --- !u!1 &6907868967248194476
 GameObject:
   m_ObjectHideFlags: 0
@@ -3462,6 +3465,7 @@ MonoBehaviour:
   StartRotation: {x: 0, y: 0, z: 0}
   StartScale: {x: 1, y: 1, z: 1}
   StartAlpha: 1
+  SelectedParticle: {fileID: 0}
   AllowMultipleClicks: 1
   ButtonCategory: GeneralControlPanel
   ButtonName: Stop All Actions
@@ -5954,6 +5958,7 @@ MonoBehaviour:
   StartRotation: {x: 0, y: 0, z: 0}
   StartScale: {x: 1, y: 1, z: 1}
   StartAlpha: 1
+  SelectedParticle: {fileID: 0}
   AllowMultipleClicks: 0
   ButtonCategory: GeneralControlPanel
   ButtonName: Cancel Selection

@@ -168,6 +168,8 @@ namespace RTS.Controls
         {
             _managerUI.ActivatePopup(PopupType.ShipControl, !open);
             _managerUI.ActivatePopup(PopupType.ChangeFireMode, open);
+            // TODO: Change selected button with actual firemode.
+            // TODO: Also check firemode particle change when switching between ships.
         }
 
         private void ChangeFireMode(FireMode mode)

@@ -431,6 +431,8 @@ namespace Doozy.Engine.UI
 
         /// <summary> Reference to the GameObject that should be selected after this UIPopup has been shown. Works only if AutoSelectButtonAfterShow is TRUE </summary>
         public GameObject SelectedButton;
+        
+        public UIButton SelectedButtonUI;
 
         /// <summary> Behavior when this UIPopup gets shown (becomes visible on screen) </summary>
         public UIPopupBehavior ShowBehavior = new UIPopupBehavior(AnimationType.Show);
@@ -562,6 +564,14 @@ namespace Doozy.Engine.UI
         #endregion
 
         #region Public Methods
+
+        public void SetSelectedButton(int index)
+        {
+            if (Data.ButtonsCount  <= index) return;
+            SelectedButtonUI = Data.Buttons[index];
+
+            if (IsHiding || IsVisible) ShowProperButtonParticle();
+        }
 
         /// <summary> Cancel an auto hide, if it was initiated </summary>
         public void CancelAutoHide()
@@ -695,6 +705,25 @@ namespace Doozy.Engine.UI
 
         #region Private Methods
 
+        private void ShowProperButtonParticle()
+        {
+            foreach (var button in Data.Buttons)
+            {
+                if (button.SelectedParticle == null) continue;
+                
+                if (button == SelectedButtonUI)
+                {
+                    if (button.SelectedParticle.isStopped)
+                        button.SelectedParticle.Play();
+                }
+                else
+                {
+                    if (button.SelectedParticle.isPlaying)
+                        button.SelectedParticle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                }
+            }
+        }
+
         private void Initialize()
         {
             SetPopupName(name + GetInstanceID());
@@ -785,6 +814,8 @@ namespace Doozy.Engine.UI
             UIAnimator.StopAnimations(Container.RectTransform, ShowBehavior.Animation.AnimationType); //stop any SHOW animations
             Container.Enable();                                                                       //enable the gameobject, canvas and graphic raycaster
             Overlay.Enable();
+            
+            ShowProperButtonParticle();
 
             //MOVE
             Vector3 moveFrom = UIAnimator.GetAnimationMoveFrom(Container.RectTransform, ShowBehavior.Animation, Container.StartPosition);

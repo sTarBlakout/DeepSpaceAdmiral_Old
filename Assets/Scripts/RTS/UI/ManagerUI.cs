@@ -59,8 +59,8 @@ namespace RTS.UI
         {
             switch (type)
             {
-                case PopupType.ShipControl: ChangeSelectedButtonInPopup(shipControlPanelPopup, buttonIdx); break;
-                case PopupType.ChangeFireMode: ChangeSelectedButtonInPopup(changeFireModePopup, buttonIdx); break;
+                case PopupType.ShipControl: shipControlPanelPopup.SetSelectedButton(buttonIdx); break;
+                case PopupType.ChangeFireMode: changeFireModePopup.SetSelectedButton(buttonIdx); break;
             }
         }
         
@@ -79,12 +79,6 @@ namespace RTS.UI
                 popup.Show();
             else
                 popup.Hide();
-        }
-
-        public void ChangeSelectedButtonInPopup(UIPopup popup, int buttonIdx)
-        {
-            if (popup.Data.ButtonsCount  <= buttonIdx) return;
-            popup.SelectedButton = popup.Data.Buttons[buttonIdx].gameObject;
         }
 
         private IEnumerator ShowPopupAfterAllControlsHide(UIPopup popup)
