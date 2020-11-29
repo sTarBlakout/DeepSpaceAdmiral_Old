@@ -82,7 +82,8 @@ namespace Doozy.Editor.UI
             m_inputData,
             m_targetLabel,
             m_textLabel,
-            m_textMeshProLabel;
+            m_textMeshProLabel,
+            m_selectedButtonParticle;
 
         private AnimBool
             m_onPointerEnterExpanded,
@@ -140,6 +141,7 @@ namespace Doozy.Editor.UI
             m_inputData = GetProperty(PropertyName.InputData);
             m_targetLabel = GetProperty(PropertyName.TargetLabel);
             m_textLabel = GetProperty(PropertyName.TextLabel);
+            m_selectedButtonParticle = GetProperty(PropertyName.SelectedParticle);
 
 #if dUI_TextMeshPro
             m_textMeshProLabel = GetProperty(PropertyName.TextMeshProLabel);
@@ -229,7 +231,14 @@ namespace Doozy.Editor.UI
             GUILayout.Space(DGUI.Properties.Space(8));
             DrawLabelOptions();
             GUILayout.Space(DGUI.Properties.Space(4));
+            DrawSelectedButtonParticle();
+            GUILayout.Space(DGUI.Properties.Space(4));
             serializedObject.ApplyModifiedProperties();
+        }
+        
+        private void DrawSelectedButtonParticle()
+        {
+            DGUI.Property.Draw(m_selectedButtonParticle, UILabels.ParticleButtonSelected, ComponentColorName);
         }
 
         private void DrawDebugModeAndCreateParentAndCenterPivot()

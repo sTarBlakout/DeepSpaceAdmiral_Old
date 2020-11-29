@@ -458,6 +458,7 @@ namespace Doozy.Engine.Utils
         public string ParameterName = "Parameter Name";
         public string ParameterType = "Parameter Type";
         public string ParticleSystem = "Particle System";
+        public string ParticleButtonSelected = "Selected Particle";
         public string Paste = "Paste";
         public string PauseAllSounds = "Pause All Sounds";
         public string PercentageOfScreenZeroToOne = "Percentage Of Screen (0 - 1)";

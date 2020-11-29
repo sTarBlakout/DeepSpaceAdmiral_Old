@@ -205,6 +205,8 @@ namespace Doozy.Engine.UI
         #endregion
 
         #region Public Variables
+        
+        public ParticleSystem SelectedParticle;
 
         /// <summary> If TRUE, this button can be spam clicked and it won't get disabled. If FALSE, after each click, this button will get disabled for DisableButtonBetweenClicksInterval value </summary>
         public bool AllowMultipleClicks;

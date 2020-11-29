@@ -313,6 +313,7 @@ namespace Doozy.Editor
         SelectButton,
         SelectedButton,
         SelectedLoopAnimation,
+        SelectedParticle,
         SequenceResetTime,
         ShowBehavior,
         ShowProgressor,

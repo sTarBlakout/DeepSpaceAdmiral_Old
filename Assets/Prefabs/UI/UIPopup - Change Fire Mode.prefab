@@ -139,6 +139,7 @@ MonoBehaviour:
   StartRotation: {x: 0, y: 0, z: 0}
   StartScale: {x: 1, y: 1, z: 1}
   StartAlpha: 1
+  SelectedParticle: {fileID: 2086325285750563829}
   AllowMultipleClicks: 0
   ButtonCategory: ChangeFireModePanel
   ButtonName: Only Onboard Guns
@@ -3269,6 +3270,7 @@ MonoBehaviour:
   StartRotation: {x: 0, y: 0, z: 0}
   StartScale: {x: 1, y: 1, z: 1}
   StartAlpha: 1
+  SelectedParticle: {fileID: 6244763616404811496}
   AllowMultipleClicks: 0
   ButtonCategory: ChangeFireModePanel
   ButtonName: All Guns
@@ -6062,6 +6064,7 @@ MonoBehaviour:
   StartRotation: {x: 0, y: 0, z: 0}
   StartScale: {x: 1, y: 1, z: 1}
   StartAlpha: 1
+  SelectedParticle: {fileID: 2588207761605346912}
   AllowMultipleClicks: 0
   ButtonCategory: ChangeFireModePanel
   ButtonName: Only Main Guns
@@ -8489,6 +8492,7 @@ MonoBehaviour:
   StartRotation: {x: 0, y: 0, z: 0}
   StartScale: {x: 1, y: 1, z: 1}
   StartAlpha: 1
+  SelectedParticle: {fileID: 6906209109123987559}
   AllowMultipleClicks: 0
   ButtonCategory: ChangeFireModePanel
   ButtonName: Stop All Guns
@@ -10848,6 +10852,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2176556497501028203}
   m_PrefabAsset: {fileID: 0}
+--- !u!198 &2086325285750563829 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 198355545756671134, guid: 4dfed57c051cfd446abcf1813d3313ab,
+    type: 3}
+  m_PrefabInstance: {fileID: 2176556497501028203}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2390173826356566782
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10913,6 +10923,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4dfed57c051cfd446abcf1813d3313ab, type: 3}
+--- !u!198 &2588207761605346912 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 198355545756671134, guid: 4dfed57c051cfd446abcf1813d3313ab,
+    type: 3}
+  m_PrefabInstance: {fileID: 2390173826356566782}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2394526835751322250 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4656526324291700, guid: 4dfed57c051cfd446abcf1813d3313ab,
@@ -10990,6 +11006,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 6082507383514968694}
   m_PrefabAsset: {fileID: 0}
+--- !u!198 &6244763616404811496 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 198355545756671134, guid: 4dfed57c051cfd446abcf1813d3313ab,
+    type: 3}
+  m_PrefabInstance: {fileID: 6082507383514968694}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6707966275121374457
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11055,6 +11077,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4dfed57c051cfd446abcf1813d3313ab, type: 3}
+--- !u!198 &6906209109123987559 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 198355545756671134, guid: 4dfed57c051cfd446abcf1813d3313ab,
+    type: 3}
+  m_PrefabInstance: {fileID: 6707966275121374457}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6703591412888943757 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4656526324291700, guid: 4dfed57c051cfd446abcf1813d3313ab,
