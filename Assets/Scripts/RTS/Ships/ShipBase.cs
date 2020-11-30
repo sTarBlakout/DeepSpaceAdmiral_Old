@@ -85,7 +85,6 @@ namespace RTS.Ships
         public Vector3 Position => transform.position;
         public List<GameObject> CreatedSpaceDerbis => _createdSpaceDerbis;
         public List<Transform> HitPositions => _hitPositions;
-        public FireMode CurrFireMode => _fireMode;
 
         #endregion
 

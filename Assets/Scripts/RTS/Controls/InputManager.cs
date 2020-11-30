@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Doozy.Engine;
 using UnityEngine;
 using Lean.Touch;
@@ -116,12 +117,8 @@ namespace RTS.Controls
         {
             _managerUI.HideAllControlsUI(true);
 
-            var mono = _selectedObject.Mono;
-            if (mono is ShipBase ship)
-            {
+            if (_selectedObject.Mono is ShipBase)
                 _managerUI.ActivatePopup(PopupType.ShipControl, true);
-                _managerUI.ChangeSelectedButton(PopupType.ChangeFireMode, (int)ship.CurrFireMode);
-            }
         }
 
         #endregion
@@ -172,8 +169,6 @@ namespace RTS.Controls
             var behavior = _selectedObject.GetCurrBehavior(BehaviorType.FireMode);
             if (behavior != null)
                 _managerUI.ChangeSelectedButton(PopupType.ChangeFireMode, (int) (FireMode) behavior);
-            
-            // TODO: Also check firemode particle change when switching between ships.
         }
 
         private void ChangeFireMode(FireMode mode)
