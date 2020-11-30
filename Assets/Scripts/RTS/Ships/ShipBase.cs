@@ -469,6 +469,14 @@ namespace RTS.Ships
             if (behavior is FireMode fireMode)
                 SwitchFireMode(fireMode);
         }
+
+        public virtual Enum GetCurrBehavior(BehaviorType type)
+        {
+            if (type == BehaviorType.FireMode)
+                return _fireMode;
+
+            return null;
+        }
         
         #endregion
     }

@@ -5,5 +5,6 @@ namespace RTS.Controls
     public interface IBehaviorSwitchable
     {
         void SwitchBehavior(Enum behavior);
+        Enum GetCurrBehavior(BehaviorType type);
     }
 }

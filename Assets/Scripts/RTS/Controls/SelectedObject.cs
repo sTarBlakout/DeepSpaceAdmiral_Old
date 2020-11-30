@@ -81,6 +81,11 @@ namespace RTS.Controls
             _attackable?.ForceLooseTarget();
         }
 
+        public Enum GetCurrBehavior(BehaviorType type)
+        {
+            return _behaviorSwitchable.GetCurrBehavior(type);
+        }
+
         public bool TryInteractWithObject(MonoBehaviour monoBehaviourObj)
         {
             if (!_isInit) return false;
