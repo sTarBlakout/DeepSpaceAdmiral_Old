@@ -15,7 +15,6 @@ namespace RTS.Ships
         [Header("General")]
         [SerializeField] public byte teamId; 
         [SerializeField] private float maxHealthPoints;
-        [SerializeField] private Transform dimensionPointsTransform;
 
         [Header("Movement")]
         [SerializeField] private float maxMovementSpeed = 1f;
@@ -42,7 +41,6 @@ namespace RTS.Ships
 
         private readonly List<ParticleManager> _mainExplosionParticles = new List<ParticleManager>();
         private readonly List<GameObject> _createdSpaceDerbis = new List<GameObject>();
-        private readonly List<DimensionPoint> _dimensionPoints = new List<DimensionPoint>();
         private List<Transform> _hitPositions;
 
         private float _slowDownEndPrec;
@@ -58,6 +56,7 @@ namespace RTS.Ships
 
         private WeaponManager _weaponManager;
         private EngineManager _engineManager;
+        private DimensionPoints _dimensionPoints;
 
         private float _currHealthPoints;
 
@@ -88,7 +87,7 @@ namespace RTS.Ships
         public IDamageable Damageable => this;
         public List<GameObject> CreatedSpaceDerbis => _createdSpaceDerbis;
         public List<Transform> HitPositions => _hitPositions;
-        public List<DimensionPoint> DimensionPoints => _dimensionPoints;
+        public DimensionPoints DimensionPoints => _dimensionPoints;
 
         #endregion
 
@@ -100,6 +99,7 @@ namespace RTS.Ships
             _rigidbody = GetComponent<Rigidbody>();
             _weaponManager = transform.GetComponentInChildren<WeaponManager>();
             _engineManager = transform.GetComponentInChildren<EngineManager>();
+            _dimensionPoints = transform.GetComponentInChildren<DimensionPoints>();
 
             _slowDownEndPrec = GlobalData.Instance.BattleshipSlowDownEndPrec;
             _facingTargetPrec = GlobalData.Instance.BattleshipFacingTargetPrec;
@@ -111,8 +111,6 @@ namespace RTS.Ships
             _isReachedDestination = true;
             
             _hitPositions = hitPointsTransform.Cast<Transform>().ToList();
-            foreach (Transform child in dimensionPointsTransform)
-                _dimensionPoints.Add(child.GetComponent<DimensionPoint>());
         }
 
         protected virtual void Start()

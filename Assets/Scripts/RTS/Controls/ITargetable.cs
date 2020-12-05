@@ -9,8 +9,8 @@ namespace RTS.Controls
         bool IsEnemy(byte askerTeamId);
         byte TeamId { get; }
         Vector3 Position { get; }
-        IDamageable Damageable { get; }
+        DimensionPoints DimensionPoints { get; }
         List<Transform> HitPositions { get; }
-        List<DimensionPoint> DimensionPoints { get; }
+        IDamageable Damageable { get; }
     }
 }
