@@ -976,6 +976,7 @@ MonoBehaviour:
   StartRotation: {x: 0, y: 0, z: 0}
   StartScale: {x: 1, y: 1, z: 1}
   StartAlpha: 1
+  SelectedParticle: {fileID: 0}
   AllowMultipleClicks: 1
   ButtonCategory: General
   ButtonName: Unnamed

@@ -3059,6 +3059,7 @@ MonoBehaviour:
     StartRotation: {x: -0, y: 0, z: 0}
     StartScale: {x: 1, y: 1, z: 1}
   SelectedButton: {fileID: 0}
+  SelectedButtonUI: {fileID: 0}
   ShowBehavior:
     Animation:
       AnimationType: 1
@@ -3195,8 +3196,6 @@ MonoBehaviour:
   UpdateHideProgressorOnShow: 0
   UpdateShowProgressorOnHide: 0
   UseOverlay: 1
-  SelectedButtonParticle: {fileID: 0}
-  SelectedButtonIndex: 0
 --- !u!1 &6907868967248194476
 GameObject:
   m_ObjectHideFlags: 0
