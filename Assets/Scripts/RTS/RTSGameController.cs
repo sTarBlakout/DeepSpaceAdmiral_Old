@@ -81,46 +81,46 @@ namespace RTS
 
         #region Static Methods
         
-        public static bool TargetExistAndReachable(IDamageable requesterDamageable, MonoBehaviour targetMono, float range)
+        public static bool TargetExistAndReachable(ITargetable requester, MonoBehaviour targetMono, float range)
         {
             if (targetMono == null) return false;
-            var targetDamageable = targetMono.GetComponent<IDamageable>();
-            return TargetExistAndReachable(requesterDamageable, targetDamageable, range);
+            var target = targetMono.GetComponent<ITargetable>();
+            return TargetExistAndReachable(requester, target, range);
         }
         
-        public static bool TargetExistAndReachable(IDamageable requesterDamageable, IDamageable targetDamageable, float range)
+        public static bool TargetExistAndReachable(ITargetable requester, ITargetable target, float range)
         {
             var conditionsMet = false;
-            if (targetDamageable != null && targetDamageable.IsEnemy(requesterDamageable.TeamId) && targetDamageable.CanBeDamaged())
+            if (target != null && target.IsEnemy(requester.TeamId) && target.Damageable.CanBeDamaged())
             {
-                if (Vector3.Distance(requesterDamageable.Position, targetDamageable.Position) <= range)
+                if (Vector3.Distance(requester.Position, target.Position) <= range)
                     conditionsMet = true; 
             }
             return conditionsMet;
         }
 
-        public static MonoBehaviour GetClosestTarget(IDamageable requesterDamageable, float range, IDamageable preferredTarget = null)
+        public static MonoBehaviour GetClosestTarget(ITargetable requester, float range, ITargetable preferredTarget = null)
         {
-            var possibleTargets = Physics.OverlapSphere(requesterDamageable.Position, range);
+            var possibleTargets = Physics.OverlapSphere(requester.Position, range);
             var minDist = float.MaxValue;
             Collider possibleTarget = null;
-            foreach (var target in possibleTargets)
+            foreach (var targetCollider in possibleTargets)
             {
-                if (target.transform == requesterDamageable) continue;
-                var targetDamageable = target.GetComponent<IDamageable>();
-                if (targetDamageable == null) continue;
-                if (!targetDamageable.CanBeDamaged() || !targetDamageable.IsEnemy(requesterDamageable.TeamId)) continue;
-                if (targetDamageable == preferredTarget)
+                if (targetCollider.transform == requester) continue;
+                var target = targetCollider.GetComponent<ITargetable>();
+                if (target == null) continue;
+                if (!target.Damageable.CanBeDamaged() || !target.IsEnemy(requester.TeamId)) continue;
+                if (target == preferredTarget)
                 {
-                    possibleTarget = target;
+                    possibleTarget = targetCollider;
                     break;
                 }
 
-                var distToTarget = Vector3.Distance(target.transform.position, requesterDamageable.Position); 
+                var distToTarget = Vector3.Distance(targetCollider.transform.position, requester.Position); 
                 if (distToTarget < minDist)
                 {
                     minDist = distToTarget;
-                    possibleTarget = target;
+                    possibleTarget = targetCollider;
                 }
             }
 

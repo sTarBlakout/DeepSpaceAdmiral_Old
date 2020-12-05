@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 
 namespace RTS.Ships
 {
-    public abstract class ShipBase : MonoBehaviour, IMoveable, IDamageable, IAttackable, ISelectable, IExplosible, IBehaviorSwitchable
+    public abstract class ShipBase : MonoBehaviour, IMoveable, IDamageable, IAttackable, ITargetable, ISelectable, IExplosible, IBehaviorSwitchable
     {
         #region Data
 
@@ -85,6 +85,7 @@ namespace RTS.Ships
         public float ExplosionForce => explosionForce;
         public float ExplosionRadius => explosionRadius;
         public Vector3 Position => transform.position;
+        public IDamageable Damageable => this;
         public List<GameObject> CreatedSpaceDerbis => _createdSpaceDerbis;
         public List<Transform> HitPositions => _hitPositions;
         public List<DimensionPoint> DimensionPoints => _dimensionPoints;
@@ -439,14 +440,18 @@ namespace RTS.Ships
         }
         
         #endregion
-
+        
         #region IDamageable Implementation
-
+        
         public bool IsEnemy(byte askerTeamId)
         {
             return askerTeamId != teamId;
         }
         
+        #endregion
+
+        #region IDamageable Implementation
+
         public bool CanBeDamaged()
         {
             return _state != State.Destroyed;
@@ -454,8 +459,8 @@ namespace RTS.Ships
 
         public void Damage(float damage)
         {
-            if (_state == State.Destroyed) return;
-            
+            if (!CanBeDamaged()) return;
+
             _currHealthPoints = CalculateTakenDamage(damage);
             if (_currHealthPoints <= 0f)
             {

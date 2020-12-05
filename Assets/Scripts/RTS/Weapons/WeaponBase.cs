@@ -16,6 +16,7 @@ namespace RTS.Weapons
         protected Transform ParentShipTransform { get; private set; }
         protected ISelectable SelectableShip { get; private set; }
         protected IDamageable DamageableShip { get; private set; }
+        protected ITargetable TargetableShip { get; private set; }
         
         public float AttackRange => attackRange;
 
@@ -27,6 +28,7 @@ namespace RTS.Weapons
         {
             ParentShipTransform = parentShip;
             DamageableShip = ParentShipTransform.GetComponent<IDamageable>();
+            TargetableShip = ParentShipTransform.GetComponent<ITargetable>();
             SelectableShip = ParentShipTransform.GetComponent<ISelectable>();
             Init();
         }

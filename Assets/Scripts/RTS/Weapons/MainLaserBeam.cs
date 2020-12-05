@@ -51,10 +51,10 @@ namespace RTS.Weapons
                 if (Physics.SphereCast(transform.position, beamMaxThickness, transform.forward, out var hit, attackRange))
                 {
                     beamEndPoint = hit.point;
-                    var hitDamageable = hit.collider.GetComponent<IDamageable>();
-                    if (hitDamageable != null)
+                    var hitTargetable = hit.collider.GetComponent<ITargetable>();
+                    if (hitTargetable != null)
                     {
-                        if (hitDamageable.IsEnemy(SelectableShip.TeamId))
+                        if (hitTargetable.IsEnemy(SelectableShip.TeamId))
                         {
                             ShouldHeat = true;
                             if (MainGunTemp >= borderGunTemp)
@@ -63,7 +63,7 @@ namespace RTS.Weapons
                                 if (_nextDamageTime <= Time.time && _shouldDamage) 
                                 {
                                     _nextDamageTime = Time.time + fireRate;
-                                    hitDamageable.Damage(damage);
+                                    hitTargetable.Damageable.Damage(damage);
                                 }
                             }
                         }

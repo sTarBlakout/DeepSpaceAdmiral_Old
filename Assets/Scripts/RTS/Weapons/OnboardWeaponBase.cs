@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GameGlobal;
 using RTS.Controls;
 using UnityEngine;
 
@@ -13,14 +12,14 @@ namespace RTS.Weapons
         [Header("Onboard Weapon")] 
         [SerializeField] protected Transform turretsContainer;
 
-        private IDamageable _preferredTarget;
-        private IDamageable _currentTarget;
-        private IDamageable _lastTraget;
+        private ITargetable _preferredTarget;
+        private ITargetable _currentTarget;
+        private ITargetable _lastTraget;
         private float _timeNextDamage;
         private List<OnboardTurretBase> _turrets = new List<OnboardTurretBase>();
 
         protected List<Transform> TurretTransforms { get; private set; }
-        protected IDamageable CurrentTarget => _currentTarget;
+        protected ITargetable CurrentTarget => _currentTarget;
 
         #endregion
 
@@ -46,6 +45,7 @@ namespace RTS.Weapons
             else
             {
                 _currentTarget = null;
+                _lastTraget = null;
             }
 
             ProcessTurretRotating();
@@ -68,14 +68,14 @@ namespace RTS.Weapons
 
         private void ProcessTarget()
         {
-            if (RTSGameController.TargetExistAndReachable(DamageableShip, _currentTarget, attackRange))
+            if (RTSGameController.TargetExistAndReachable(TargetableShip, _currentTarget, attackRange))
                 return;
 
-            var target = RTSGameController.GetClosestTarget(DamageableShip, attackRange, _preferredTarget);
-            if (target != null) _currentTarget = target.GetComponent<IDamageable>();
+            var target = RTSGameController.GetClosestTarget(TargetableShip, attackRange, _preferredTarget);
+            if (target != null) _currentTarget = target.GetComponent<ITargetable>();
         }
         
-        private void DamageTarget(IDamageable target)
+        private void DamageTarget(ITargetable target)
         {
             if (target == null) return;
 
@@ -85,10 +85,10 @@ namespace RTS.Weapons
                 _lastTraget = target;
                 return;
             }
-            if (_timeNextDamage > Time.time || !target.IsEnemy(SelectableShip.TeamId) || !target.CanBeDamaged()) return;
+            if (_timeNextDamage > Time.time || !target.IsEnemy(SelectableShip.TeamId) || !target.Damageable.CanBeDamaged()) return;
             _timeNextDamage = Time.time + fireRate;
             
-            target.Damage(damage);
+            target.Damageable.Damage(damage);
         }
         
         #endregion

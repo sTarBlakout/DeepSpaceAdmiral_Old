@@ -9,6 +9,7 @@ namespace RTS.Controls
         
         private IMoveable _moveable;
         private IDamageable _damageable;
+        private ITargetable _targetable;
         private IAttackable _attackable;
         private ISelectable _selectable;
         private IBehaviorSwitchable _behaviorSwitchable;
@@ -31,6 +32,7 @@ namespace RTS.Controls
             }
 
             _damageable = _monoBehaviour.GetComponent<IDamageable>();
+            _targetable = _monoBehaviour.GetComponent<ITargetable>();
             _moveable = _monoBehaviour.GetComponent<IMoveable>();
             _attackable = _monoBehaviour.GetComponent<IAttackable>();
             _behaviorSwitchable = _monoBehaviour.GetComponent<IBehaviorSwitchable>();
@@ -38,7 +40,7 @@ namespace RTS.Controls
             if (_damageable != null)
             {
                 // If enemy, don't select.
-                if (_damageable.IsEnemy(1))
+                if (_targetable.IsEnemy(_targetable.TeamId))
                 {
                     UninitObject();
                     return;
@@ -91,9 +93,10 @@ namespace RTS.Controls
             if (!_isInit) return false;
             
             var damageable = monoBehaviourObj.GetComponent<IDamageable>();
+            var targetable = monoBehaviourObj.GetComponent<ITargetable>();
             if (damageable != null)
             {
-                if (damageable.IsEnemy(1) && damageable.CanBeDamaged())
+                if (targetable.IsEnemy(_targetable.TeamId) && damageable.CanBeDamaged())
                 {
                     _attackable.AttackTarget(monoBehaviourObj);
                     return true;
