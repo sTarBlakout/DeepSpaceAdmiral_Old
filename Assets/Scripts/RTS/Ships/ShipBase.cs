@@ -15,6 +15,7 @@ namespace RTS.Ships
         [Header("General")]
         [SerializeField] public byte teamId; 
         [SerializeField] private float maxHealthPoints;
+        [SerializeField] private Transform dimensionPointsTransform;
 
         [Header("Movement")]
         [SerializeField] private float maxMovementSpeed = 1f;
@@ -41,6 +42,7 @@ namespace RTS.Ships
 
         private readonly List<ParticleManager> _mainExplosionParticles = new List<ParticleManager>();
         private readonly List<GameObject> _createdSpaceDerbis = new List<GameObject>();
+        private readonly List<DimensionPoint> _dimensionPoints = new List<DimensionPoint>();
         private List<Transform> _hitPositions;
 
         private float _slowDownEndPrec;
@@ -85,6 +87,7 @@ namespace RTS.Ships
         public Vector3 Position => transform.position;
         public List<GameObject> CreatedSpaceDerbis => _createdSpaceDerbis;
         public List<Transform> HitPositions => _hitPositions;
+        public List<DimensionPoint> DimensionPoints => _dimensionPoints;
 
         #endregion
 
@@ -107,6 +110,8 @@ namespace RTS.Ships
             _isReachedDestination = true;
             
             _hitPositions = hitPointsTransform.Cast<Transform>().ToList();
+            foreach (Transform child in dimensionPointsTransform)
+                _dimensionPoints.Add(child.GetComponent<DimensionPoint>());
         }
 
         protected virtual void Start()
@@ -225,14 +230,14 @@ namespace RTS.Ships
         private void AutoTargetAttack()
         {
             if (_fireMode == FireMode.NoGuns || _fireMode == FireMode.OnlyOnboard) return;
-            
-            if (RTSGameController.TargetExistAndReachable(transform, teamId, _weaponManager.AttackRange, _currTarget))
+
+            if (RTSGameController.TargetExistAndReachable(this, _currTarget, _weaponManager.AttackRange))
             {
                 ProcessShootMovements();
                 return;
             }
 
-            _currTarget = RTSGameController.GetClosestTarget(transform, teamId, _weaponManager.AttackRange);
+            _currTarget = RTSGameController.GetClosestTarget(this, _weaponManager.AttackRange);
             _currTargetDamageable = _currTarget != null ? _currTarget.GetComponent<IDamageable>() : null;
         }
 

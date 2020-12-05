@@ -29,4 +29,12 @@
         OnlyOnboard,
         AllGuns
     }
+    
+    public enum DimensionPointPos
+    {
+        Front,
+        Back,
+        Left,
+        Right
+    }
 }

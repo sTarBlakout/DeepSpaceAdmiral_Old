@@ -10,15 +10,13 @@ namespace RTS.Weapons
     {
         #region Data
 
-        [Header("Onboard Weapon")] [SerializeField]
-        protected Transform turretsContainer;
+        [Header("Onboard Weapon")] 
+        [SerializeField] protected Transform turretsContainer;
 
         private IDamageable _preferredTarget;
         private IDamageable _currentTarget;
-
         private IDamageable _lastTraget;
         private float _timeNextDamage;
-
         private List<OnboardTurretBase> _turrets = new List<OnboardTurretBase>();
 
         protected List<Transform> TurretTransforms { get; private set; }
@@ -70,10 +68,10 @@ namespace RTS.Weapons
 
         private void ProcessTarget()
         {
-            if (RTSGameController.TargetExistAndReachable(ParentShip, SelectableShip.TeamId, attackRange, _currentTarget))
+            if (RTSGameController.TargetExistAndReachable(DamageableShip, _currentTarget, attackRange))
                 return;
 
-            var target = RTSGameController.GetClosestTarget(ParentShip, SelectableShip.TeamId, attackRange, _preferredTarget);
+            var target = RTSGameController.GetClosestTarget(DamageableShip, attackRange, _preferredTarget);
             if (target != null) _currentTarget = target.GetComponent<IDamageable>();
         }
         

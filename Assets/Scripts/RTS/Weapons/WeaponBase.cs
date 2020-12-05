@@ -13,8 +13,9 @@ namespace RTS.Weapons
         [SerializeField] protected float attackRange = 1f;
         [SerializeField] protected float fireRate = 1f;
 
-        protected Transform ParentShip { get; private set; }
+        protected Transform ParentShipTransform { get; private set; }
         protected ISelectable SelectableShip { get; private set; }
+        protected IDamageable DamageableShip { get; private set; }
         
         public float AttackRange => attackRange;
 
@@ -24,8 +25,9 @@ namespace RTS.Weapons
         
         public void InitWeapon(Transform parentShip)
         {
-            ParentShip = parentShip;
-            SelectableShip = ParentShip.GetComponent<ISelectable>();
+            ParentShipTransform = parentShip;
+            DamageableShip = ParentShipTransform.GetComponent<IDamageable>();
+            SelectableShip = ParentShipTransform.GetComponent<ISelectable>();
             Init();
         }
         

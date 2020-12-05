@@ -58,7 +58,7 @@ namespace RTS
         private void Start()
         {
             SpawnBattleshipAtPosition(new Vector3(-19, 0, 5), true);
-            SpawnBattleshipAtPosition(new Vector3(-25, 0, 5), true);
+            //SpawnBattleshipAtPosition(new Vector3(-25, 0, 5), true);
         }
 
         #endregion
@@ -81,42 +81,42 @@ namespace RTS
 
         #region Static Methods
         
-        public static bool TargetExistAndReachable(Transform requesterTransform, byte requesterTeamId, float range, MonoBehaviour targetMono)
+        public static bool TargetExistAndReachable(IDamageable requesterDamageable, MonoBehaviour targetMono, float range)
         {
             if (targetMono == null) return false;
-            var target = targetMono.GetComponent<IDamageable>();
-            return TargetExistAndReachable(requesterTransform, requesterTeamId, range, target);
+            var targetDamageable = targetMono.GetComponent<IDamageable>();
+            return TargetExistAndReachable(requesterDamageable, targetDamageable, range);
         }
         
-        public static bool TargetExistAndReachable(Transform requesterTransform, byte requesterTeamId, float range, IDamageable target)
+        public static bool TargetExistAndReachable(IDamageable requesterDamageable, IDamageable targetDamageable, float range)
         {
             var conditionsMet = false;
-            if (target != null && target.IsEnemy(requesterTeamId) && target.CanBeDamaged())
+            if (targetDamageable != null && targetDamageable.IsEnemy(requesterDamageable.TeamId) && targetDamageable.CanBeDamaged())
             {
-                if (Vector3.Distance(requesterTransform.position, target.Position) <= range)
-                    conditionsMet = true;
+                if (Vector3.Distance(requesterDamageable.Position, targetDamageable.Position) <= range)
+                    conditionsMet = true; 
             }
             return conditionsMet;
         }
 
-        public static MonoBehaviour GetClosestTarget(Transform requesterTransform, byte requesterTeamId, float range, IDamageable preferredTarget = null)
+        public static MonoBehaviour GetClosestTarget(IDamageable requesterDamageable, float range, IDamageable preferredTarget = null)
         {
-            var possibleTargets = Physics.OverlapSphere(requesterTransform.position, range);
+            var possibleTargets = Physics.OverlapSphere(requesterDamageable.Position, range);
             var minDist = float.MaxValue;
             Collider possibleTarget = null;
             foreach (var target in possibleTargets)
             {
-                if (target.transform == requesterTransform) continue;
+                if (target.transform == requesterDamageable) continue;
                 var targetDamageable = target.GetComponent<IDamageable>();
                 if (targetDamageable == null) continue;
-                if (!targetDamageable.CanBeDamaged() || !targetDamageable.IsEnemy(requesterTeamId)) continue;
+                if (!targetDamageable.CanBeDamaged() || !targetDamageable.IsEnemy(requesterDamageable.TeamId)) continue;
                 if (targetDamageable == preferredTarget)
                 {
                     possibleTarget = target;
                     break;
                 }
 
-                var distToTarget = Vector3.Distance(target.transform.position, requesterTransform.position); 
+                var distToTarget = Vector3.Distance(target.transform.position, requesterDamageable.Position); 
                 if (distToTarget < minDist)
                 {
                     minDist = distToTarget;
@@ -128,6 +128,12 @@ namespace RTS
                 return null;
 
             return possibleTarget.GetComponent<MonoBehaviour>();
+        }
+
+        public static bool HasObstaclesToTarget()
+        {
+            // TODO: Finish it.
+            return false;
         }
 
         #endregion
