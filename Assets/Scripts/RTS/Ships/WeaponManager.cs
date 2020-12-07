@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using RTS.Controls;
 using UnityEngine;
 using RTS.Weapons;
 
@@ -11,7 +12,7 @@ namespace RTS.Ships
 
         private bool _shouldAttackMain;
         private bool _shouldAttackOnboard;
-        private MonoBehaviour _currTarget;
+        private ITargetable _currTarget;
 
         private List<MainWeaponBase> _mainWeapons;
         private OnboardWeaponBase _onboardWeapon;
@@ -45,7 +46,7 @@ namespace RTS.Ships
 
         #region Public API
 
-        public void UpdateWeaponSystem(bool shouldAttackMain, bool shouldAttackOnboard, MonoBehaviour target = null)
+        public void UpdateWeaponSystem(bool shouldAttackMain, bool shouldAttackOnboard, ITargetable target = null)
         {
             _currTarget = target;
             _shouldAttackMain = shouldAttackMain;
@@ -60,10 +61,10 @@ namespace RTS.Ships
             switch (ActiveDirection)
             {
                 case ActiveDirection.Front:
-                    rotation = (_currTarget.transform.position - transform.position).normalized;
+                    rotation = (_currTarget.Transform.position - transform.position).normalized;
                     break;
                 case ActiveDirection.Sides:
-                    var directToTarget = (_currTarget.transform.position - transform.position).normalized;
+                    var directToTarget = (_currTarget.Transform.position - transform.position).normalized;
                     var angle = 90f;
                     if (Vector3.Angle(transform.right, directToTarget) < 90f) angle = -90f;
                     rotation = Quaternion.AngleAxis(angle, Vector3.up) * directToTarget;

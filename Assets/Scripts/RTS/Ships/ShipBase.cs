@@ -56,7 +56,6 @@ namespace RTS.Ships
 
         private WeaponManager _weaponManager;
         private EngineManager _engineManager;
-        private DimensionPoints _dimensionPoints;
 
         private float _currHealthPoints;
 
@@ -69,8 +68,7 @@ namespace RTS.Ships
         private bool _isReachedDestination;
         private bool _isShipMoving;
 
-        private MonoBehaviour _currTarget;
-        private IDamageable _currTargetDamageable;
+        private ITargetable _currTarget;
 
         private bool _shouldOnboardGunShoot;
         private bool _shouldMainGunShoot;
@@ -84,10 +82,10 @@ namespace RTS.Ships
         public float ExplosionForce => explosionForce;
         public float ExplosionRadius => explosionRadius;
         public Vector3 Position => transform.position;
+        public Transform Transform => transform;
         public IDamageable Damageable => this;
         public List<GameObject> CreatedSpaceDerbis => _createdSpaceDerbis;
         public List<Transform> HitPositions => _hitPositions;
-        public DimensionPoints DimensionPoints => _dimensionPoints;
 
         #endregion
 
@@ -99,7 +97,6 @@ namespace RTS.Ships
             _rigidbody = GetComponent<Rigidbody>();
             _weaponManager = transform.GetComponentInChildren<WeaponManager>();
             _engineManager = transform.GetComponentInChildren<EngineManager>();
-            _dimensionPoints = transform.GetComponentInChildren<DimensionPoints>();
 
             _slowDownEndPrec = GlobalData.Instance.BattleshipSlowDownEndPrec;
             _facingTargetPrec = GlobalData.Instance.BattleshipFacingTargetPrec;
@@ -160,16 +157,16 @@ namespace RTS.Ships
 
         private void AttackTargetBehavior()
         {
-            if (!_currTargetDamageable.CanBeDamaged())
+            if (!_currTarget.Damageable.CanBeDamaged())
             {
                 StopAttack();
                 return;
             }
             
-            var distToTarget = Vector3.Distance(transform.position, _currTarget.transform.position);
+            var distToTarget = Vector3.Distance(transform.position, _currTarget.Transform.position);
             if (distToTarget > _weaponManager.AttackRange)
             {
-                _targetMovePos = _currTarget.transform.position;
+                _targetMovePos = _currTarget.Transform.position;
                 MoveToPositon(_targetMovePos, _state);
                 return;
             }
@@ -191,7 +188,6 @@ namespace RTS.Ships
             _state = State.Idle;
             _stateToSwitch = State.Idle;
             _currTarget = null;
-            _currTargetDamageable = null;
         }
 
         private void SwitchFireMode(FireMode mode, bool isMainFireMode = true)
@@ -237,7 +233,6 @@ namespace RTS.Ships
             }
 
             _currTarget = RTSGameController.GetClosestTarget(this, _weaponManager.AttackRange);
-            _currTargetDamageable = _currTarget != null ? _currTarget.GetComponent<IDamageable>() : null;
         }
 
         #endregion
@@ -250,7 +245,7 @@ namespace RTS.Ships
             {
                 if (_stateToSwitch == State.AttackTarget)
                 {
-                    _targetMovePos = _currTarget.transform.position;
+                    _targetMovePos = _currTarget.Transform.position;
                     MoveToPositon(_targetMovePos, _state);
                     var distToTarget = Vector3.Distance(transform.position, _targetMovePos);
                     if (distToTarget <= _weaponManager.AttackRange)
@@ -406,10 +401,9 @@ namespace RTS.Ships
         
         #region IAttackable Implementation
 
-        public void AttackTarget(MonoBehaviour target)
+        public void AttackTarget(ITargetable target)
         {
             _currTarget = target;
-            _currTargetDamageable = target.GetComponent<IDamageable>();
             _state = State.AttackTarget;
         }
 

@@ -92,13 +92,13 @@ namespace RTS.Controls
         {
             if (!_isInit) return false;
             
-            var damageable = monoBehaviourObj.GetComponent<IDamageable>();
-            var targetable = monoBehaviourObj.GetComponent<ITargetable>();
-            if (damageable != null)
+            var damageable = (IDamageable)monoBehaviourObj;
+            var targetable = (ITargetable)monoBehaviourObj;
+            if (damageable != null && targetable != null)
             {
                 if (targetable.IsEnemy(_targetable.TeamId) && damageable.CanBeDamaged())
                 {
-                    _attackable.AttackTarget(monoBehaviourObj);
+                    _attackable.AttackTarget(targetable);
                     return true;
                 }
             }

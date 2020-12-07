@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GameGlobal;
 using RTS.Controls;
 using RTS.Ships;
@@ -54,18 +55,18 @@ namespace RTS
         #endregion
 
         #region Unity Events
-
+        
         private void Start()
         {
             SpawnBattleshipAtPosition(new Vector3(-19, 0, 5), true);
-            //SpawnBattleshipAtPosition(new Vector3(-25, 0, 5), true);
+            SpawnBattleshipAtPosition(new Vector3(-25, 0, 5), true);
         }
-
+        
         #endregion
 
         #region Spawn Logic
 
-        private void SpawnBattleshipAtPosition(Vector3 position, bool isFriend)
+        private GameObject SpawnBattleshipAtPosition(Vector3 position, bool isFriend)
         {
             var spawnPos = new Vector3(position.x, GlobalData.Instance.RtsShipsPosY, position.z);
             var shipGameObject = Instantiate(shipToSpawn, spawnPos, Quaternion.identity);
@@ -75,35 +76,29 @@ namespace RTS
             shipGameObject.AddComponent<AIShipController>().enabled = !isFriend;
 
             _allShips.Add(shipGameObject);
+            return shipGameObject;
         }
 
         #endregion
 
         #region Static Methods
-        
-        public static bool TargetExistAndReachable(ITargetable requester, MonoBehaviour targetMono, float range)
-        {
-            if (targetMono == null) return false;
-            var target = targetMono.GetComponent<ITargetable>();
-            return TargetExistAndReachable(requester, target, range);
-        }
-        
+
         public static bool TargetExistAndReachable(ITargetable requester, ITargetable target, float range)
         {
             var conditionsMet = false;
             if (target != null && target.IsEnemy(requester.TeamId) && target.Damageable.CanBeDamaged())
             {
-                if (Vector3.Distance(requester.Position, target.Position) <= range)
+                if (Vector3.Distance(requester.Transform.position, target.Transform.position) <= range && IsTargetInLineOfSight(requester, target))
                     conditionsMet = true; 
             }
             return conditionsMet;
         }
 
-        public static MonoBehaviour GetClosestTarget(ITargetable requester, float range, ITargetable preferredTarget = null)
+        public static ITargetable GetClosestTarget(ITargetable requester, float range, ITargetable preferredTarget = null)
         {
-            var possibleTargets = Physics.OverlapSphere(requester.Position, range);
+            var possibleTargets = Physics.OverlapSphere(requester.Transform.position, range);
             var minDist = float.MaxValue;
-            Collider possibleTarget = null;
+            ITargetable possibleTarget = null;
             foreach (var targetCollider in possibleTargets)
             {
                 if (targetCollider.transform == requester) continue;
@@ -112,31 +107,39 @@ namespace RTS
                 if (!target.Damageable.CanBeDamaged() || !target.IsEnemy(requester.TeamId)) continue;
                 if (target == preferredTarget)
                 {
-                    possibleTarget = targetCollider;
+                    possibleTarget = target;
                     break;
                 }
 
-                var distToTarget = Vector3.Distance(targetCollider.transform.position, requester.Position); 
+                var distToTarget = Vector3.Distance(targetCollider.transform.position, requester.Transform.position); 
                 if (distToTarget < minDist)
                 {
                     minDist = distToTarget;
-                    possibleTarget = targetCollider;
+                    possibleTarget = target;
                 }
             }
 
-            if (possibleTarget == null)
+            if (possibleTarget == null || !IsTargetInLineOfSight(requester, possibleTarget))
                 return null;
 
-            return possibleTarget.GetComponent<MonoBehaviour>();
+            return possibleTarget;
         }
 
-        public static bool HasObstaclesToTarget()
+        public static bool IsTargetInLineOfSight(ITargetable requester, ITargetable target)
         {
-            // TODO: Finish it.
+            if (target == null) return false;
+            if (Physics.Linecast(requester.Transform.position, target.Transform.position, out var hit))
+            {
+                var hitTarget = hit.collider.GetComponent<ITargetable>();
+                if (hitTarget != null && hitTarget == target)
+                    return true;
+            }
             return false;
         }
 
         #endregion
+        
+        #region Private Functions
         
         private void CreateExplosionAtPos(Vector3 position, float radius, float force)
         {
@@ -167,5 +170,7 @@ namespace RTS
                 }
             }
         }
+        
+        #endregion
     }
 }

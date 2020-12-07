@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using RTS.Controls;
+using RTS.Ships;
 using UnityEngine;
 
 namespace RTS.Weapons
@@ -12,14 +13,14 @@ namespace RTS.Weapons
         [Header("Onboard Weapon")] 
         [SerializeField] protected Transform turretsContainer;
 
-        private ITargetable _preferredTarget;
-        private ITargetable _currentTarget;
+        private ITargetable _prefTarget;
+        private ITargetable _currTarget;
         private ITargetable _lastTraget;
         private float _timeNextDamage;
         private List<OnboardTurretBase> _turrets = new List<OnboardTurretBase>();
 
         protected List<Transform> TurretTransforms { get; private set; }
-        protected ITargetable CurrentTarget => _currentTarget;
+        protected ITargetable CurrTarget => _currTarget;
 
         #endregion
 
@@ -40,11 +41,11 @@ namespace RTS.Weapons
             if (process)
             {
                 ProcessTarget();
-                DamageTarget(_currentTarget);
+                DamageTarget(_currTarget);
             }
             else
             {
-                _currentTarget = null;
+                _currTarget = null;
                 _lastTraget = null;
             }
 
@@ -59,8 +60,8 @@ namespace RTS.Weapons
         private void ProcessTurretRotating()
         {
             var targetPos = Vector3.zero;
-            var hasTarget = _currentTarget != null;
-            if (hasTarget) targetPos = _currentTarget.Position;
+            var hasTarget = _currTarget != null;
+            if (hasTarget) targetPos = _currTarget.Transform.position;
 
             foreach (var turret in _turrets)
                 turret.UpdateTurret(hasTarget, targetPos);
@@ -68,11 +69,10 @@ namespace RTS.Weapons
 
         private void ProcessTarget()
         {
-            if (RTSGameController.TargetExistAndReachable(TargetableShip, _currentTarget, attackRange))
+            if (RTSGameController.TargetExistAndReachable(TargetableShip, _currTarget, attackRange))
                 return;
 
-            var target = RTSGameController.GetClosestTarget(TargetableShip, attackRange, _preferredTarget);
-            if (target != null) _currentTarget = target.GetComponent<ITargetable>();
+            _currTarget = RTSGameController.GetClosestTarget(TargetableShip, attackRange, _prefTarget);
         }
         
         private void DamageTarget(ITargetable target)

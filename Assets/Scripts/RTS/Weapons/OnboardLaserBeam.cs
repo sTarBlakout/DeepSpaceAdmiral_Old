@@ -27,13 +27,13 @@ namespace RTS.Weapons
         
         protected override void ProcessVisuals()
         {
-            if (CurrentTarget == null) return;
+            if (CurrTarget == null) return;
             
             foreach (var laserTurret in _laserTurrets)
             {
                 if (!(Random.value <= shootChance)) continue;
-                var randomPointId = Random.Range(0, CurrentTarget.HitPositions.Count);
-                laserTurret.Shoot(CurrentTarget.HitPositions[randomPointId].position);
+                var randomPointId = Random.Range(0, CurrTarget.HitPositions.Count);
+                laserTurret.Shoot(CurrTarget.HitPositions[randomPointId].position);
             }
         }
     }
