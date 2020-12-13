@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using GameGlobal;
 using RTS.Controls;
+using RTS.Interfaces;
 using RTS.Ships;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -59,7 +60,7 @@ namespace RTS
         private void Start()
         {
             SpawnBattleshipAtPosition(new Vector3(-19, 0, 5), true);
-            SpawnBattleshipAtPosition(new Vector3(-25, 0, 5), true);
+            //SpawnBattleshipAtPosition(new Vector3(-25, 0, 5), true);
         }
         
         #endregion

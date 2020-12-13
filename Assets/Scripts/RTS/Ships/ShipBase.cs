@@ -4,11 +4,13 @@ using System.Linq;
 using UnityEngine;
 using GameGlobal;
 using RTS.Controls;
+using RTS.Interfaces;
 using Random = UnityEngine.Random;
 
 namespace RTS.Ships
 {
-    public abstract class ShipBase : MonoBehaviour, IMoveable, IDamageable, IAttackable, ITargetable, ISelectable, IExplosible, IBehaviorSwitchable
+    public abstract class ShipBase : MonoBehaviour, IMoveable, IDamageable, IAttackable, ITargetable, ISelectable, 
+        IExplosible, IBehaviorSwitchable, IRamable
     {
         #region Data
 
@@ -36,6 +38,11 @@ namespace RTS.Ships
         [SerializeField] private GameObject[] destructLvlMeshes;
         [SerializeField] private Transform hitPointsTransform;
         [Range(0, 1)] [SerializeField] private float partsStayOnExplChance;
+
+        [Header("Ramming")] 
+        [SerializeField] private float maxRammingAngle;
+        [SerializeField] private float ramDamImpModifier;
+        [SerializeField] private float ramDamDecStep;
         
         public Action<GameObject> OnShipDestroyed;
 
@@ -72,6 +79,8 @@ namespace RTS.Ships
 
         private bool _shouldOnboardGunShoot;
         private bool _shouldMainGunShoot;
+
+        private float _ramDamageImpulse = -1f;
 
         #endregion
 
@@ -129,6 +138,16 @@ namespace RTS.Ships
             _weaponManager.UpdateWeaponSystem(_shouldMainGunShoot, _shouldOnboardGunShoot, _currTarget);
         }
         
+        private void OnCollisionStay(Collision other)
+        {
+            ProcessRamming(other);
+        }
+
+        private void OnCollisionExit(Collision other)
+        {
+            ResetRamming();
+        }
+
         #endregion
 
         #region Private/Protected Functions
@@ -316,6 +335,36 @@ namespace RTS.Ships
             _rigidbody.AddTorque(0, rotationAmount, 0);
         }
         
+        #endregion
+        
+        #region Ramming Logic
+
+        private void ProcessRamming(Collision collision)
+        {
+            // TODO: Mb try damage modified by velocity?
+            var ramable = collision.gameObject.GetComponent<IRamable>();
+            if (ramable == null) return;
+
+            if (_ramDamageImpulse < 0)
+                _ramDamageImpulse = collision.impulse.magnitude / Time.fixedDeltaTime;
+            else
+                _ramDamageImpulse = Mathf.Max(_ramDamageImpulse - ramDamDecStep, 0f);
+            
+            var myTransform = transform;
+            foreach (var contact in collision.contacts)
+            {
+                var directionToContact = (contact.point - myTransform.position).normalized;
+                var angle = Vector3.Angle(myTransform.forward, directionToContact);
+                if (angle <= maxRammingAngle)
+                    ramable.Damageable.Damage(_ramDamageImpulse * ramDamImpModifier);
+            }
+        }
+
+        private void ResetRamming()
+        {
+            _ramDamageImpulse = -1f;
+        }
+
         #endregion
 
         #region Destruction Logic

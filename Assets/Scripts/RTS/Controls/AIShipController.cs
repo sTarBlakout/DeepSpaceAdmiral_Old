@@ -1,5 +1,6 @@
 ﻿using System;
 using GameGlobal;
+using RTS.Interfaces;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
