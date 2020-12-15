@@ -434,11 +434,13 @@ namespace RTS.Ships
 
         public void MoveToPositon(Vector3 position, State state = State.MoveToPosition)
         {
+            if (state == State.Order) StopAttack();
+            
             _targetMovePos = position;
             _isReachedDestination = false;
             _state = State.MoveToPosition;
-            if (state != State.MoveToPosition)
-                _stateToSwitch = state;
+            
+            if (state == State.AttackTarget) _stateToSwitch = state;
         }
 
         public void ForceStop()

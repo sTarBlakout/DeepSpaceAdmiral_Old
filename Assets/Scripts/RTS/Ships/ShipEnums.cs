@@ -6,6 +6,7 @@
         MoveToPosition,
         AttackTarget,
         Destroyed,
+        Order,
         Empty
     }
 

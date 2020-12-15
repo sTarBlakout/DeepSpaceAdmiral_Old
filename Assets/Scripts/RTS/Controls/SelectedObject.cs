@@ -1,5 +1,6 @@
 ﻿using System;
 using RTS.Interfaces;
+using RTS.Ships;
 using UnityEngine;
 
 namespace RTS.Controls
@@ -75,7 +76,7 @@ namespace RTS.Controls
         {
             if (!_isInit) return;
 
-            _moveable?.MoveToPositon(position);
+            _moveable?.MoveToPositon(position, State.Order);
         }
 
         public void StopAllActions()
