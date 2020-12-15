@@ -204,8 +204,10 @@ namespace RTS.Ships
                 SwitchFireMode(FireMode.NoGuns);
             else
                 SwitchFireMode(_fireMode);
-            _state = State.Idle;
-            _stateToSwitch = State.Idle;
+            if (_state == State.AttackTarget)
+                _state = State.Idle;
+            if (_stateToSwitch == State.AttackTarget)
+                _stateToSwitch = State.Idle;
             _currTarget = null;
         }
 
@@ -341,7 +343,6 @@ namespace RTS.Ships
 
         private void ProcessRamming(Collision collision)
         {
-            // TODO: Mb try damage modified by velocity?
             var ramable = collision.gameObject.GetComponent<IRamable>();
             if (ramable == null) return;
 
