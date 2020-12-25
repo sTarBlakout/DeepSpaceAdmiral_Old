@@ -43,7 +43,9 @@ namespace RTS.Ships
         [SerializeField] private float maxRammingAngle;
         [SerializeField] private float ramDamImpModifier;
         [SerializeField] private float ramDamDecStep;
-        
+        [SerializeField] private float damageThreshold;
+        [SerializeField] private GameObject ramHitExplosion;
+
         public Action<GameObject> OnShipDestroyed;
 
         private readonly List<ParticleManager> _mainExplosionParticles = new List<ParticleManager>();
@@ -80,6 +82,7 @@ namespace RTS.Ships
         private bool _shouldOnboardGunShoot;
         private bool _shouldMainGunShoot;
 
+        private Dictionary<IRamable, GameObject> _rammerExplDict = new Dictionary<IRamable, GameObject>();
         private float _ramDamageImpulse = -1f;
 
         #endregion
@@ -145,7 +148,7 @@ namespace RTS.Ships
 
         private void OnCollisionExit(Collision other)
         {
-            ResetRamming();
+            ResetRamming(other);
         }
 
         #endregion
@@ -357,13 +360,16 @@ namespace RTS.Ships
                 var directionToContact = (contact.point - myTransform.position).normalized;
                 var angle = Vector3.Angle(myTransform.forward, directionToContact);
                 if (angle <= maxRammingAngle)
-                    ramable.Damageable.Damage(_ramDamageImpulse * ramDamImpModifier);
+                    ramable.Ramming(_ramDamageImpulse * ramDamImpModifier, contact.point, this);
             }
         }
 
-        private void ResetRamming()
+        private void ResetRamming(Collision collision)
         {
             _ramDamageImpulse = -1f;
+
+            var rammable = collision.gameObject.GetComponent<IRamable>();
+            rammable?.StopRamming(this);
         }
 
         #endregion
@@ -529,6 +535,35 @@ namespace RTS.Ships
                 return _fireMode;
 
             return null;
+        }
+        
+        #endregion
+        
+        #region IRamable Implementation
+        
+        public void Ramming(float damage, Vector3 ramPoint, IRamable rammer)
+        {
+            Damage(damage);
+            
+            if (!_rammerExplDict.ContainsKey(rammer))
+            {
+                if (damage >= damageThreshold)
+                {
+                    var hitExpl = Instantiate(ramHitExplosion, ramPoint, Quaternion.identity);
+                    _rammerExplDict.Add(rammer, hitExpl);
+                }
+            }
+            else
+            {
+                var explParticle = _rammerExplDict.FirstOrDefault(pair => pair.Key == rammer);
+                if (explParticle.Value != null) explParticle.Value.transform.position = ramPoint;
+            }
+        }
+
+        public void StopRamming(IRamable rammer)
+        {
+            if (_rammerExplDict.ContainsKey(rammer))
+                _rammerExplDict.Remove(rammer);
         }
         
         #endregion

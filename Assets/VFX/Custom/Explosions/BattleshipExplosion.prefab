@@ -41,7 +41,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1002657561601884}
   serializedVersion: 6
   lengthInSec: 0.35
-  simulationSpeed: 0.5
+  simulationSpeed: 0.2
   stopAction: 0
   cullingMode: 3
   ringBufferMode: 0
@@ -4862,7 +4862,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1181026164354470}
   serializedVersion: 6
   lengthInSec: 2.5
-  simulationSpeed: 0.5
+  simulationSpeed: 0.2
   stopAction: 0
   cullingMode: 1
   ringBufferMode: 0
@@ -9674,7 +9674,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1694455865950246}
   serializedVersion: 6
   lengthInSec: 2.5
-  simulationSpeed: 0.5
+  simulationSpeed: 0.2
   stopAction: 0
   cullingMode: 3
   ringBufferMode: 0
@@ -14487,7 +14487,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1880211421563480}
   serializedVersion: 6
   lengthInSec: 2.5
-  simulationSpeed: 0.5
+  simulationSpeed: 0.2
   stopAction: 0
   cullingMode: 3
   ringBufferMode: 0
@@ -19299,7 +19299,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1903717373349070}
   serializedVersion: 6
   lengthInSec: 2.5
-  simulationSpeed: 0.5
+  simulationSpeed: 0.2
   stopAction: 0
   cullingMode: 3
   ringBufferMode: 0
@@ -24125,7 +24125,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1905092842673754}
   serializedVersion: 6
   lengthInSec: 2.5
-  simulationSpeed: 0.5
+  simulationSpeed: 0.2
   stopAction: 0
   cullingMode: 3
   ringBufferMode: 0
@@ -28908,3 +28908,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d828e90a7197784d9a19b5c97c3ec0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activateOnAwake: 1

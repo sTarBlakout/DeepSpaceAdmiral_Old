@@ -1,7 +1,10 @@
-﻿namespace RTS.Interfaces
+﻿using UnityEngine;
+
+namespace RTS.Interfaces
 {
     public interface IRamable
     {
-        IDamageable Damageable { get; }
+        void Ramming(float damage, Vector3 ramPoint, IRamable rammer);
+        void StopRamming(IRamable rammer);
     }
 }
