@@ -45,6 +45,7 @@ namespace RTS.Ships
         [SerializeField] private float ramDamDecStep;
         [SerializeField] private float damageThreshold;
         [SerializeField] private GameObject ramHitExplosion;
+        [SerializeField] private GameObject frictionParticle;
 
         public Action<GameObject> OnShipDestroyed;
 
@@ -83,6 +84,7 @@ namespace RTS.Ships
         private bool _shouldMainGunShoot;
 
         private Dictionary<IRamable, GameObject> _rammerExplDict = new Dictionary<IRamable, GameObject>();
+        private Dictionary<Collision, List<GameObject>> _particleCollDict = new Dictionary<Collision, List<GameObject>>();
         private float _ramDamageImpulse = -1f;
 
         #endregion
@@ -144,6 +146,7 @@ namespace RTS.Ships
         private void OnCollisionStay(Collision other)
         {
             ProcessRamming(other);
+            ProcessFriction(other);
         }
 
         private void OnCollisionExit(Collision other)
@@ -343,6 +346,35 @@ namespace RTS.Ships
         #endregion
         
         #region Ramming Logic
+
+        private void ProcessFriction(Collision collision)
+        {
+            if (!_particleCollDict.ContainsKey(collision))
+            {
+                var particleList = new List<GameObject>();
+                foreach (var contact in collision.contacts)
+                    particleList.Add(Instantiate(frictionParticle, contact.point, Quaternion.identity));
+                _particleCollDict.Add(collision, particleList);
+            }
+            else
+            {
+                var colParticles = _particleCollDict.FirstOrDefault(pair => pair.Key == collision);
+                if (colParticles.Key.contactCount != collision.contactCount)
+                {
+                    var particleList = new List<GameObject>();
+                    foreach (var particle in colParticles.Value)
+                    {
+                        foreach (var contact in collision.contacts)
+                        {
+                            if (GlobalData.VectorsApproxEqual(contact.point, particle.transform.position, 0.1f))
+                                particleList.Add(particle);
+                        }
+                    }
+
+                    // TODO: finish here
+                }
+            }
+        }
 
         private void ProcessRamming(Collision collision)
         {

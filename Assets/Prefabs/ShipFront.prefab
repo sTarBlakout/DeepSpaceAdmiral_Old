@@ -55493,6 +55493,8 @@ MonoBehaviour:
   damageThreshold: 4
   ramHitExplosion: {fileID: 1191624696711110, guid: 48a827ebaedb6214e962b63f5959c8d4,
     type: 3}
+  frictionParticle: {fileID: 2953989883984934608, guid: 4c3746632f865e048b08da9df330b3fa,
+    type: 3}
 --- !u!1 &6650746610045840802
 GameObject:
   m_ObjectHideFlags: 0
