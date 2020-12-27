@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -49,6 +50,7 @@ namespace RTS.Ships
 
         public Action<GameObject> OnShipDestroyed;
 
+        private readonly List<Collision> _currentCollisions = new List<Collision>();
         private readonly List<ParticleManager> _mainExplosionParticles = new List<ParticleManager>();
         private readonly List<GameObject> _createdSpaceDerbis = new List<GameObject>();
         private List<Transform> _hitPositions;
@@ -83,8 +85,8 @@ namespace RTS.Ships
         private bool _shouldOnboardGunShoot;
         private bool _shouldMainGunShoot;
 
+        private Dictionary<GameObject, Coroutine> _objectCorDict = new Dictionary<GameObject, Coroutine>(); 
         private Dictionary<IRamable, GameObject> _rammerExplDict = new Dictionary<IRamable, GameObject>();
-        private Dictionary<Collision, List<GameObject>> _particleCollDict = new Dictionary<Collision, List<GameObject>>();
         private float _ramDamageImpulse = -1f;
 
         #endregion
@@ -142,15 +144,26 @@ namespace RTS.Ships
             
             _weaponManager.UpdateWeaponSystem(_shouldMainGunShoot, _shouldOnboardGunShoot, _currTarget);
         }
-        
+
+        private void OnCollisionEnter(Collision other)
+        {
+            if (!_currentCollisions.Contains(other))
+            {
+                _currentCollisions.Add(other);
+                StartNewFriction(other);
+            }
+        }
+
         private void OnCollisionStay(Collision other)
         {
             ProcessRamming(other);
-            ProcessFriction(other);
         }
 
         private void OnCollisionExit(Collision other)
         {
+            if (_currentCollisions.Contains(other))
+                _currentCollisions.Remove(other);
+            
             ResetRamming(other);
         }
 
@@ -346,34 +359,25 @@ namespace RTS.Ships
         #endregion
         
         #region Ramming Logic
-
-        private void ProcessFriction(Collision collision)
+        
+        private void StartNewFriction(Collision collision)
         {
-            if (!_particleCollDict.ContainsKey(collision))
-            {
-                var particleList = new List<GameObject>();
-                foreach (var contact in collision.contacts)
-                    particleList.Add(Instantiate(frictionParticle, contact.point, Quaternion.identity));
-                _particleCollDict.Add(collision, particleList);
-            }
-            else
-            {
-                var colParticles = _particleCollDict.FirstOrDefault(pair => pair.Key == collision);
-                if (colParticles.Key.contactCount != collision.contactCount)
-                {
-                    var particleList = new List<GameObject>();
-                    foreach (var particle in colParticles.Value)
-                    {
-                        foreach (var contact in collision.contacts)
-                        {
-                            if (GlobalData.VectorsApproxEqual(contact.point, particle.transform.position, 0.1f))
-                                particleList.Add(particle);
-                        }
-                    }
+            var friction = Instantiate(frictionParticle, collision.contacts[0].point, Quaternion.identity);
+            StartCoroutine(ProcessFrictionParticles(collision, friction));
+        }
 
-                    // TODO: finish here
+        private IEnumerator ProcessFrictionParticles(Collision collision, GameObject particle)
+        {
+            while (collision.gameObject != null && _isShipMoving)
+            {
+                if (_currentCollisions.Any(col => col.gameObject == collision.gameObject))
+                {
+                    particle.transform.position = collision.contacts[0].point;
+                    yield return new WaitForSeconds(0.1f);
                 }
+                else break;
             }
+            particle.GetComponent<ParticleSystem>().Stop();
         }
 
         private void ProcessRamming(Collision collision)
