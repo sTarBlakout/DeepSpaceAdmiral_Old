@@ -150,7 +150,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ab212fac1e447a39857c36a1f37ca5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fps: 60
   rtsShipsPosY: 2
+  unitSpeedMod: 1000
   battleshipSlowDownEndPrec: 0.1
   battleshipFacingTargetPrec: 0.999
   battleshipSideEngineTriggerMove: 0.5

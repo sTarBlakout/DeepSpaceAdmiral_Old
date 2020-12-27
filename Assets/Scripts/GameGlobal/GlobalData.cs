@@ -6,7 +6,9 @@ namespace GameGlobal
     {
         #region Data
 
+        [SerializeField] private int fps;
         [SerializeField] private float rtsShipsPosY;
+        [SerializeField] private float unitSpeedMod;
         
         [SerializeField] private float battleshipSlowDownEndPrec = 0.1f;
         [SerializeField] private float battleshipFacingTargetPrec = 0.999f;
@@ -19,6 +21,7 @@ namespace GameGlobal
 
         #region Getters
         public float RtsShipsPosY => rtsShipsPosY;
+        public float UnitSpeedMod => unitSpeedMod;
         public float BattleshipSlowDownEndPrec => battleshipSlowDownEndPrec;
         public float BattleshipFacingTargetPrec => battleshipFacingTargetPrec;
         public float BattleshipSideEngineTriggerMove => battleshipSideEngineTriggerMove;
@@ -45,7 +48,9 @@ namespace GameGlobal
         #region Unity Events
 
         private void Awake() 
-        { 
+        {
+            Application.targetFrameRate = fps;
+            
             DontDestroyOnLoad(gameObject);
             DontDestroyOnLoad(particleContainer);
         }

@@ -55470,6 +55470,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   teamId: 0
   maxHealthPoints: 10000
+  mass: 1000
   maxMovementSpeed: 300
   rotationSpeed: 200
   reachedDistOffset: 2
@@ -55488,7 +55489,7 @@ MonoBehaviour:
   hitPointsTransform: {fileID: 797873722890805414}
   partsStayOnExplChance: 0
   maxRammingAngle: 10
-  ramDamImpModifier: 0.05
+  ramDamImpModifier: 0.001
   ramDamDecStep: 1.5
   damageThreshold: 4
   ramHitExplosion: {fileID: 1191624696711110, guid: 48a827ebaedb6214e962b63f5959c8d4,

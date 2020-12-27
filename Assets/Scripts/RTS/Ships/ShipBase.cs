@@ -18,6 +18,7 @@ namespace RTS.Ships
         [Header("General")]
         [SerializeField] public byte teamId; 
         [SerializeField] private float maxHealthPoints;
+        [SerializeField] private float mass;
 
         [Header("Movement")]
         [SerializeField] private float maxMovementSpeed = 1f;
@@ -84,10 +85,13 @@ namespace RTS.Ships
 
         private bool _shouldOnboardGunShoot;
         private bool _shouldMainGunShoot;
-
-        private Dictionary<GameObject, Coroutine> _objectCorDict = new Dictionary<GameObject, Coroutine>(); 
+        
         private Dictionary<IRamable, GameObject> _rammerExplDict = new Dictionary<IRamable, GameObject>();
-        private float _ramDamageImpulse = -1f;
+        private float _ramDamage = -1f;
+
+        private Queue<float> _unitSpdLastValues = new Queue<float>(); 
+        private Vector3 _lastPosition;
+        private float _unitSpeed;
 
         #endregion
 
@@ -124,6 +128,8 @@ namespace RTS.Ships
             _isReachedDestination = true;
             
             _hitPositions = hitPointsTransform.Cast<Transform>().ToList();
+
+            _lastPosition = transform.position;
         }
 
         protected virtual void Start()
@@ -143,6 +149,8 @@ namespace RTS.Ships
             _engineManager.UpdateEngines(_dotForward, _dotSide, _rigidbody.angularVelocity.y, _isShipMoving);
             
             _weaponManager.UpdateWeaponSystem(_shouldMainGunShoot, _shouldOnboardGunShoot, _currTarget);
+            
+            CalculateUnitSpeed();
         }
 
         private void OnCollisionEnter(Collision other)
@@ -171,6 +179,16 @@ namespace RTS.Ships
 
         #region Private/Protected Functions
 
+        private void CalculateUnitSpeed()
+        {
+            var position = transform.position;
+            _unitSpeed = (position - _lastPosition).magnitude * GlobalData.Instance.UnitSpeedMod;
+            _lastPosition = position;
+            if (_unitSpdLastValues.Count >= 5)
+                _unitSpdLastValues.Dequeue();
+            _unitSpdLastValues.Enqueue(_unitSpeed);
+        }
+        
         protected void ProcessState()
         {
             switch (_state)
@@ -385,24 +403,22 @@ namespace RTS.Ships
             var ramable = collision.gameObject.GetComponent<IRamable>();
             if (ramable == null) return;
 
-            if (_ramDamageImpulse < 0)
-                _ramDamageImpulse = collision.impulse.magnitude / Time.fixedDeltaTime;
+            if (_ramDamage < 0)
+                _ramDamage = _unitSpdLastValues.Max() * mass * ramDamImpModifier;
             else
-                _ramDamageImpulse = Mathf.Max(_ramDamageImpulse - ramDamDecStep, 0f);
-            
+                _ramDamage = Mathf.Max(_ramDamage - ramDamDecStep, 0f);
+
             var myTransform = transform;
-            foreach (var contact in collision.contacts)
-            {
-                var directionToContact = (contact.point - myTransform.position).normalized;
-                var angle = Vector3.Angle(myTransform.forward, directionToContact);
-                if (angle <= maxRammingAngle)
-                    ramable.Ramming(_ramDamageImpulse * ramDamImpModifier, contact.point, this);
-            }
+            var directionToContact = (collision.contacts[0].point - myTransform.position).normalized;
+            var angle = Vector3.Angle(myTransform.forward, directionToContact);
+            if (angle <= maxRammingAngle)
+                ramable.Ramming(_ramDamage, collision.contacts[0].point, this);
+
         }
 
         private void ResetRamming(Collision collision)
         {
-            _ramDamageImpulse = -1f;
+            _ramDamage = -1f;
 
             var rammable = collision.gameObject.GetComponent<IRamable>();
             rammable?.StopRamming(this);
