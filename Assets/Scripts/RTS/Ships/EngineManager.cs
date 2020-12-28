@@ -14,6 +14,7 @@ namespace RTS.Ships
         [SerializeField] private Transform leftEngineSection;
 
         [SerializeField] private float startMainEngineMinDot;
+        [SerializeField] private float slowDownEngThld;
 
         private List<ParticleSystem> _mainEngines = new List<ParticleSystem>();
         private List<ParticleSystem> _rightEngines = new List<ParticleSystem>();
@@ -53,13 +54,13 @@ namespace RTS.Ships
             ActivateEngineSection(EngineSection.Right, false);
         }
 
-        public void UpdateEngines(float dotForward, float dotSide, float angularVelY, bool isShipMoving)
+        public void UpdateEngines(float dotForward, float dotSide, float angularVelY, float unitSpd, bool reachedDest)
         {
             if (!_isEngineSystemOn) return;
             
             bool shouldSideEnginesWork;
                 
-            if (isShipMoving)
+            if (unitSpd >= slowDownEngThld * GlobalData.Instance.UnitSpeedMod || !reachedDest)
             {
                 ActivateEngineSection(EngineSection.Main, dotForward > startMainEngineMinDot);
                 shouldSideEnginesWork = dotForward < _sideEngineActTrigMove;

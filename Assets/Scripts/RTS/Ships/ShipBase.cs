@@ -146,7 +146,7 @@ namespace RTS.Ships
             
             _isShipMoving = _unitSpeed >= _slowDownEndPrec && _state == State.MoveToPosition;
             
-            _engineManager.UpdateEngines(_dotForward, _dotSide, _rigidbody.angularVelocity.y, _isShipMoving);
+            _engineManager.UpdateEngines(_dotForward, _dotSide, _rigidbody.angularVelocity.y, _unitSpeed, _isReachedDestination);
             _weaponManager.UpdateWeaponSystem(_shouldMainGunShoot, _shouldOnboardGunShoot, _currTarget);
             
             CalculateUnitSpeed();

@@ -10347,6 +10347,7 @@ MonoBehaviour:
   rightEngineSection: {fileID: 2244665097156025709}
   leftEngineSection: {fileID: 7069783923572667854}
   startMainEngineMinDot: 0.15
+  slowDownEngThld: 0.05
 --- !u!1 &1881061369117385602
 GameObject:
   m_ObjectHideFlags: 0
