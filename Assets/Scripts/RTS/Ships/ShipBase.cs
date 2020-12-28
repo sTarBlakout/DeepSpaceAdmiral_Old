@@ -143,11 +143,10 @@ namespace RTS.Ships
         protected virtual void FixedUpdate()
         {
             ProcessState();
-
-            var anyMovements = !GlobalData.VectorsApproxEqual(_rigidbody.velocity, Vector3.zero, _slowDownEndPrec);
-            _isShipMoving = anyMovements && _state == State.MoveToPosition;
-            _engineManager.UpdateEngines(_dotForward, _dotSide, _rigidbody.angularVelocity.y, _isShipMoving);
             
+            _isShipMoving = _unitSpeed >= _slowDownEndPrec && _state == State.MoveToPosition;
+            
+            _engineManager.UpdateEngines(_dotForward, _dotSide, _rigidbody.angularVelocity.y, _isShipMoving);
             _weaponManager.UpdateWeaponSystem(_shouldMainGunShoot, _shouldOnboardGunShoot, _currTarget);
             
             CalculateUnitSpeed();
@@ -386,7 +385,7 @@ namespace RTS.Ships
 
         private IEnumerator ProcessFrictionParticles(Collision collision, GameObject particle)
         {
-            while (collision.gameObject != null && _isShipMoving)
+            while (collision.collider != null && _isShipMoving)
             {
                 if (_currentCollisions.Any(col => col.gameObject == collision.gameObject))
                 {
@@ -514,7 +513,8 @@ namespace RTS.Ships
         public void AttackTarget(ITargetable target)
         {
             _currTarget = target;
-            _state = State.AttackTarget;
+            if (_state == State.MoveToPosition)
+                MoveToPositon(transform.position, State.AttackTarget);
         }
 
         public void ForceLooseTarget()

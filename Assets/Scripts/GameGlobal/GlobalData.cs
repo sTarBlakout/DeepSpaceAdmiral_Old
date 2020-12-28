@@ -22,7 +22,7 @@ namespace GameGlobal
         #region Getters
         public float RtsShipsPosY => rtsShipsPosY;
         public float UnitSpeedMod => unitSpeedMod;
-        public float BattleshipSlowDownEndPrec => battleshipSlowDownEndPrec;
+        public float BattleshipSlowDownEndPrec => battleshipSlowDownEndPrec * unitSpeedMod;
         public float BattleshipFacingTargetPrec => battleshipFacingTargetPrec;
         public float BattleshipSideEngineTriggerMove => battleshipSideEngineTriggerMove;
         public float BattleshipSideEngineTriggerStay => battleshipSideEngineTriggerStay;

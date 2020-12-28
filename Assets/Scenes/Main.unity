@@ -153,7 +153,7 @@ MonoBehaviour:
   fps: 60
   rtsShipsPosY: 2
   unitSpeedMod: 1000
-  battleshipSlowDownEndPrec: 0.1
+  battleshipSlowDownEndPrec: 0.01
   battleshipFacingTargetPrec: 0.999
   battleshipSideEngineTriggerMove: 0.5
   battleshipSideEngineTriggerStay: 0.999
