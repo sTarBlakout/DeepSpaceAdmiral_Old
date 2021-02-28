@@ -10,8 +10,8 @@ using Random = UnityEngine.Random;
 
 namespace RTS.Ships
 {
-    public abstract class ShipBase : MonoBehaviour, IMoveable, IDamageable, IAttackable, ITargetable, ISelectable, 
-        IExplosible, IBehaviorSwitchable, IRamable
+    public abstract class ShipBase : MonoBehaviour, 
+        IMoveable, IDamageable, IAttackable, ITargetable, ISelectable, IExplosible, IBehaviorSwitchable, IRamable, ICarriable
     {
         #region Data
 
@@ -48,6 +48,9 @@ namespace RTS.Ships
         [SerializeField] private float damageThreshold;
         [SerializeField] private GameObject ramHitExplosion;
         [SerializeField] private GameObject frictionParticle;
+
+        [Header("Carrier")] 
+        [SerializeField] private int[] squadronIds;
 
         public Action<GameObject> OnShipDestroyed;
 
@@ -618,6 +621,15 @@ namespace RTS.Ships
                 _rammerExplDict.Remove(rammer);
         }
         
+        #endregion
+        
+        #region ICarriable Implementation
+
+        public void LaunchSquadron(int id)
+        {
+            Debug.Log(id);
+        }
+
         #endregion
     }
 }
