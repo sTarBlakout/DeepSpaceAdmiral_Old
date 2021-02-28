@@ -151,13 +151,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fps: 60
-  rtsShipsPosY: 2
-  unitSpeedMod: 1000
-  battleshipSlowDownEndPrec: 0.01
-  battleshipFacingTargetPrec: 0.999
-  battleshipSideEngineTriggerMove: 0.5
-  battleshipSideEngineTriggerStay: 0.999
   particleContainer: {fileID: 1291819977}
+  rtsGameData: {fileID: 11400000, guid: bc4cbb7f562777d4c8ffe6ce71e02c82, type: 2}
 --- !u!4 &99946245
 Transform:
   m_ObjectHideFlags: 0

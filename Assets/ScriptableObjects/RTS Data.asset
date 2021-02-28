@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: RTS Data
   m_EditorClassIdentifier: Assembly-CSharp:ScriptableObjects.GlobalData:RtsGameData
-  rtsShipsPosY: 0
-  unitSpeedMod: 0
-  battleshipSlowDownEndPrec: 0.1
+  rtsShipsPosY: 2
+  unitSpeedMod: 1000
+  battleshipSlowDownEndPrec: 0.01
   battleshipFacingTargetPrec: 0.999
   battleshipSideEngineTriggerMove: 0.5
   battleshipSideEngineTriggerStay: 0.999
