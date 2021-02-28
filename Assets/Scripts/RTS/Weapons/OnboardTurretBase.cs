@@ -37,7 +37,7 @@ namespace RTS.Weapons
         {
             RotateGraphics(ShouldAttack ? _directionToTarget : graphicsContainer.forward);
             var dotProd = Vector3.Dot(_directionToTarget, graphicsRotator.forward);
-            var readyToShoot = dotProd > GlobalData.Instance.BattleshipFacingTargetPrec && ShouldAttack;
+            var readyToShoot = dotProd > AllData.Instance.RtsGameData.BattleshipFacingTargetPrec && ShouldAttack;
             return readyToShoot;
         }
 
@@ -47,7 +47,7 @@ namespace RTS.Weapons
             graphicsRotator.rotation = Quaternion.LookRotation(direction);
 
             var graphicsEulerAngles = graphicsRotator.localEulerAngles;
-            var xClamped = GlobalData.ClampAngle(graphicsEulerAngles.x, maxRotatingAngleX);
+            var xClamped = AllData.ClampAngle(graphicsEulerAngles.x, maxRotatingAngleX);
             var correctedAngles = new Vector3(xClamped, graphicsEulerAngles.y, 0f);
             graphicsRotator.localEulerAngles = correctedAngles;
         }

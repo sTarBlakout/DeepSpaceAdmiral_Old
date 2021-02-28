@@ -26,7 +26,7 @@ namespace GameGlobal
 
         public void ActivateParticle()
         {
-            transform.SetParent(GlobalData.Instance.ParticleContainer);
+            transform.SetParent(AllData.Instance.ParticleContainer);
             _particleSystem.Play();
             _activateDestroy = true;
         }

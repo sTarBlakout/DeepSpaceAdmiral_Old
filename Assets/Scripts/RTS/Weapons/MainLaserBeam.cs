@@ -120,9 +120,9 @@ namespace RTS.Weapons
             if (_laserBeamRenderer.enabled != _isBeamActive)
                 _laserBeamRenderer.enabled = activate;
 
-            GlobalData.ActivateParticle(_laserBeamStart, _isBeamActive);
-            GlobalData.ActivateParticle(_laserBeamHit, _isBeamActive && hitSmth);
-            GlobalData.ActivateParticle(_laserBeamEnd, _isBeamActive && !hitSmth);
+            AllData.ActivateParticle(_laserBeamStart, _isBeamActive);
+            AllData.ActivateParticle(_laserBeamHit, _isBeamActive && hitSmth);
+            AllData.ActivateParticle(_laserBeamEnd, _isBeamActive && !hitSmth);
         }
     }
 }

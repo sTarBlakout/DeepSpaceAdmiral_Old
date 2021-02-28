@@ -35,7 +35,7 @@ namespace GameGlobal
         {
             _leanChase.enabled = false;
             
-            var initPos = new Vector3(transform.position.x, GlobalData.Instance.RtsShipsPosY, transform.position.z);
+            var initPos = new Vector3(transform.position.x, AllData.Instance.RtsGameData.RtsShipsPosY, transform.position.z);
             transform.position = initPos;
         }
 
@@ -43,7 +43,7 @@ namespace GameGlobal
         {
             if (_leanChase.isActiveAndEnabled)
             {
-                if (GlobalData.VectorsApproxEqual(transform.position, _leanChase.Destination.position, ZoomObjPrec))
+                if (AllData.VectorsApproxEqual(transform.position, _leanChase.Destination.position, ZoomObjPrec))
                     _leanChase.enabled = false;
             }
         }

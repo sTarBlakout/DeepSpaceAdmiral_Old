@@ -1,44 +1,34 @@
-﻿using UnityEngine;
+﻿using ScriptableObjects.GlobalData;
+using UnityEngine;
 
 namespace GameGlobal
 {
-    public class GlobalData : MonoBehaviour
+    public class AllData : MonoBehaviour
     {
         #region Data
-
-        [SerializeField] private int fps;
-        [SerializeField] private float rtsShipsPosY;
-        [SerializeField] private float unitSpeedMod;
         
-        [SerializeField] private float battleshipSlowDownEndPrec = 0.1f;
-        [SerializeField] private float battleshipFacingTargetPrec = 0.999f;
-        [SerializeField] private float battleshipSideEngineTriggerMove = 0.5f;
-        [SerializeField] private float battleshipSideEngineTriggerStay = 0.999f;
-
+        [SerializeField] private int fps;
         [SerializeField] private Transform particleContainer;
+        [SerializeField] private RtsGameData rtsGameData;
         
         #endregion
 
         #region Getters
-        public float RtsShipsPosY => rtsShipsPosY;
-        public float UnitSpeedMod => unitSpeedMod;
-        public float BattleshipSlowDownEndPrec => battleshipSlowDownEndPrec * unitSpeedMod;
-        public float BattleshipFacingTargetPrec => battleshipFacingTargetPrec;
-        public float BattleshipSideEngineTriggerMove => battleshipSideEngineTriggerMove;
-        public float BattleshipSideEngineTriggerStay => battleshipSideEngineTriggerStay;
+        
         public Transform ParticleContainer => particleContainer;
+        public RtsGameData RtsGameData => rtsGameData;
 
         #endregion
         
         #region Singleton Implementation
 
-        private static GlobalData _instance;
-        public static GlobalData Instance
+        private static AllData _instance;
+        public static AllData Instance
         {
             get 
             {
                 if (_instance == null)
-                    _instance = FindObjectOfType<GlobalData>();
+                    _instance = FindObjectOfType<AllData>();
                 return _instance;
             }
         }
