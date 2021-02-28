@@ -1,4 +1,4 @@
-﻿using ScriptableObjects.GlobalData;
+﻿using ScriptableObjects.OverallData;
 using UnityEngine;
 
 namespace GameGlobal
@@ -7,28 +7,28 @@ namespace GameGlobal
     {
         #region Data
         
-        [SerializeField] private int fps;
-        [SerializeField] private Transform particleContainer;
         [SerializeField] private RtsGameData rtsGameData;
+        [SerializeField] private GlobalData globalData;
+        [SerializeField] private Transform particleContainer;
         
         #endregion
 
         #region Getters
         
-        public Transform ParticleContainer => particleContainer;
         public RtsGameData RtsGameData => rtsGameData;
+        public GlobalData GlobalData => globalData;
+        public Transform ParticleContainer => particleContainer;
 
         #endregion
         
         #region Singleton Implementation
 
         private static AllData _instance;
-        public static AllData Instance
+        public static AllData I
         {
             get 
             {
-                if (_instance == null)
-                    _instance = FindObjectOfType<AllData>();
+                if (_instance == null) _instance = FindObjectOfType<AllData>();
                 return _instance;
             }
         }
@@ -37,9 +37,9 @@ namespace GameGlobal
 
         #region Unity Events
 
-        private void Awake() 
+        private void Awake()
         {
-            Application.targetFrameRate = fps;
+            Application.targetFrameRate = GlobalData.FPS;
             
             DontDestroyOnLoad(gameObject);
             DontDestroyOnLoad(particleContainer);

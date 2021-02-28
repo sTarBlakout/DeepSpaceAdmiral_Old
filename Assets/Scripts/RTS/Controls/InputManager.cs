@@ -104,7 +104,7 @@ namespace RTS.Controls
             else
             {
                 // Touched map, try to move ship there, if selected.
-                var moveToPos = new Vector3(hitInfo.point.x, AllData.Instance.RtsGameData.RtsShipsPosY, hitInfo.point.z);
+                var moveToPos = new Vector3(hitInfo.point.x, AllData.I.RtsGameData.RtsShipsPosY, hitInfo.point.z);
                 _selectedObject.TryMoveToPos(moveToPos);
             }
         }

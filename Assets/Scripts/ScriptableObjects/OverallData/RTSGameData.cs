@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace ScriptableObjects.GlobalData
+namespace ScriptableObjects.OverallData
 {
-    [CreateAssetMenu(fileName = "RTS Data", menuName = "ScriptableObjects/GlobalData/RTS Data")]
+    [CreateAssetMenu(fileName = "RTS Data", menuName = "Scriptable Objects/Overall Data/RTS Data")]
     public class RtsGameData : ScriptableObject
     {
         #region Data
@@ -20,7 +18,6 @@ namespace ScriptableObjects.GlobalData
         #endregion
 
         #region Getters
-        
         public float RtsShipsPosY => rtsShipsPosY;
         public float UnitSpeedMod => unitSpeedMod;
         public float BattleshipSlowDownEndPrec => battleshipSlowDownEndPrec * unitSpeedMod;

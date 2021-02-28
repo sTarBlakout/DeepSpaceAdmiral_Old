@@ -121,8 +121,8 @@ namespace RTS.Ships
             _weaponManager = transform.GetComponentInChildren<WeaponManager>();
             _engineManager = transform.GetComponentInChildren<EngineManager>();
 
-            _slowDownEndPrec = AllData.Instance.RtsGameData.BattleshipSlowDownEndPrec;
-            _facingTargetPrec = AllData.Instance.RtsGameData.BattleshipFacingTargetPrec;
+            _slowDownEndPrec = AllData.I.RtsGameData.BattleshipSlowDownEndPrec;
+            _facingTargetPrec = AllData.I.RtsGameData.BattleshipFacingTargetPrec;
 
             _currHealthPoints = maxHealthPoints;
             
@@ -184,7 +184,7 @@ namespace RTS.Ships
         private void CalculateUnitSpeed()
         {
             var position = transform.position;
-            _unitSpeed = (position - _lastPosition).magnitude * AllData.Instance.RtsGameData.UnitSpeedMod;
+            _unitSpeed = (position - _lastPosition).magnitude * AllData.I.RtsGameData.UnitSpeedMod;
             _lastPosition = position;
             if (_unitSpdLastValues.Count >= 5)
                 _unitSpdLastValues.Dequeue();
@@ -203,7 +203,7 @@ namespace RTS.Ships
         
         private void InitParticles()
         {
-            selectedMarker.transform.Translate(Vector3.down * AllData.Instance.RtsGameData.RtsShipsPosY, Space.World);
+            selectedMarker.transform.Translate(Vector3.down * AllData.I.RtsGameData.RtsShipsPosY, Space.World);
             
             foreach (Transform explosion in mainExplosion.transform)
                 _mainExplosionParticles.Add(explosion.GetComponent<ParticleManager>());

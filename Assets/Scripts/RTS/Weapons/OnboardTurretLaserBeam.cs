@@ -55,7 +55,7 @@ namespace RTS.Weapons
             var directionToTarget = (_posToShoot - transform.position).normalized;
             RotateGraphics(ShouldAttack ? directionToTarget : graphicsContainer.forward);
             var dotProd = Vector3.Dot(directionToTarget, graphicsRotator.forward);
-            return dotProd > AllData.Instance.RtsGameData.BattleshipFacingTargetPrec && ShouldAttack;
+            return dotProd > AllData.I.RtsGameData.BattleshipFacingTargetPrec && ShouldAttack;
         }
 
         public void Shoot(Vector3 targetPos)

@@ -42,7 +42,7 @@ namespace RTS
 
         public void TestShipBuild()
         {
-            var spawnPos = new Vector3(0f, AllData.Instance.RtsGameData.RtsShipsPosY, 0f);
+            var spawnPos = new Vector3(0f, AllData.I.RtsGameData.RtsShipsPosY, 0f);
             var ship = Instantiate(shipToSpawn, spawnPos, Quaternion.identity);
             ship.GetComponent<Battleship>().teamId = 2;
             ship.GetComponent<Battleship>().OnShipDestroyed += DestroyShip;
@@ -69,7 +69,7 @@ namespace RTS
 
         private GameObject SpawnBattleshipAtPosition(Vector3 position, bool isFriend)
         {
-            var spawnPos = new Vector3(position.x, AllData.Instance.RtsGameData.RtsShipsPosY, position.z);
+            var spawnPos = new Vector3(position.x, AllData.I.RtsGameData.RtsShipsPosY, position.z);
             var shipGameObject = Instantiate(shipToSpawn, spawnPos, Quaternion.identity);
             var battleship = shipGameObject.GetComponent<Battleship>();
             battleship.teamId = 1;

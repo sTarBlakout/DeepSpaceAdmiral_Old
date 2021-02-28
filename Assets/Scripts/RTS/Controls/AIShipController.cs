@@ -24,7 +24,7 @@ namespace RTS.Controls
             if (!_moveable.IsReachedDestination) return;
 
             var randomPoint = Random.insideUnitSphere * 100;
-            _targetPos = new Vector3(randomPoint.x, AllData.Instance.RtsGameData.RtsShipsPosY, randomPoint.z);
+            _targetPos = new Vector3(randomPoint.x, AllData.I.RtsGameData.RtsShipsPosY, randomPoint.z);
             _moveable.MoveToPositon(_targetPos);
         }
     }

@@ -37,8 +37,8 @@ namespace RTS.Ships
         {
             InitEngines();
 
-            _sideEngineActTrigMove = AllData.Instance.RtsGameData.BattleshipSideEngineTriggerMove;
-            _sideEngineActTrigStay = AllData.Instance.RtsGameData.BattleshipSideEngineTriggerStay;
+            _sideEngineActTrigMove = AllData.I.RtsGameData.BattleshipSideEngineTriggerMove;
+            _sideEngineActTrigStay = AllData.I.RtsGameData.BattleshipSideEngineTriggerStay;
         }
 
         #endregion
@@ -60,7 +60,7 @@ namespace RTS.Ships
             
             bool shouldSideEnginesWork;
                 
-            if (unitSpd >= slowDownEngThld * AllData.Instance.RtsGameData.UnitSpeedMod || !reachedDest)
+            if (unitSpd >= slowDownEngThld * AllData.I.RtsGameData.UnitSpeedMod || !reachedDest)
             {
                 ActivateEngineSection(EngineSection.Main, dotForward > startMainEngineMinDot);
                 shouldSideEnginesWork = dotForward < _sideEngineActTrigMove;

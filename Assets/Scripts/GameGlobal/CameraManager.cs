@@ -35,7 +35,7 @@ namespace GameGlobal
         {
             _leanChase.enabled = false;
             
-            var initPos = new Vector3(transform.position.x, AllData.Instance.RtsGameData.RtsShipsPosY, transform.position.z);
+            var initPos = new Vector3(transform.position.x, AllData.I.RtsGameData.RtsShipsPosY, transform.position.z);
             transform.position = initPos;
         }
 

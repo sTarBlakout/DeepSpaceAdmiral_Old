@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
   m_Name: RTS Data
-  m_EditorClassIdentifier: Assembly-CSharp:ScriptableObjects.GlobalData:RtsGameData
+  m_EditorClassIdentifier: Assembly-CSharp:ScriptableObjects.OverallData:RtsGameData
   rtsShipsPosY: 2
   unitSpeedMod: 1000
   battleshipSlowDownEndPrec: 0.01
