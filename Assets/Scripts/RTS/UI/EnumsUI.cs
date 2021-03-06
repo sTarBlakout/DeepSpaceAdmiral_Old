@@ -3,6 +3,7 @@
     public enum PopupType
     {
         ShipControl,
-        ChangeFireMode
+        ChangeFireMode,
+        LaunchSquadron
     }
 }

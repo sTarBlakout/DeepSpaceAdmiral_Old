@@ -1004,7 +1004,7 @@ MonoBehaviour:
         m_PersistentCalls:
           m_Calls: []
       GameEvents:
-      - Ship_OnlyOnboardGuns
+      - Ship_CFM_OnlyOnboardGuns
       SoundData:
         SoundSource: 0
         DatabaseName: General
@@ -4136,7 +4136,7 @@ MonoBehaviour:
         m_PersistentCalls:
           m_Calls: []
       GameEvents:
-      - Ship_AllGuns
+      - Ship_CFM_AllGuns
       SoundData:
         SoundSource: 0
         DatabaseName: General
@@ -6930,7 +6930,7 @@ MonoBehaviour:
         m_PersistentCalls:
           m_Calls: []
       GameEvents:
-      - Ship_OnlyMainGuns
+      - Ship_CFM_OnlyMainGuns
       SoundData:
         SoundSource: 0
         DatabaseName: General
@@ -9358,7 +9358,7 @@ MonoBehaviour:
         m_PersistentCalls:
           m_Calls: []
       GameEvents:
-      - Ship_StopAllGuns
+      - Ship_CFM_StopAllGuns
       SoundData:
         SoundSource: 0
         DatabaseName: General

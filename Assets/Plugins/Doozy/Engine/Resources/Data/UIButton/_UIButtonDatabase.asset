@@ -19,8 +19,10 @@ MonoBehaviour:
   - GeneralControlPanel
   - ShipControlPanel
   - ChangeFireModePanel
+  - LaunchSquadronPanel
   Categories:
   - {fileID: 11400000, guid: 486db36ea56619c42ba204b5d42c47ce, type: 2}
   - {fileID: 11400000, guid: 99649debdb0f6674b841091bebd8c8e5, type: 2}
   - {fileID: 11400000, guid: f7c38a50364e54547aa7b397251fca03, type: 2}
   - {fileID: 11400000, guid: b394782ec0627d947a3fb72cad3d96b6, type: 2}
+  - {fileID: 11400000, guid: 9e3bb000d4877c84c8f63748771b28ed, type: 2}

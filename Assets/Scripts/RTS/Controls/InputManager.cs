@@ -153,12 +153,21 @@ namespace RTS.Controls
         {
             switch (_gameEventListener.GameEventName)
             {
-                case "Ship_ChangeFireMode": OpenChangeFireModePanel(true); break;
-                case "Ship_StopAllGuns": ChangeFireMode(FireMode.NoGuns); break;
-                case "Ship_OnlyOnboardGuns": ChangeFireMode(FireMode.OnlyOnboard); break;
-                case "Ship_OnlyMainGuns": ChangeFireMode(FireMode.OnlyMain); break;
-                case "Ship_AllGuns": ChangeFireMode(FireMode.AllGuns); break;
+                case "Ship_CFM_Panel": OpenChangeFireModePanel(true); break;
+                case "Ship_CFM_StopAllGuns": ChangeFireMode(FireMode.NoGuns); break;
+                case "Ship_CFM_OnlyOnboardGuns": ChangeFireMode(FireMode.OnlyOnboard); break;
+                case "Ship_CFM_OnlyMainGuns": ChangeFireMode(FireMode.OnlyMain); break;
+                case "Ship_CFM_AllGuns": ChangeFireMode(FireMode.AllGuns); break;
+                
+                case "Ship_LS_Panel": OpenLaunchSquadronPanel(true); break;
+                case "Ship_LS_Close": OpenLaunchSquadronPanel(false); break;
             }
+        }
+
+        private void OpenLaunchSquadronPanel(bool open)
+        {
+            _managerUI.ActivatePopup(PopupType.ShipControl, !open);
+            _managerUI.ActivatePopup(PopupType.LaunchSquadron, open);
         }
 
         private void OpenChangeFireModePanel(bool open)

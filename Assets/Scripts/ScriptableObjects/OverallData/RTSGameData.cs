@@ -7,9 +7,11 @@ namespace ScriptableObjects.OverallData
     {
         #region Data
 
+        [Header("General")]
         [SerializeField] private float rtsShipsPosY;
         [SerializeField] private float unitSpeedMod;
         
+        [Header("Battleship")]
         [SerializeField] private float battleshipSlowDownEndPrec = 0.1f;
         [SerializeField] private float battleshipFacingTargetPrec = 0.999f;
         [SerializeField] private float battleshipSideEngineTriggerMove = 0.5f;

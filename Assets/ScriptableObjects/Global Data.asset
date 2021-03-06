@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1191f6e076f9cb419421a0cfe149b61, type: 3}
   m_Name: Global Data
   m_EditorClassIdentifier: 
-  fps: 30
+  fps: 60

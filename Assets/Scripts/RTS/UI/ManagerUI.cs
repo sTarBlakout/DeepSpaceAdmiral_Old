@@ -11,6 +11,7 @@ namespace RTS.UI
     {
         [SerializeField] private UIPopup shipControlPanelPopup;
         [SerializeField] private UIPopup changeFireModePopup;
+        [SerializeField] private UIPopup launchSquadronPopup;
 
         private UICanvas _rtsCanvas;
         private readonly List<UIPopup> _controlsPopups = new List<UIPopup>();
@@ -52,6 +53,7 @@ namespace RTS.UI
             {
                 case PopupType.ShipControl: ShowPopup(shipControlPanelPopup, activate); break;
                 case PopupType.ChangeFireMode: ShowPopup(changeFireModePopup, activate); break;
+                case PopupType.LaunchSquadron: ShowPopup(launchSquadronPopup, activate); break;
             }
         }
         
@@ -71,7 +73,7 @@ namespace RTS.UI
                 StartCoroutine(ShowPopupAfterAllControlsHide(popup));
                 return;
             }
-
+            
             foreach (var button in popup.Data.Buttons) 
                 button.Interactable = show;
             
