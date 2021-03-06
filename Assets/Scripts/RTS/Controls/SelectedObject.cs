@@ -15,6 +15,7 @@ namespace RTS.Controls
         private IAttackable _attackable;
         private ISelectable _selectable;
         private IBehaviorSwitchable _behaviorSwitchable;
+        private ICarriable _carriable;
 
         private bool _isInit;
         public bool IsInit => _isInit;
@@ -38,6 +39,7 @@ namespace RTS.Controls
             _moveable = _monoBehaviour.GetComponent<IMoveable>();
             _attackable = _monoBehaviour.GetComponent<IAttackable>();
             _behaviorSwitchable = _monoBehaviour.GetComponent<IBehaviorSwitchable>();
+            _carriable = _monoBehaviour.GetComponent<ICarriable>();
 
             if (_damageable != null)
             {
@@ -64,6 +66,7 @@ namespace RTS.Controls
             _moveable = null;
             _attackable = null;
             _behaviorSwitchable = null;
+            _carriable = null;
             _isInit = false;
         }
 

@@ -1,4 +1,5 @@
-﻿using RTS.Interfaces;
+﻿using System.Collections.Generic;
+using RTS.Interfaces;
 using UnityEngine;
 
 namespace RTS.Ships
@@ -6,9 +7,11 @@ namespace RTS.Ships
     public class Battleship : ShipBase, ICarriable
     {
         [Header("Carrier")] 
-        [SerializeField] private int[] squadronIds;
+        [SerializeField] private List<int> squadronIds;
 
         #region ICarriable Implementation
+        
+        public List<int> SquadronIds { get; }
 
         public void LaunchSquadron(int id)
         {
