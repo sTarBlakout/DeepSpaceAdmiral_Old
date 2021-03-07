@@ -16,12 +16,12 @@ namespace RTS.Controls
         
         [SerializeField] private float doubleTapThreshold;
 
-        private readonly SelectedObject _selectedObject = new SelectedObject();
+        public Action OnObjectReselect;
         
+        private readonly SelectedObject _selectedObject = new SelectedObject();
         private float _lastTappedTime;
         private byte _doubleTapCounter;
         private Coroutine _doubleTapResetCoroutine;
-
         private ManagerUI _managerUI;
         private GameEventListener _gameEventListener;
         
@@ -112,6 +112,7 @@ namespace RTS.Controls
                 {
                     _selectedObject.InitObject(monoBehaviorObj);
                     ShowProperControlsUI();
+                    OnObjectReselect?.Invoke();
                 }
                 else
                 {
