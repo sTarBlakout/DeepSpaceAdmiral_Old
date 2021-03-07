@@ -5058,7 +5058,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridLayout: {fileID: 8334773507320461387}
-  squadButtonPrefab: {fileID: 3104440035318007039, guid: 4826c36db6d97724eae64408d64b4dea,
+  squadButtonPrefab: {fileID: 5125175511921916280, guid: de63baa721f558745bc127fff1b723fb,
     type: 3}
 --- !u!114 &7933139446551322764
 MonoBehaviour:

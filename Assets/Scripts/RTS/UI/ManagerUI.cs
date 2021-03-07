@@ -63,6 +63,7 @@ namespace RTS.UI
             {
                 case PopupType.ShipControl: shipControlPanelPopup.SetSelectedButton(buttonIdx); break;
                 case PopupType.ChangeFireMode: changeFireModePopup.SetSelectedButton(buttonIdx); break;
+                case PopupType.LaunchSquadron: launchSquadronPopup.SetSelectedButton(buttonIdx); break;
             }
         }
         
