@@ -4838,6 +4838,7 @@ GameObject:
   m_Component:
   - component: {fileID: 205707623571867569}
   - component: {fileID: 8334773507320461387}
+  - component: {fileID: 3737872558494671784}
   m_Layer: 5
   m_Name: Squadrons Layot
   m_TagString: Untagged
@@ -4888,6 +4889,18 @@ MonoBehaviour:
   m_Spacing: {x: 5, y: 5}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!114 &3737872558494671784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4695867944545654982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e82541c689646b4793e6910ef6acbfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6652420443179340977
 GameObject:
   m_ObjectHideFlags: 0

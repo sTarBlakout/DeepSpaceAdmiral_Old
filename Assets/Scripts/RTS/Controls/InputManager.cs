@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using Doozy.Engine;
 using UnityEngine;
 using Lean.Touch;
@@ -24,6 +25,26 @@ namespace RTS.Controls
         private ManagerUI _managerUI;
         private GameEventListener _gameEventListener;
         
+        #endregion
+
+        #region Getters
+
+        public SelectedObject CurrSelectedObject => _selectedObject;
+
+        #endregion
+        
+        #region Singleton Implementation
+
+        private static InputManager _instance;
+        public static InputManager I
+        {
+            get 
+            {
+                if (_instance == null) _instance = FindObjectOfType<InputManager>();
+                return _instance;
+            }
+        }
+
         #endregion
 
         #region Unity Methods

@@ -11,7 +11,7 @@ namespace RTS.Ships
 
         #region ICarriable Implementation
         
-        public List<int> SquadronIds { get; }
+        public List<int> SquadronIds => squadronIds;
 
         public void LaunchSquadron(int id)
         {
