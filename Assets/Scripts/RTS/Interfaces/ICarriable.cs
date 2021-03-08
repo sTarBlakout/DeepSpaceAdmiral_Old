@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace RTS.Interfaces
 {
     public interface ICarriable
     {
-        void LaunchSquadron(int id);
+        void LaunchSquadron(GameObject squadronPrefab);
         List<int> SquadronIds { get; }
     }
 }

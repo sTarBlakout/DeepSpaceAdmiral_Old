@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace ScriptableObjects.OverallData
 {
@@ -16,6 +18,9 @@ namespace ScriptableObjects.OverallData
         [SerializeField] private float battleshipFacingTargetPrec = 0.999f;
         [SerializeField] private float battleshipSideEngineTriggerMove = 0.5f;
         [SerializeField] private float battleshipSideEngineTriggerStay = 0.999f;
+
+        [Header("Squadrons")] 
+        [SerializeField] private List<GameObject> squadrons;
         
         #endregion
 
@@ -26,7 +31,16 @@ namespace ScriptableObjects.OverallData
         public float BattleshipFacingTargetPrec => battleshipFacingTargetPrec;
         public float BattleshipSideEngineTriggerMove => battleshipSideEngineTriggerMove;
         public float BattleshipSideEngineTriggerStay => battleshipSideEngineTriggerStay;
-        
+
+        #endregion
+
+        #region Public Methods
+
+        public GameObject GetSquadron(int id)
+        {
+            return squadrons.FirstOrDefault(sq => sq.GetComponent<SquadronBase>().ID == id);
+        }
+
         #endregion
     }
 }

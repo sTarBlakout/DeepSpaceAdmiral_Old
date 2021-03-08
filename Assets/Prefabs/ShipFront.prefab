@@ -55497,7 +55497,7 @@ MonoBehaviour:
     type: 3}
   frictionParticle: {fileID: 2953989883984934608, guid: 4c3746632f865e048b08da9df330b3fa,
     type: 3}
-  squadronIds: 0c0000002f00000017000000
+  squadronIds: 160000000d000000
 --- !u!1 &6650746610045840802
 GameObject:
   m_ObjectHideFlags: 0

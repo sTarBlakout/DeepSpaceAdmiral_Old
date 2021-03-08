@@ -191,7 +191,7 @@ namespace RTS.Controls
         {
             var launchSqdPopup = _managerUI.CurrOpenPopup.GetComponent<LaunchSquadPopup>();
             if (launchSqdPopup == null) return;
-            _selectedObject.LaunchSquadron(launchSqdPopup.SelectedBtnId);
+            _selectedObject.LaunchSquadron(AllData.I.RtsGameData.GetSquadron(launchSqdPopup.SelectedBtnId));
         }
 
         private void OpenChangeFireModePanel(bool open)

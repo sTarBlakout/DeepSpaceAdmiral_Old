@@ -13,9 +13,9 @@ namespace RTS.Ships
         
         public List<int> SquadronIds => squadronIds;
 
-        public void LaunchSquadron(int id)
+        public void LaunchSquadron(GameObject squadronPrefab)
         {
-            Debug.Log("Launching squadron: " + id);
+            Debug.Log("Launching squadron: " + squadronPrefab);
         }
 
         #endregion

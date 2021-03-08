@@ -131,9 +131,9 @@ namespace RTS.Controls
             _behaviorSwitchable?.SwitchBehavior(behavior);
         }
 
-        public void LaunchSquadron(int id)
+        public void LaunchSquadron(GameObject squadronPrefab)
         {
-            _carriable?.LaunchSquadron(id);
+            _carriable?.LaunchSquadron(squadronPrefab);
         }
 
         public List<int> GetSquadronIds()
