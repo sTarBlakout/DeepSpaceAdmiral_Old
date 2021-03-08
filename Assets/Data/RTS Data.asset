@@ -18,3 +18,5 @@ MonoBehaviour:
   battleshipFacingTargetPrec: 0.999
   battleshipSideEngineTriggerMove: 0.5
   battleshipSideEngineTriggerStay: 0.999
+  squadrons:
+  - {fileID: 4597278478295576661, guid: eca20124c0e567d45a9c11ca761f538e, type: 3}
