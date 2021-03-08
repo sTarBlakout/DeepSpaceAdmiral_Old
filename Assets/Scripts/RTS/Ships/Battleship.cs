@@ -15,7 +15,7 @@ namespace RTS.Ships
 
         public void LaunchSquadron(int id)
         {
-            Debug.Log(id);
+            Debug.Log("Launching squadron: " + id);
         }
 
         #endregion

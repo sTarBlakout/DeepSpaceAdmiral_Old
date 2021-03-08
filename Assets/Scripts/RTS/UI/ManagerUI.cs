@@ -14,9 +14,11 @@ namespace RTS.UI
         [SerializeField] private UIPopup launchSquadronPopup;
 
         private UICanvas _rtsCanvas;
+        private UIPopup _currOpenPopup;
         private readonly List<UIPopup> _controlsPopups = new List<UIPopup>();
-
         private bool _waitUntilAllControlsHidden;
+
+        public UIPopup CurrOpenPopup => _currOpenPopup;
 
         private void Start()
         {
@@ -77,11 +79,13 @@ namespace RTS.UI
             
             foreach (var button in popup.Data.Buttons) 
                 button.Interactable = show;
-            
+
             if (show)
+            {
                 popup.Show();
-            else
-                popup.Hide();
+                _currOpenPopup = popup;
+            }
+            else popup.Hide();
         }
 
         private IEnumerator ShowPopupAfterAllControlsHide(UIPopup popup)

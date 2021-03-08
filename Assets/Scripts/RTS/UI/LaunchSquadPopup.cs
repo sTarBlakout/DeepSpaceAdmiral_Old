@@ -16,6 +16,8 @@ public class LaunchSquadPopup : MonoBehaviour
     private LaunchSquadButton _selectedBtn;
     private List<LaunchSquadButton> _squadBtns = new List<LaunchSquadButton>();
 
+    public int SelectedBtnId => _selectedBtn.ID;
+
     private void Awake()
     {
         _popup = GetComponent<UIPopup>();
@@ -31,20 +33,21 @@ public class LaunchSquadPopup : MonoBehaviour
         }
         _squadBtns.Clear();
         
-        foreach (var id in InputManager.I.CurrSelectedObject.GetSquadronIds())
+        foreach (var id in InputManager.I.GetSquadronIds())
         {
             var newBtn = Instantiate(squadButtonPrefab, gridLayout.transform);
             var lsBtn = newBtn.GetComponent<LaunchSquadButton>();
             lsBtn.Init(id);
-            lsBtn.UIButton.Button.onClick.AddListener(() => OnButtonClick(lsBtn));
+            lsBtn.UIButton.Button.onClick.AddListener(() => OnSquadButtonClick(lsBtn));
             _squadBtns.Add(lsBtn);
             _popup.Data.Buttons.Add(lsBtn.UIButton);
         }
     }
 
-    private void OnButtonClick(LaunchSquadButton clickedButton)
+    private void OnSquadButtonClick(LaunchSquadButton clickedButton)
     {
         foreach (var btn in _squadBtns) btn.ActivateSelectParticle(false);
         clickedButton.ActivateSelectParticle(true);
+        _selectedBtn = clickedButton;
     }
 }

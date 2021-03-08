@@ -131,6 +131,11 @@ namespace RTS.Controls
             _behaviorSwitchable?.SwitchBehavior(behavior);
         }
 
+        public void LaunchSquadron(int id)
+        {
+            _carriable?.LaunchSquadron(id);
+        }
+
         public List<int> GetSquadronIds()
         {
             return _carriable != null ? new List<int>(_carriable.SquadronIds) : new List<int>();

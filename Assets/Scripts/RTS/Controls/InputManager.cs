@@ -27,12 +27,6 @@ namespace RTS.Controls
         
         #endregion
 
-        #region Getters
-
-        public SelectedObject CurrSelectedObject => _selectedObject;
-
-        #endregion
-        
         #region Singleton Implementation
 
         private static InputManager _instance;
@@ -183,6 +177,7 @@ namespace RTS.Controls
                 
                 case "Ship_LS_Panel": OpenLaunchSquadronPanel(true); break;
                 case "Ship_LS_Close": OpenLaunchSquadronPanel(false); break;
+                case "Ship_LS_Launch": LaunchSquadron(); break;
             }
         }
 
@@ -192,6 +187,13 @@ namespace RTS.Controls
             _managerUI.ActivatePopup(PopupType.LaunchSquadron, open);
         }
 
+        private void LaunchSquadron()
+        {
+            var launchSqdPopup = _managerUI.CurrOpenPopup.GetComponent<LaunchSquadPopup>();
+            if (launchSqdPopup == null) return;
+            _selectedObject.LaunchSquadron(launchSqdPopup.SelectedBtnId);
+        }
+
         private void OpenChangeFireModePanel(bool open)
         {
             _managerUI.ActivatePopup(PopupType.ShipControl, !open);
@@ -199,7 +201,7 @@ namespace RTS.Controls
 
             var behavior = _selectedObject.GetCurrBehavior(BehaviorType.FireMode);
             if (behavior != null)
-                _managerUI.ChangeSelectedButton(PopupType.ChangeFireMode, (int) (FireMode) behavior);
+                _managerUI.ChangeSelectedButton(PopupType.ChangeFireMode, (int)(FireMode)behavior);
         }
 
         private void ChangeFireMode(FireMode mode)
@@ -209,6 +211,15 @@ namespace RTS.Controls
             _managerUI.ChangeSelectedButton(PopupType.ChangeFireMode, (int)mode);
         }
         
+        #endregion
+
+        #region Selected Object API
+
+        public List<int> GetSquadronIds()
+        {
+            return _selectedObject.GetSquadronIds();
+        }
+
         #endregion
     }
 }
