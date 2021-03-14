@@ -44,3 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 22
+  shipsAmount: 10
+  launchTime: 20
+  shipSize: 0.05
+  shipPref: {fileID: 1405876428854690, guid: 39d609d49c8aa724e9dfb4e431e3e2d3, type: 3}

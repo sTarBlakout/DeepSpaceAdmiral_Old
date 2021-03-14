@@ -7,5 +7,6 @@ namespace RTS.Interfaces
     {
         void LaunchSquadron(GameObject squadronPrefab);
         List<int> SquadronIds { get; }
+        List<Transform> SquadronSpawnPoints { get; }
     }
 }
